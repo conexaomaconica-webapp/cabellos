@@ -1,10 +1,11 @@
 import { createClient, getActiveOrganizationId } from '@/lib/supabase/server';
 import { ClientForm } from '@/components/clients/ClientForm';
-import { Client, Professional, Service, Appointment } from '@/types/database';
+import { ClientServiceFrequencies } from '@/components/clients/ClientServiceFrequencies';
+import { Client, Professional, Service, Appointment, ClientServiceFrequency, ClientContact } from '@/types/database';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, History, Wrench, UserCheck } from 'lucide-react';
+import { History } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
@@ -17,33 +18,51 @@ export default async function EditClientPage({ params }: EditClientPageProps) {
   const supabase = await createClient();
   const activeOrgId = await getActiveOrganizationId();
 
-  const [{ data: clientData }, { data: professionalsData }, { data: servicesData }, { data: appointmentsData }] =
-    await Promise.all([
-      supabase
-        .from('clients')
-        .select('*')
-        .eq('id', id)
-        .eq('organization_id', activeOrgId!)
-        .single(),
-      supabase
-        .from('professionals')
-        .select('*')
-        .eq('organization_id', activeOrgId!)
-        .eq('is_active', true)
-        .order('name'),
-      supabase
-        .from('services')
-        .select('*')
-        .eq('organization_id', activeOrgId!)
-        .eq('is_active', true)
-        .order('name'),
-      supabase
-        .from('appointments')
-        .select('*, professional:professionals(*), services:appointment_services(*, service:services(*)), payments:appointment_payments(*, payment_method:payment_methods(*))')
-        .eq('client_id', id)
-        .eq('organization_id', activeOrgId!)
-        .order('created_at', { ascending: false }),
-    ]);
+  const [
+    { data: clientData },
+    { data: professionalsData },
+    { data: servicesData },
+    { data: appointmentsData },
+    { data: frequenciesData },
+    { data: contactsData },
+  ] = await Promise.all([
+    supabase
+      .from('clients')
+      .select('*')
+      .eq('id', id)
+      .eq('organization_id', activeOrgId!)
+      .single(),
+    supabase
+      .from('professionals')
+      .select('*')
+      .eq('organization_id', activeOrgId!)
+      .eq('is_active', true)
+      .order('name'),
+    supabase
+      .from('services')
+      .select('*')
+      .eq('organization_id', activeOrgId!)
+      .eq('is_active', true)
+      .order('name'),
+    supabase
+      .from('appointments')
+      .select('*, professional:professionals(*), services:appointment_services(*, service:services(*)), payments:appointment_payments(*, payment_method:payment_methods(*))')
+      .eq('client_id', id)
+      .eq('organization_id', activeOrgId!)
+      .order('created_at', { ascending: false }),
+    supabase
+      .from('client_service_frequencies')
+      .select('*, service:services(*), last_professional:professionals(*)')
+      .eq('client_id', id)
+      .eq('organization_id', activeOrgId!)
+      .order('updated_at', { ascending: false }),
+    supabase
+      .from('client_contacts')
+      .select('*')
+      .eq('client_id', id)
+      .eq('organization_id', activeOrgId!)
+      .order('contacted_at', { ascending: false }),
+  ]);
 
   if (!clientData) {
     notFound();
@@ -53,20 +72,25 @@ export default async function EditClientPage({ params }: EditClientPageProps) {
   const professionals = (professionalsData || []) as Professional[];
   const services = (servicesData || []) as Service[];
   const appointments = (appointmentsData || []) as Appointment[];
+  const frequencies = (frequenciesData || []) as ClientServiceFrequency[];
+  const contacts = (contactsData || []) as ClientContact[];
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-white tracking-tight">Ficha do Cliente</h1>
         <p className="text-sm text-slate-400 mt-1">
-          Edite os dados cadastrais e veja o histórico de atendimentos de {client.name}
+          Edite os dados cadastrais, frequências por serviço e veja o histórico de atendimentos de {client.name}
         </p>
       </div>
 
       {/* Form de Edição */}
       <ClientForm client={client} professionals={professionals} services={services} />
 
-      {/* SEÇÃO 2: HISTÓRICO DE ATENDIMENTOS */}
+      {/* SEÇÃO FREQUÊNCIA POR SERVIÇO & HISTÓRICO DE CONTATOS (SPRINT 3) */}
+      <ClientServiceFrequencies clientId={id} frequencies={frequencies} contacts={contacts} />
+
+      {/* SEÇÃO HISTÓRICO DE ATENDIMENTOS */}
       <Card className="bg-slate-900 border-slate-800 text-white shadow-xl">
         <CardHeader className="border-b border-slate-800 flex flex-row items-center justify-between">
           <CardTitle className="text-lg font-bold text-white flex items-center gap-2">

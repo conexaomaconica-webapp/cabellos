@@ -1,7 +1,22 @@
 import { createClient, getActiveOrganizationId } from '@/lib/supabase/server';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users, UserCheck, Wrench, FolderKanban, Plus, Sparkles, CalendarCheck2, DollarSign, TrendingUp, UserCheck2 } from 'lucide-react';
+import {
+  Users,
+  UserCheck,
+  Wrench,
+  FolderKanban,
+  Plus,
+  Sparkles,
+  CalendarCheck2,
+  DollarSign,
+  TrendingUp,
+  UserCheck2,
+  Clock,
+  AlertTriangle,
+  Send,
+  ArrowRight,
+} from 'lucide-react';
 import Link from 'next/link';
 
 function formatCurrency(val: number) {
@@ -14,6 +29,9 @@ export default async function DashboardPage() {
 
   // Data atual em YYYY-MM-DD
   const todayStr = new Date().toISOString().split('T')[0];
+  const d7 = new Date();
+  d7.setDate(d7.getDate() + 7);
+  const d7Str = d7.toISOString().split('T')[0];
 
   // Executar buscas em paralelo
   const [
@@ -22,6 +40,10 @@ export default async function DashboardPage() {
     { count: servicesCount },
     { data: activeOrg },
     { data: todayAppointments },
+    { count: returnsTodayCount },
+    { count: returnsOverdueCount },
+    { count: returnsNext7Count },
+    { count: contactsTodayCount },
   ] = await Promise.all([
     supabase.from('clients').select('*', { count: 'exact', head: true }).eq('organization_id', activeOrgId!).eq('is_active', true),
     supabase.from('professionals').select('*', { count: 'exact', head: true }).eq('organization_id', activeOrgId!).eq('is_active', true),
@@ -33,14 +55,35 @@ export default async function DashboardPage() {
       .eq('organization_id', activeOrgId!)
       .eq('date', todayStr)
       .eq('status', 'completed'),
+    supabase
+      .from('return_alerts')
+      .select('*', { count: 'exact', head: true })
+      .eq('organization_id', activeOrgId!)
+      .in('status', ['due', 'upcoming'])
+      .eq('expected_return_at', todayStr),
+    supabase
+      .from('return_alerts')
+      .select('*', { count: 'exact', head: true })
+      .eq('organization_id', activeOrgId!)
+      .eq('status', 'overdue'),
+    supabase
+      .from('return_alerts')
+      .select('*', { count: 'exact', head: true })
+      .eq('organization_id', activeOrgId!)
+      .in('status', ['upcoming', 'due'])
+      .gte('expected_return_at', todayStr)
+      .lte('expected_return_at', d7Str),
+    supabase
+      .from('client_contacts')
+      .select('*', { count: 'exact', head: true })
+      .eq('organization_id', activeOrgId!)
+      .gte('contacted_at', `${todayStr}T00:00:00.000Z`),
   ]);
 
   // Cálculo das métricas de hoje
   const completedTodayCount = todayAppointments?.length || 0;
   const revenueToday = todayAppointments?.reduce((acc, curr) => acc + Number(curr.total_amount || 0), 0) || 0;
   const averageTicketToday = completedTodayCount > 0 ? revenueToday / completedTodayCount : 0;
-  
-  // Clientes únicos atendidos hoje
   const uniqueClientsToday = new Set(todayAppointments?.map((a) => a.client_id)).size;
 
   return (
@@ -50,18 +93,23 @@ export default async function DashboardPage() {
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold mb-2">
-              <Sparkles className="h-3.5 w-3.5" /> Sprint 2 — Atendimentos & Operação
+              <Sparkles className="h-3.5 w-3.5" /> Sprint 3 — Retornos & Engajamento por Serviço
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
               {activeOrg?.name || 'Bem-vindo ao Cabellos'}
             </h1>
             <p className="text-sm text-slate-400 mt-1 max-w-xl">
-              Gerencie atendimentos, clientes, equipe de profissionais e acompanhe os indicadores em tempo real.
+              Acompanhe retornos previstos por serviço, contate clientes em atraso e potencialize a recorrência do salão.
             </p>
           </div>
-          <div className="flex gap-2 shrink-0">
-            <Link href="/atendimentos/novo">
+          <div className="flex flex-wrap gap-2 shrink-0">
+            <Link href="/retornos">
               <Button variant="default" className="bg-amber-500 text-slate-950 hover:bg-amber-400 font-semibold shadow-lg">
+                <Clock className="h-4 w-4 mr-1.5" /> Central de Retornos
+              </Button>
+            </Link>
+            <Link href="/atendimentos/novo">
+              <Button variant="outline" className="border-slate-700 text-slate-200 hover:bg-slate-800">
                 <Plus className="h-4 w-4 mr-1.5" /> Novo Atendimento
               </Button>
             </Link>
@@ -69,13 +117,89 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Métricas Operacionais de Hoje */}
+      {/* SEÇÃO 1: INDICADORES DA CENTRAL DE RETORNOS (SPRINT 3) */}
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-base font-semibold text-slate-300 flex items-center gap-2">
+            <Clock className="h-4 w-4 text-amber-400" /> Indicadores de Retorno & Recorrência
+          </h2>
+          <Link href="/retornos" className="text-xs text-amber-400 hover:underline flex items-center gap-1 font-medium">
+            Ver Central de Retornos <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Retornos Hoje */}
+          <Link href="/retornos?tab=hoje">
+            <Card className="bg-slate-900 border-slate-800 text-white hover:border-amber-500/50 transition-all shadow-md cursor-pointer group">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-xs font-medium text-slate-400">Retornos Previstos Hoje</CardTitle>
+                <div className="h-8 w-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
+                  <Clock className="h-4 w-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-amber-400">{returnsTodayCount || 0}</div>
+                <p className="text-[11px] text-slate-500 mt-0.5">Alertas com vencimento hoje</p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          {/* Retornos Atrasados */}
+          <Link href="/retornos?tab=atrasados">
+            <Card className="bg-slate-900 border-slate-800 text-white hover:border-red-500/50 transition-all shadow-md cursor-pointer group">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-xs font-medium text-slate-400">Retornos em Atraso</CardTitle>
+                <div className="h-8 w-8 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 group-hover:scale-110 transition-transform">
+                  <AlertTriangle className="h-4 w-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-red-400">{returnsOverdueCount || 0}</div>
+                <p className="text-[11px] text-slate-500 mt-0.5">Clientes que ultrapassaram a data</p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          {/* Próximos 7 Dias */}
+          <Link href="/retornos?tab=proximos_7">
+            <Card className="bg-slate-900 border-slate-800 text-white hover:border-blue-500/50 transition-all shadow-md cursor-pointer group">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-xs font-medium text-slate-400">Próximos 7 Dias</CardTitle>
+                <div className="h-8 w-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+                  <CalendarCheck2 className="h-4 w-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-blue-400">{returnsNext7Count || 0}</div>
+                <p className="text-[11px] text-slate-500 mt-0.5">Alertas da próxima semana</p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          {/* Contatados Hoje */}
+          <Link href="/retornos?tab=contatados">
+            <Card className="bg-slate-900 border-slate-800 text-white hover:border-emerald-500/50 transition-all shadow-md cursor-pointer group">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-xs font-medium text-slate-400">Contatados Hoje</CardTitle>
+                <div className="h-8 w-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+                  <Send className="h-4 w-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-emerald-400">{contactsTodayCount || 0}</div>
+                <p className="text-[11px] text-slate-500 mt-0.5">Mensagens registradas hoje</p>
+              </CardContent>
+            </Card>
+          </Link>
+        </div>
+      </div>
+
+      {/* SEÇÃO 2: MÉTRICAS OPERACIONAIS DE HOJE */}
       <div>
         <h2 className="text-base font-semibold text-slate-300 mb-3 flex items-center gap-2">
-          <CalendarCheck2 className="h-4 w-4 text-amber-400" /> Resumo do Dia ({new Date().toLocaleDateString('pt-BR')})
+          <CalendarCheck2 className="h-4 w-4 text-amber-400" /> Operação de Hoje ({new Date().toLocaleDateString('pt-BR')})
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Atendimentos Hoje */}
           <Card className="bg-slate-900 border-slate-800 text-white shadow-md">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-xs font-medium text-slate-400">Atendimentos Hoje</CardTitle>
@@ -89,7 +213,6 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
 
-          {/* Faturamento Hoje */}
           <Card className="bg-slate-900 border-slate-800 text-white shadow-md">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-xs font-medium text-slate-400">Faturamento Hoje</CardTitle>
@@ -103,7 +226,6 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
 
-          {/* Ticket Médio Hoje */}
           <Card className="bg-slate-900 border-slate-800 text-white shadow-md">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-xs font-medium text-slate-400">Ticket Médio Hoje</CardTitle>
@@ -117,7 +239,6 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
 
-          {/* Clientes Atendidos Hoje */}
           <Card className="bg-slate-900 border-slate-800 text-white shadow-md">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-xs font-medium text-slate-400">Clientes Atendidos</CardTitle>
@@ -135,7 +256,6 @@ export default async function DashboardPage() {
 
       {/* Cards de Métricas Cadastrais */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {/* Card Clientes */}
         <Card className="bg-slate-900 border-slate-800 text-white hover:border-slate-700 transition-all shadow-md">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-400">Total de Clientes</CardTitle>
@@ -157,7 +277,6 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Card Profissionais */}
         <Card className="bg-slate-900 border-slate-800 text-white hover:border-slate-700 transition-all shadow-md">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-400">Equipe de Profissionais</CardTitle>
@@ -179,7 +298,6 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Card Serviços */}
         <Card className="bg-slate-900 border-slate-800 text-white hover:border-slate-700 transition-all shadow-md">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-400">Catálogo de Serviços</CardTitle>
@@ -201,69 +319,6 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Seção de Atalhos Rápidos */}
-      <Card className="bg-slate-900 border-slate-800 text-white shadow-xl">
-        <CardHeader>
-          <CardTitle className="text-lg font-bold text-white">Ações Rápidas</CardTitle>
-          <CardDescription className="text-slate-400">
-            Acesse diretamente as rotas principais da operação do salão
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-          <Link
-            href="/atendimentos/novo"
-            className="flex items-center gap-3 p-4 rounded-xl bg-slate-800/60 border border-slate-700/60 hover:bg-slate-800 hover:border-amber-500/50 transition-all group"
-          >
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400 group-hover:scale-105 transition-transform">
-              <CalendarCheck2 className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="font-semibold text-sm text-slate-100">Novo Atendimento</p>
-              <p className="text-xs text-slate-400">Concluir serviço</p>
-            </div>
-          </Link>
-
-          <Link
-            href="/atendimentos"
-            className="flex items-center gap-3 p-4 rounded-xl bg-slate-800/60 border border-slate-700/60 hover:bg-slate-800 hover:border-emerald-500/50 transition-all group"
-          >
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 group-hover:scale-105 transition-transform">
-              <DollarSign className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="font-semibold text-sm text-slate-100">Atendimentos</p>
-              <p className="text-xs text-slate-400">Lista e histórico</p>
-            </div>
-          </Link>
-
-          <Link
-            href="/clientes/novo"
-            className="flex items-center gap-3 p-4 rounded-xl bg-slate-800/60 border border-slate-700/60 hover:bg-slate-800 hover:border-blue-500/50 transition-all group"
-          >
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400 group-hover:scale-105 transition-transform">
-              <Users className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="font-semibold text-sm text-slate-100">Novo Cliente</p>
-              <p className="text-xs text-slate-400">Cadastrar cliente</p>
-            </div>
-          </Link>
-
-          <Link
-            href="/cadastros/servicos"
-            className="flex items-center gap-3 p-4 rounded-xl bg-slate-800/60 border border-slate-700/60 hover:bg-slate-800 hover:border-purple-500/50 transition-all group"
-          >
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400 group-hover:scale-105 transition-transform">
-              <Wrench className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="font-semibold text-sm text-slate-100">Catálogo Serviços</p>
-              <p className="text-xs text-slate-400">Gerenciar preços</p>
-            </div>
-          </Link>
-        </CardContent>
-      </Card>
     </div>
   );
 }

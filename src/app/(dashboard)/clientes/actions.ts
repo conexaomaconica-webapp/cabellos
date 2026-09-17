@@ -194,3 +194,30 @@ export async function checkDuplicateClientAction(phone: string, whatsapp: string
 
   return { duplicates: data || [] };
 }
+
+export async function setManualServiceFrequencyAction(payload: {
+  client_id: string;
+  service_id: string;
+  manual_interval_days: number | null;
+}) {
+  const supabase = await createClient();
+  const activeOrgId = await getActiveOrganizationId();
+
+  if (!activeOrgId) return { error: 'Organização não selecionada' };
+
+  const { error } = await supabase.rpc('set_manual_service_frequency', {
+    p_data: {
+      organization_id: activeOrgId,
+      client_id: payload.client_id,
+      service_id: payload.service_id,
+      manual_interval_days: payload.manual_interval_days,
+    },
+  });
+
+  if (error) return { error: error.message };
+
+  revalidatePath(`/clientes/${payload.client_id}`);
+  revalidatePath('/retornos');
+  return { success: true };
+}
+

@@ -198,3 +198,86 @@ export interface AppointmentPayment {
   updated_at: string;
   payment_method?: PaymentMethod;
 }
+
+// Sprint 3 Types
+export type ReturnAlertStatus = 'upcoming' | 'due' | 'overdue' | 'contacted' | 'snoozed' | 'returned' | 'ignored' | 'scheduled';
+export type CalculationMode = 'manual' | 'automatic' | 'service_default' | 'global_default';
+export type ConfidenceLevel = 'low' | 'medium' | 'high';
+export type TemplateType = 'return_reminder' | 'overdue' | 'inactive_client' | 'package_renewal' | 'birthday' | 'custom';
+export type ContactType = 'whatsapp' | 'phone' | 'instagram' | 'in_person' | 'other';
+export type ContactResult = 'sent' | 'no_response' | 'interested' | 'scheduled' | 'declined' | 'returned';
+
+export interface ClientServiceFrequency {
+  id: string;
+  organization_id: string;
+  client_id: string;
+  service_id: string;
+  last_professional_id: string | null;
+  visit_count: number;
+  first_service_at: string | null;
+  last_service_at: string | null;
+  average_interval_days: number | null;
+  manual_interval_days: number | null;
+  effective_interval_days: number | null;
+  next_expected_return_at: string | null;
+  calculation_mode: CalculationMode;
+  confidence_level: ConfidenceLevel;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  client?: Client;
+  service?: Service;
+  last_professional?: Professional | null;
+}
+
+export interface ReturnAlert {
+  id: string;
+  organization_id: string;
+  client_id: string;
+  service_id: string;
+  client_service_frequency_id: string | null;
+  expected_return_at: string;
+  status: ReturnAlertStatus;
+  days_overdue: number;
+  snoozed_until: string | null;
+  snooze_reason: string | null;
+  contacted_at: string | null;
+  resolved_at: string | null;
+  resolution: string | null;
+  created_at: string;
+  updated_at: string;
+  client?: Client;
+  service?: Service;
+  frequency?: ClientServiceFrequency;
+}
+
+export interface MessageTemplate {
+  id: string;
+  organization_id: string;
+  name: string;
+  type: TemplateType;
+  content: string;
+  is_default: boolean;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ClientContact {
+  id: string;
+  organization_id: string;
+  client_id: string;
+  service_id: string | null;
+  return_alert_id: string | null;
+  user_id: string;
+  contact_type: ContactType;
+  message_template_id: string | null;
+  message_content: string;
+  contacted_at: string;
+  result: ContactResult;
+  notes: string | null;
+  created_at: string;
+  service?: Service | null;
+  template?: MessageTemplate | null;
+}
+

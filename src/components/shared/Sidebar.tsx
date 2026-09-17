@@ -13,6 +13,10 @@ import {
   Scissors,
   LogOut,
   ChevronRight,
+  CalendarCheck2,
+  Clock,
+  Settings,
+  MessageSquare,
 } from 'lucide-react';
 import { logoutAction } from '@/app/(auth)/actions';
 
@@ -27,6 +31,8 @@ export function Sidebar({ organizations, activeOrgId, userName }: SidebarProps) 
 
   const navItems = [
     { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { label: 'Atendimentos', href: '/atendimentos', icon: CalendarCheck2 },
+    { label: 'Central de Retornos', href: '/retornos', icon: Clock },
     { label: 'Clientes', href: '/clientes', icon: Users },
   ];
 
@@ -34,6 +40,11 @@ export function Sidebar({ organizations, activeOrgId, userName }: SidebarProps) 
     { label: 'Profissionais', href: '/cadastros/profissionais', icon: UserCheck },
     { label: 'Categorias de Serviço', href: '/cadastros/categorias', icon: FolderKanban },
     { label: 'Serviços', href: '/cadastros/servicos', icon: Wrench },
+  ];
+
+  const configItems = [
+    { label: 'Modelos de Mensagem', href: '/configuracoes/mensagens', icon: MessageSquare },
+    { label: 'Regras de Retorno', href: '/configuracoes/retornos', icon: Settings },
   ];
 
   return (
@@ -112,6 +123,34 @@ export function Sidebar({ organizations, activeOrgId, userName }: SidebarProps) 
                 );
               })}
             </div>
+
+            <div className="space-y-1">
+              <p className="px-3 text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                Configurações
+              </p>
+              {configItems.map((item) => {
+                const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+                const Icon = item.icon;
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all ${
+                      isActive
+                        ? 'bg-amber-500/10 text-amber-400 font-semibold'
+                        : 'text-slate-300 hover:bg-slate-800/60 hover:text-white'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Icon className={`h-4 w-4 ${isActive ? 'text-amber-400' : 'text-slate-400'}`} />
+                      <span>{item.label}</span>
+                    </div>
+                    {isActive && <ChevronRight className="h-4 w-4 text-amber-400" />}
+                  </Link>
+                );
+              })}
+            </div>
           </nav>
         </div>
 
@@ -145,6 +184,24 @@ export function Sidebar({ organizations, activeOrgId, userName }: SidebarProps) 
           <span>Dashboard</span>
         </Link>
         <Link
+          href="/retornos"
+          className={`flex flex-col items-center py-1 px-3 rounded-lg text-[11px] font-medium transition-all ${
+            pathname.startsWith('/retornos') ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Clock className="h-5 w-5 mb-0.5" />
+          <span>Retornos</span>
+        </Link>
+        <Link
+          href="/atendimentos"
+          className={`flex flex-col items-center py-1 px-3 rounded-lg text-[11px] font-medium transition-all ${
+            pathname.startsWith('/atendimentos') ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <CalendarCheck2 className="h-5 w-5 mb-0.5" />
+          <span>Atendimentos</span>
+        </Link>
+        <Link
           href="/clientes"
           className={`flex flex-col items-center py-1 px-3 rounded-lg text-[11px] font-medium transition-all ${
             pathname.startsWith('/clientes') ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-slate-200'
@@ -152,26 +209,6 @@ export function Sidebar({ organizations, activeOrgId, userName }: SidebarProps) 
         >
           <Users className="h-5 w-5 mb-0.5" />
           <span>Clientes</span>
-        </Link>
-        <Link
-          href="/cadastros/profissionais"
-          className={`flex flex-col items-center py-1 px-3 rounded-lg text-[11px] font-medium transition-all ${
-            pathname.startsWith('/cadastros/profissionais') ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          <UserCheck className="h-5 w-5 mb-0.5" />
-          <span>Profissionais</span>
-        </Link>
-        <Link
-          href="/cadastros/servicos"
-          className={`flex flex-col items-center py-1 px-3 rounded-lg text-[11px] font-medium transition-all ${
-            pathname.startsWith('/cadastros/servicos') || pathname.startsWith('/cadastros/categorias')
-              ? 'text-amber-400 font-bold'
-              : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          <Wrench className="h-5 w-5 mb-0.5" />
-          <span>Serviços</span>
         </Link>
       </div>
     </>
