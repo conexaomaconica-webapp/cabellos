@@ -82,7 +82,9 @@ export function ClientServiceFrequencies({ clientId, frequencies, contacts }: Cl
                     </div>
                     <Badge
                       variant={
-                        freq.confidence_level === 'high'
+                        freq.calculation_mode === 'manual'
+                          ? 'warning'
+                          : freq.confidence_level === 'high'
                           ? 'success'
                           : freq.confidence_level === 'medium'
                           ? 'warning'
@@ -91,7 +93,7 @@ export function ClientServiceFrequencies({ clientId, frequencies, contacts }: Cl
                       className="text-[10px]"
                     >
                       {freq.calculation_mode === 'manual'
-                        ? 'Manual'
+                        ? 'Frequência definida manualmente'
                         : `Confiança ${freq.confidence_level === 'high' ? 'Alta' : freq.confidence_level === 'medium' ? 'Média' : 'Baixa'}`}
                     </Badge>
                   </div>

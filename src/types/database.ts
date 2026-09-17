@@ -221,7 +221,7 @@ export interface ClientServiceFrequency {
   effective_interval_days: number | null;
   next_expected_return_at: string | null;
   calculation_mode: CalculationMode;
-  confidence_level: ConfidenceLevel;
+  confidence_level: ConfidenceLevel | null;
   is_active: boolean;
   created_at: string;
   updated_at: string;

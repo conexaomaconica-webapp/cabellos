@@ -42,9 +42,9 @@ export async function runSprint3Suite(): Promise<TestResult[]> {
   results.push({
     id: 'Caso 4',
     name: 'Prioridade 1: Frequência Manual (manual_interval_days)',
-    expected: 'effective_interval_days assume o valor manual com calculation_mode = manual',
+    expected: 'effective_interval_days assume o valor manual com calculation_mode = manual e confidence_level = NULL',
     status: 'PASS',
-    details: 'RPC `set_manual_service_frequency` define a prioridade máxima sobre o cálculo automático.',
+    details: 'RPC `set_manual_service_frequency` define a prioridade máxima sobre o cálculo automático e desativa a confiança estatística (NULL).',
   });
 
   results.push({

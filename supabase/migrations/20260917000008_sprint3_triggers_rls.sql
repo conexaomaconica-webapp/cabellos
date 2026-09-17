@@ -242,7 +242,7 @@ BEGIN
     IF v_manual_days IS NOT NULL AND v_manual_days > 0 THEN
         v_effective_days := v_manual_days;
         v_mode := 'manual';
-        v_confidence := 'high';
+        v_confidence := NULL;
     ELSIF v_visit_count >= v_min_visits AND v_avg_days IS NOT NULL AND v_avg_days > 0 THEN
         v_effective_days := ROUND(v_avg_days)::INT;
         v_mode := 'automatic';
