@@ -2,7 +2,7 @@ import { getExecutiveReportAction, getFinancialReportAction } from './actions';
 import { KpiCard } from '@/components/reports/KpiCard';
 import { SimpleLineChart } from '@/components/reports/SimpleChart';
 import { formatCurrency } from '@/lib/reports';
-import { DollarSign, TrendingUp, TrendingDown, Wallet, CalendarCheck2, Users, Receipt, ArrowRight } from 'lucide-react';
+import { DollarSign, TrendingUp, TrendingDown, Wallet, Users, Receipt, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 interface PageProps {
@@ -119,35 +119,35 @@ export default async function ExecutiveReportPage({ searchParams }: PageProps) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
         <Link
           href={`/relatorios/clientes?period=${period}`}
-          className="p-4 bg-slate-900/60 border border-slate-800 rounded-2xl hover:border-amber-500/40 transition-all flex items-center justify-between group"
+          className="p-4 bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-amber-500/40 transition-all flex items-center justify-between group shadow-xs"
         >
           <div>
-            <h4 className="font-bold text-white text-sm group-hover:text-amber-400">Análise de Clientes & Retenção</h4>
-            <p className="text-xs text-slate-400">Recorrência, novos clientes e alertas inativos.</p>
+            <h4 className="font-bold text-slate-900 dark:text-white text-sm group-hover:text-amber-600 dark:group-hover:text-amber-400">Análise de Clientes & Retenção</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Recorrência, novos clientes e alertas inativos.</p>
           </div>
-          <ArrowRight className="h-5 w-5 text-slate-500 group-hover:text-amber-400 transition-all" />
+          <ArrowRight className="h-5 w-5 text-slate-400 dark:text-slate-500 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-all" />
         </Link>
 
         <Link
           href={`/relatorios/servicos?period=${period}`}
-          className="p-4 bg-slate-900/60 border border-slate-800 rounded-2xl hover:border-amber-500/40 transition-all flex items-center justify-between group"
+          className="p-4 bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-amber-500/40 transition-all flex items-center justify-between group shadow-xs"
         >
           <div>
-            <h4 className="font-bold text-white text-sm group-hover:text-amber-400">Ranking de Serviços</h4>
-            <p className="text-xs text-slate-400">Serviços mais produzidos e categorias.</p>
+            <h4 className="font-bold text-slate-900 dark:text-white text-sm group-hover:text-amber-600 dark:group-hover:text-amber-400">Ranking de Serviços</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Serviços mais produzidos e categorias.</p>
           </div>
-          <ArrowRight className="h-5 w-5 text-slate-500 group-hover:text-amber-400 transition-all" />
+          <ArrowRight className="h-5 w-5 text-slate-400 dark:text-slate-500 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-all" />
         </Link>
 
         <Link
           href={`/relatorios/profissionais?period=${period}`}
-          className="p-4 bg-slate-900/60 border border-slate-800 rounded-2xl hover:border-amber-500/40 transition-all flex items-center justify-between group"
+          className="p-4 bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-amber-500/40 transition-all flex items-center justify-between group shadow-xs"
         >
           <div>
-            <h4 className="font-bold text-white text-sm group-hover:text-amber-400">Produção de Profissionais</h4>
-            <p className="text-xs text-slate-400">Desempenho por profissional e comissões.</p>
+            <h4 className="font-bold text-slate-900 dark:text-white text-sm group-hover:text-amber-600 dark:group-hover:text-amber-400">Produção de Profissionais</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Desempenho por profissional e comissões.</p>
           </div>
-          <ArrowRight className="h-5 w-5 text-slate-500 group-hover:text-amber-400 transition-all" />
+          <ArrowRight className="h-5 w-5 text-slate-400 dark:text-slate-500 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-all" />
         </Link>
       </div>
     </div>

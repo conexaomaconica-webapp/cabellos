@@ -200,12 +200,12 @@ export function ReturnsClient({ initialTab, alerts, templates, orgName, inactive
 
       {/* Seção Inativos */}
       {activeTab === 'inativos' ? (
-        <Card className="bg-slate-900 border-slate-800 text-white shadow-xl">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xs">
           <CardHeader>
-            <CardTitle className="text-base font-bold text-white flex items-center gap-2">
-              <Users className="h-5 w-5 text-amber-400" /> Clientes sem Atendimento Recente
+            <CardTitle className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <Users className="h-5 w-5 text-amber-500 dark:text-amber-400" /> Clientes sem Atendimento Recente
             </CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardDescription className="text-slate-500 dark:text-slate-400">
               Clientes que ultrapassaram o prazo geral de inatividade configurado pela organização.
             </CardDescription>
           </CardHeader>
@@ -214,25 +214,25 @@ export function ReturnsClient({ initialTab, alerts, templates, orgName, inactive
               inactiveClients.map((client) => (
                 <div
                   key={client.id}
-                  className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                 >
                   <div>
-                    <h4 className="font-bold text-base text-white">{client.name}</h4>
-                    <p className="text-xs text-slate-400 mt-0.5">
+                    <h4 className="font-bold text-base text-slate-900 dark:text-white">{client.name}</h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                       Último Atendimento:{' '}
-                      <span className="text-slate-200">{client.last_appointment_at ? formatDate(client.last_appointment_at) : 'Nunca'}</span>
+                      <span className="text-slate-800 dark:text-slate-200">{client.last_appointment_at ? formatDate(client.last_appointment_at) : 'Nunca'}</span>
                     </p>
-                    {client.whatsapp && <p className="text-xs text-slate-400">WhatsApp: {formatPhoneNumber(client.whatsapp)}</p>}
+                    {client.whatsapp && <p className="text-xs text-slate-500 dark:text-slate-400">WhatsApp: {formatPhoneNumber(client.whatsapp)}</p>}
                   </div>
                   <Link href={`/clientes/${client.id}`}>
-                    <Button variant="outline" size="sm" className="border-slate-700 text-slate-300 text-xs">
+                    <Button variant="outline" size="sm" className="border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs">
                       <Eye className="h-3.5 w-3.5 mr-1" /> Ver Ficha
                     </Button>
                   </Link>
                 </div>
               ))
             ) : (
-              <p className="text-sm text-slate-400 italic py-8 text-center">Nenhum cliente inativo encontrado nesta consulta.</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 italic py-8 text-center">Nenhum cliente inativo encontrado nesta consulta.</p>
             )}
           </CardContent>
         </Card>
@@ -244,7 +244,7 @@ export function ReturnsClient({ initialTab, alerts, templates, orgName, inactive
               const isOverdue = alert.status === 'overdue' || alert.days_overdue > 0;
 
               return (
-                <Card key={alert.id} className="bg-slate-900 border-slate-800 text-white shadow-lg hover:border-slate-700 transition-all">
+                <Card key={alert.id} className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
                   <CardContent className="p-5 space-y-4">
                     {/* Header do Card */}
                     <div className="flex items-start justify-between gap-2">
@@ -356,21 +356,21 @@ export function ReturnsClient({ initialTab, alerts, templates, orgName, inactive
         </div>
       )}
 
-      {/* Modal de Registro de Contato / WhatsApp */}
+      {/* Modal Registrar Contato */}
       {isContactModalOpen && selectedAlert && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl p-6 text-white space-y-4 shadow-2xl">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <MessageSquare className="h-5 w-5 text-amber-400" /> Registrar Contato com {selectedAlert.client?.name}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-slate-900 dark:text-white space-y-4 shadow-2xl">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <MessageSquare className="h-5 w-5 text-amber-500 dark:text-amber-400" /> Registrar Contato com {selectedAlert.client?.name}
             </h3>
 
             <div className="space-y-3">
               <div>
-                <label className="text-xs font-medium text-slate-400 mb-1 block">Modelo de Mensagem</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-400 mb-1 block">Modelo de Mensagem</label>
                 <select
                   value={selectedTemplateId}
                   onChange={(e) => handleSelectTemplate(e.target.value, selectedAlert)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
                 >
                   <option value="">Selecione um modelo...</option>
                   {templates.map((t) => (
@@ -382,22 +382,22 @@ export function ReturnsClient({ initialTab, alerts, templates, orgName, inactive
               </div>
 
               <div>
-                <label className="text-xs font-medium text-slate-400 mb-1 block">Conteúdo Enviado</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-400 mb-1 block">Conteúdo Enviado</label>
                 <textarea
                   rows={4}
                   value={messageContent}
                   onChange={(e) => setMessageContent(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-amber-500"
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-medium text-slate-400 mb-1 block">Resultado do Contato</label>
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-400 mb-1 block">Resultado do Contato</label>
                   <select
                     value={contactResult}
                     onChange={(e) => setContactResult(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
                   >
                     <option value="sent">Enviado</option>
                     <option value="interested">Interessado (Em Negociação)</option>
@@ -407,22 +407,22 @@ export function ReturnsClient({ initialTab, alerts, templates, orgName, inactive
                   </select>
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-slate-400 mb-1 block">Observação (opcional)</label>
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-400 mb-1 block">Observação (opcional)</label>
                   <Input
                     value={contactNotes}
                     onChange={(e) => setContactNotes(e.target.value)}
                     placeholder="Ex: pediu para ligar amanhã"
-                    className="bg-slate-950 border-slate-800 text-xs text-white"
+                    className="bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-4 border-t border-slate-800">
-              <Button variant="ghost" onClick={() => setIsContactModalOpen(false)} className="text-slate-400 text-xs">
+            <div className="flex justify-end gap-2 pt-4 border-t border-slate-100 dark:border-slate-800">
+              <Button variant="ghost" onClick={() => setIsContactModalOpen(false)} className="text-slate-600 dark:text-slate-400 text-xs">
                 Cancelar
               </Button>
-              <Button onClick={handleSaveContact} disabled={loading} className="bg-amber-500 text-slate-950 hover:bg-amber-400 font-semibold text-xs">
+              <Button onClick={handleSaveContact} disabled={loading} className="bg-amber-500 text-slate-950 hover:bg-amber-400 font-semibold text-xs shadow-sm">
                 {loading && <Loader2 className="h-4 w-4 mr-1.5 animate-spin" />} Confirmar Registro
               </Button>
             </div>
@@ -432,19 +432,19 @@ export function ReturnsClient({ initialTab, alerts, templates, orgName, inactive
 
       {/* Modal de Adiar Alerta (Snooze) */}
       {isSnoozeModalOpen && selectedAlert && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 text-white space-y-4 shadow-2xl">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <Clock className="h-5 w-5 text-amber-400" /> Adiar Alerta de {selectedAlert.client?.name}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-slate-900 dark:text-white space-y-4 shadow-2xl">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <Clock className="h-5 w-5 text-amber-500 dark:text-amber-400" /> Adiar Alerta de {selectedAlert.client?.name}
             </h3>
 
             <div className="space-y-3">
               <div>
-                <label className="text-xs font-medium text-slate-400 mb-1 block">Adiar por quanto tempo?</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-400 mb-1 block">Adiar por quanto tempo?</label>
                 <select
                   value={snoozeDaysOption}
                   onChange={(e) => setSnoozeDaysOption(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
                 >
                   <option value="1">Amanhã (+1 dia)</option>
                   <option value="3">+3 dias</option>

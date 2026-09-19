@@ -26,6 +26,10 @@ import {
 import { logoutAction } from '@/app/(auth)/actions';
 import { Organization } from '@/types/database';
 import { ThemeToggle } from './ThemeToggle';
+import { RolePreviewSelector, RolePreviewBanner } from './RolePreviewSelector';
+import { MasterRolePreview } from '@/lib/supabase/server';
+import { SystemBranding } from '@/types/system-assets';
+import BrandLogo from './BrandLogo';
 
 interface HeaderProps {
   organization: Organization | null;
@@ -34,6 +38,9 @@ interface HeaderProps {
   userRole?: string;
   userAvatar?: string | null;
   systemRole?: string;
+  previewRole?: MasterRolePreview | null;
+  hasOrgMembership?: boolean;
+  systemBranding?: SystemBranding;
 }
 
 // Map path to route title and icon
@@ -54,21 +61,37 @@ const routeMap: Record<string, { title: string; subtitle: string; icon: any }> =
   '/configuracoes/pacotes': { title: 'Regras de Pacotes', subtitle: 'Políticas de uso e pendências', icon: PackageCheck },
 };
 
-export function Header({ organization, userName, userEmail, userRole = 'admin', userAvatar, systemRole }: HeaderProps) {
+export function Header({
+  organization,
+  userName,
+  userEmail,
+  userRole = 'admin',
+  userAvatar,
+  systemRole,
+  previewRole,
+  hasOrgMembership = true,
+  systemBranding,
+}: HeaderProps) {
   const pathname = usePathname();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [imgError, setImgError] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const desktopMenuRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown on click outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      const isOutsideDesktop = desktopMenuRef.current ? !desktopMenuRef.current.contains(event.target as Node) : true;
+      const isOutsideMobile = mobileMenuRef.current ? !mobileMenuRef.current.contains(event.target as Node) : true;
+
+      if (isOutsideDesktop && isOutsideMobile) {
         setDropdownOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   // Format initials
@@ -103,6 +126,9 @@ export function Header({ organization, userName, userEmail, userRole = 'admin', 
 
   return (
     <>
+      {/* Banner Informativo de Simulação Visual (se ativo) */}
+      <RolePreviewBanner systemRole={systemRole} currentPreviewRole={previewRole} />
+
       {/* ========================================================= */}
       {/* DESKTOP HEADER                                            */}
       {/* ========================================================= */}
@@ -122,13 +148,21 @@ export function Header({ organization, userName, userEmail, userRole = 'admin', 
           </div>
         </div>
 
-        {/* Right: Theme Toggle & User Profile Dropdown */}
+        {/* Right: Role Preview Selector, Theme Toggle & User Profile Dropdown */}
         <div className="flex items-center gap-4">
+          {/* Seletor de Simulação Visual exclusivo para Master */}
+          <RolePreviewSelector
+            systemRole={systemRole}
+            hasOrgMembership={hasOrgMembership}
+            currentPreviewRole={previewRole}
+          />
+
           {/* Theme Toggle */}
           <ThemeToggle showLabel={true} />
 
+
           {/* User Profile Pill */}
-          <div className="relative" ref={menuRef}>
+          <div className="relative" ref={desktopMenuRef}>
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center gap-3 p-1.5 pl-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-left group"
@@ -204,13 +238,23 @@ export function Header({ organization, userName, userEmail, userRole = 'admin', 
 
                 {/* Dropdown Options */}
                 <div className="space-y-1">
+                  {systemRole === 'master' && (
+                    <Link
+                      href="/master"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2 text-xs font-bold rounded-xl text-purple-700 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 hover:bg-purple-100 dark:hover:bg-purple-900/40 transition-colors mb-1"
+                    >
+                      <ShieldCheck className="h-4 w-4" />
+                      <span>Painel Master Global</span>
+                    </Link>
+                  )}
                   <Link
-                    href="/configuracoes/pacotes"
+                    href="/configuracoes/mensagens"
                     onClick={() => setDropdownOpen(false)}
                     className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
                   >
                     <Settings className="h-4 w-4" />
-                    <span>Configurações do Sistema</span>
+                    <span>Configurações do Salão</span>
                   </Link>
                 </div>
 
@@ -238,11 +282,13 @@ export function Header({ organization, userName, userEmail, userRole = 'admin', 
       <header className="lg:hidden sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between shadow-xs transition-colors duration-200">
         {/* Mobile Left Logo & Org */}
         <div className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500 text-slate-950 font-bold shadow-md">
-            <Scissors className="h-4 w-4" />
-          </div>
+          <BrandLogo 
+            type="compact" 
+            srcUrl={organization?.logo_url || systemBranding?.logo_compact?.public_url || systemBranding?.logo_primary?.public_url} 
+            height={systemBranding?.logo_compact?.height || 28} 
+            className="h-7 max-w-[120px] object-contain" 
+          />
           <div>
-            <h1 className="font-bold text-sm text-slate-900 dark:text-white leading-tight">Cabellos</h1>
             <p className="text-[11px] text-amber-600 dark:text-amber-400 font-medium truncate max-w-[150px]">
               {organization?.name || 'Estabelecimento'}
             </p>
@@ -255,7 +301,7 @@ export function Header({ organization, userName, userEmail, userRole = 'admin', 
           <ThemeToggle showLabel={false} />
 
           {/* User Profile Avatar Dropdown */}
-          <div className="relative" ref={menuRef}>
+          <div className="relative" ref={mobileMenuRef}>
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center gap-1.5 p-1 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"

@@ -33,12 +33,14 @@ export interface SystemBranding {
     storage_path: string;
     mime_type: string;
     public_url?: string;
+    height?: number | null;
   } | null;
   logo_compact: {
     id: string;
     storage_path: string;
     mime_type: string;
     public_url?: string;
+    height?: number | null;
   } | null;
   favicon: {
     id: string;

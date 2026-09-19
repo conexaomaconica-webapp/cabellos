@@ -178,6 +178,64 @@ export async function archiveSystemAssetAction(assetId: string) {
   return data;
 }
 
+export async function deleteSystemAssetAction(assetId: string) {
+  const { supabase, user } = await getMasterClient();
+  
+  const { data: asset } = await supabase.from('system_assets').select('*').eq('id', assetId).single();
+  if (!asset) throw new Error('Ativo não encontrado.');
+
+  if (asset.is_active) {
+    throw new Error('Não é possível excluir um ativo atualmente ativo. Ative outro substituto primeiro.');
+  }
+
+  // 1. Remover do Storage
+  if (asset.storage_path) {
+    const { error: storageError } = await supabase.storage.from('system-assets').remove([asset.storage_path]);
+    if (storageError) {
+      console.error('Falha ao remover arquivo do storage:', storageError);
+      // Não damos throw error para permitir a exclusão lógica/do banco caso o arquivo já não exista.
+    }
+  }
+
+  // 2. Remover do Banco
+  const { error: dbError } = await supabase.from('system_assets').delete().eq('id', assetId);
+  if (dbError) throw new Error(dbError.message);
+
+  // 3. Log de Auditoria
+  await supabase.from('master_audit_logs').insert({
+    master_user_id: user.id,
+    action: asset.asset_type.startsWith('splash') ? 'splash_deleted' : 'system_logo_deleted',
+    entity_type: 'system_asset',
+    entity_id: assetId,
+    after_data: { storage_path: asset.storage_path },
+  });
+
+  return { success: true };
+}
+
+export async function updateSystemAssetHeightAction(assetId: string, height: number) {
+  const { supabase, user } = await getMasterClient();
+
+  const { data, error } = await supabase
+    .from('system_assets')
+    .update({ height })
+    .eq('id', assetId)
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  await supabase.from('master_audit_logs').insert({
+    master_user_id: user.id,
+    action: 'system_logo_resized',
+    entity_type: 'system_asset',
+    entity_id: assetId,
+    after_data: { height },
+  });
+
+  return data;
+}
+
 export async function fetchSystemAssetsAction(): Promise<SystemAsset[]> {
   const { supabase } = await getMasterClient();
   const { data, error } = await supabase

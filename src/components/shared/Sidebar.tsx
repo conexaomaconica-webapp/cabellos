@@ -23,38 +23,64 @@ import {
   Crown,
 } from 'lucide-react';
 import { logoutAction } from '@/app/(auth)/actions';
+import { MasterRolePreview } from '@/lib/supabase/server';
+import { SystemBranding } from '@/types/system-assets';
+import BrandLogo from './BrandLogo';
 
 interface SidebarProps {
   organizations: OrganizationUser[];
   activeOrgId: string;
   userName: string;
   systemRole?: string;
+  userRole?: string;
+  previewRole?: MasterRolePreview | null;
+  hasOrgMembership?: boolean;
+  systemBranding?: SystemBranding;
 }
 
-export function Sidebar({ organizations, activeOrgId, userName, systemRole }: SidebarProps) {
+export function Sidebar({
+  organizations,
+  activeOrgId,
+  userName,
+  systemRole,
+  userRole = 'admin',
+  previewRole,
+  hasOrgMembership = true,
+  systemBranding,
+}: SidebarProps) {
   const pathname = usePathname();
 
+  // Regra de simulação visual (UI Preview) estrita ao Master
+  const displayRole = (systemRole === 'master' && previewRole) ? previewRole : userRole;
+
+  // Filtragem exclusivamente visual para o Menu Principal
   const navItems = [
-    { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { label: 'Atendimentos', href: '/atendimentos', icon: CalendarCheck2 },
-    { label: 'Pacotes e Planos', href: '/pacotes', icon: PackageCheck },
-    { label: 'Central de Retornos', href: '/retornos', icon: Clock },
-    { label: 'Financeiro', href: '/financeiro', icon: Wallet },
-    { label: 'Relatórios', href: '/relatorios', icon: BarChart3 },
-    { label: 'Clientes', href: '/clientes', icon: Users },
-  ];
+    { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, roles: ['master', 'admin', 'receptionist'] },
+    { label: 'Atendimentos', href: '/atendimentos', icon: CalendarCheck2, roles: ['master', 'admin', 'receptionist', 'professional'] },
+    { label: 'Pacotes e Planos', href: '/pacotes', icon: PackageCheck, roles: ['master', 'admin', 'receptionist'] },
+    { label: 'Central de Retornos', href: '/retornos', icon: Clock, roles: ['master', 'admin', 'receptionist'] },
+    { label: 'Financeiro', href: '/financeiro', icon: Wallet, roles: ['master', 'admin'] },
+    { label: 'Relatórios', href: '/relatorios', icon: BarChart3, roles: ['master', 'admin'] },
+    { label: 'Clientes', href: '/clientes', icon: Users, roles: ['master', 'admin', 'receptionist', 'professional'] },
+  ].filter((item) => item.roles.includes(displayRole));
 
+  // Cadastros da Empresa
   const cadastrosItems = [
-    { label: 'Profissionais', href: '/cadastros/profissionais', icon: UserCheck },
-    { label: 'Categorias de Serviço', href: '/cadastros/categorias', icon: FolderKanban },
-    { label: 'Serviços', href: '/cadastros/servicos', icon: Wrench },
-  ];
+    { label: 'Profissionais', href: '/cadastros/profissionais', icon: UserCheck, roles: ['master', 'admin', 'receptionist'] },
+    { label: 'Categorias de Serviço', href: '/cadastros/categorias', icon: FolderKanban, roles: ['master', 'admin', 'receptionist'] },
+    { label: 'Serviços', href: '/cadastros/servicos', icon: Wrench, roles: ['master', 'admin', 'receptionist'] },
+  ].filter((item) => item.roles.includes(displayRole));
 
+  // Configurações
   const configItems = [
-    { label: 'Modelos de Mensagem', href: '/configuracoes/mensagens', icon: MessageSquare },
-    { label: 'Regras de Retorno', href: '/configuracoes/retornos', icon: Settings },
-    { label: 'Regras de Pacotes', href: '/configuracoes/pacotes', icon: PackageCheck },
-  ];
+    { label: 'Modelos de Mensagem', href: '/configuracoes/mensagens', icon: MessageSquare, roles: ['master', 'admin', 'receptionist'] },
+    { label: 'Regras de Retorno', href: '/configuracoes/retornos', icon: Settings, roles: ['master', 'admin'] },
+    { label: 'Regras de Pacotes', href: '/configuracoes/pacotes', icon: PackageCheck, roles: ['master', 'admin'] },
+  ].filter((item) => item.roles.includes(displayRole));
+
+
+  const activeOrgUser = organizations.find((o) => o.organization_id === activeOrgId);
+  const activeOrg = activeOrgUser?.organization as any;
 
   return (
     <>
@@ -63,13 +89,12 @@ export function Sidebar({ organizations, activeOrgId, userName, systemRole }: Si
         <div className="space-y-6">
           {/* Logo Brand */}
           <div className="flex items-center gap-3 px-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-slate-950 font-bold shadow-md">
-              <Scissors className="h-5 w-5" />
-            </div>
-            <div>
-              <h1 className="font-bold text-lg text-slate-900 dark:text-white leading-none tracking-tight">Cabellos</h1>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Gestão de Salões & Retenção</p>
-            </div>
+            <BrandLogo 
+              type="primary" 
+              srcUrl={activeOrg?.logo_url || systemBranding?.logo_primary?.public_url} 
+              height={systemBranding?.logo_primary?.height} 
+              className="h-8 max-w-[180px] object-contain" 
+            />
           </div>
 
           {/* Org Switcher */}
@@ -105,61 +130,65 @@ export function Sidebar({ organizations, activeOrgId, userName, systemRole }: Si
               })}
             </div>
 
-            <div className="space-y-1">
-              <p className="px-3 text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
-                Cadastros da Empresa
-              </p>
-              {cadastrosItems.map((item) => {
-                const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
-                const Icon = item.icon;
+            {cadastrosItems.length > 0 && (
+              <div className="space-y-1">
+                <p className="px-3 text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
+                  Cadastros da Empresa
+                </p>
+                {cadastrosItems.map((item) => {
+                  const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+                  const Icon = item.icon;
 
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all ${
-                      isActive
-                        ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold shadow-xs'
-                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <Icon className={`h-4 w-4 ${isActive ? 'text-amber-500 dark:text-amber-400' : 'text-slate-400'}`} />
-                      <span>{item.label}</span>
-                    </div>
-                    {isActive && <ChevronRight className="h-4 w-4 text-amber-500 dark:text-amber-400" />}
-                  </Link>
-                );
-              })}
-            </div>
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all ${
+                        isActive
+                          ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold shadow-xs'
+                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon className={`h-4 w-4 ${isActive ? 'text-amber-500 dark:text-amber-400' : 'text-slate-400'}`} />
+                        <span>{item.label}</span>
+                      </div>
+                      {isActive && <ChevronRight className="h-4 w-4 text-amber-500 dark:text-amber-400" />}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
 
-            <div className="space-y-1">
-              <p className="px-3 text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
-                Configurações
-              </p>
-              {configItems.map((item) => {
-                const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
-                const Icon = item.icon;
+            {configItems.length > 0 && (
+              <div className="space-y-1">
+                <p className="px-3 text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
+                  Configurações
+                </p>
+                {configItems.map((item) => {
+                  const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+                  const Icon = item.icon;
 
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all ${
-                      isActive
-                        ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold shadow-xs'
-                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <Icon className={`h-4 w-4 ${isActive ? 'text-amber-500 dark:text-amber-400' : 'text-slate-400'}`} />
-                      <span>{item.label}</span>
-                    </div>
-                    {isActive && <ChevronRight className="h-4 w-4 text-amber-500 dark:text-amber-400" />}
-                  </Link>
-                );
-              })}
-            </div>
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all ${
+                        isActive
+                          ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold shadow-xs'
+                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon className={`h-4 w-4 ${isActive ? 'text-amber-500 dark:text-amber-400' : 'text-slate-400'}`} />
+                        <span>{item.label}</span>
+                      </div>
+                      {isActive && <ChevronRight className="h-4 w-4 text-amber-500 dark:text-amber-400" />}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
 
             {/* Seção Administrador Master da Plataforma */}
             {systemRole === 'master' && (

@@ -16,6 +16,8 @@ import {
   LogOut,
   Sparkles,
 } from 'lucide-react';
+import { getSystemBrandingAction } from '@/lib/master/system-assets';
+import BrandLogo from '@/components/shared/BrandLogo';
 
 export default async function MasterLayout({
   children,
@@ -55,13 +57,15 @@ export default async function MasterLayout({
   // Redundância Server Layout Guard: Consulta estrita a profiles.system_role
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, email, system_role')
+    .select('name, email, system_role')
     .eq('id', user.id)
     .single();
 
   if (profile?.system_role !== 'master') {
     redirect('/unauthorized');
   }
+
+  const systemBranding = await getSystemBrandingAction();
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:flex-row">
@@ -70,13 +74,12 @@ export default async function MasterLayout({
         <div className="space-y-6">
           {/* HEADER BRAND */}
           <div className="flex items-center gap-3 px-2 py-3 bg-purple-950/40 border border-purple-800/40 rounded-xl">
-            <div className="p-2 bg-purple-600 text-white rounded-lg shadow-lg">
-              <Crown className="h-6 w-6" />
-            </div>
-            <div>
-              <h1 className="font-bold text-base text-white leading-tight">Cabellos</h1>
-              <span className="text-xs text-purple-300 font-medium">Administração Master</span>
-            </div>
+            <BrandLogo 
+              type="primary" 
+              srcUrl={systemBranding?.logo_primary?.public_url} 
+              height={systemBranding?.logo_primary?.height} 
+              className="h-8" 
+            />
           </div>
 
           {/* NAVEGAÇÃO MASTER */}
@@ -152,7 +155,7 @@ export default async function MasterLayout({
           <div className="flex items-center justify-between px-2 py-2">
             <div className="truncate">
               <p className="text-xs font-bold text-slate-200 truncate">
-                {profile?.full_name || 'Master Admin'}
+                {profile?.name || 'Master Admin'}
               </p>
               <p className="text-[11px] text-purple-300 truncate">{profile?.email || user.email}</p>
             </div>

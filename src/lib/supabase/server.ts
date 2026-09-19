@@ -27,6 +27,8 @@ export async function createClient() {
 }
 
 export const ACTIVE_ORG_COOKIE = 'cabellos_active_org_id';
+export const MASTER_ROLE_PREVIEW_COOKIE = 'cb_master_role_preview';
+export type MasterRolePreview = 'master' | 'admin' | 'receptionist' | 'professional';
 
 export async function getActiveOrganizationId(): Promise<string | null> {
   const cookieStore = await cookies();
@@ -42,3 +44,14 @@ export async function setActiveOrganizationId(orgId: string) {
     secure: process.env.NODE_ENV === 'production',
   });
 }
+
+export async function getMasterRolePreview(): Promise<MasterRolePreview | null> {
+  const cookieStore = await cookies();
+  const val = cookieStore.get(MASTER_ROLE_PREVIEW_COOKIE)?.value;
+  if (val === 'master' || val === 'admin' || val === 'receptionist' || val === 'professional') {
+    return val;
+  }
+  return null;
+}
+
+

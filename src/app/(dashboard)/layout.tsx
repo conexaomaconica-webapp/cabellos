@@ -1,8 +1,9 @@
-import { createClient, getActiveOrganizationId } from '@/lib/supabase/server';
+import { createClient, getActiveOrganizationId, getMasterRolePreview } from '@/lib/supabase/server';
 import { Sidebar } from '@/components/shared/Sidebar';
 import { Header } from '@/components/shared/Header';
 import { redirect } from 'next/navigation';
 import { OrganizationUser, Organization } from '@/types/database';
+import { getSystemBrandingAction } from '@/lib/master/system-assets';
 
 export default async function DashboardLayout({
   children,
@@ -41,6 +42,7 @@ export default async function DashboardLayout({
   const activeOrgUser = orgUsers.find((ou) => ou.organization_id === activeOrgId);
   const activeOrg = (activeOrgUser?.organization || orgUsers[0].organization) as Organization;
   const userRole = activeOrgUser?.role || 'admin';
+  const hasOrgMembership = !!activeOrgUser;
 
   // Buscar perfil do usuário
   const { data: profile } = await supabase
@@ -53,6 +55,12 @@ export default async function DashboardLayout({
   const userEmail = user.email || profile?.email || '';
   const userAvatar = profile?.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
   const systemRole = profile?.system_role || 'user';
+
+  // Obter simulação de papel (exclusiva para Master)
+  const rawPreview = await getMasterRolePreview();
+  const previewRole = systemRole === 'master' ? rawPreview : null;
+
+  const systemBranding = await getSystemBrandingAction();
 
   return (
     <div
@@ -69,6 +77,10 @@ export default async function DashboardLayout({
         activeOrgId={activeOrgId}
         userName={userName}
         systemRole={systemRole}
+        userRole={userRole}
+        previewRole={previewRole}
+        hasOrgMembership={hasOrgMembership}
+        systemBranding={systemBranding}
       />
 
       <div className="flex-1 flex flex-col min-w-0 pb-16 lg:pb-0">
@@ -79,6 +91,9 @@ export default async function DashboardLayout({
           userRole={userRole}
           userAvatar={userAvatar}
           systemRole={systemRole}
+          previewRole={previewRole}
+          hasOrgMembership={hasOrgMembership}
+          systemBranding={systemBranding}
         />
 
         <main className="flex-1 p-4 md:p-8 overflow-y-auto">{children}</main>

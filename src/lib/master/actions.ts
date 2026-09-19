@@ -250,7 +250,7 @@ export async function fetchBackupsList() {
   const { supabase } = await getMasterSupabaseClient();
   const { data, error } = await supabase
     .from('tenant_backups')
-    .select('*, organizations(name), profiles!tenant_backups_requested_by_fkey(email, full_name)')
+    .select('*, organizations(name), profiles!tenant_backups_requested_by_fkey(email, name)')
     .order('created_at', { ascending: false });
 
   if (error) throw new Error(error.message);
@@ -271,7 +271,7 @@ export async function fetchMasterAuditLogs(filters?: { action?: string; q?: stri
   const { supabase } = await getMasterSupabaseClient();
   let query = supabase
     .from('master_audit_logs')
-    .select('*, profiles!master_audit_logs_master_user_id_fkey(full_name, email), organizations(name)')
+    .select('*, profiles!master_audit_logs_master_user_id_fkey(name, email), organizations(name)')
     .order('created_at', { ascending: false })
     .limit(100);
 

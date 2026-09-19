@@ -7,6 +7,8 @@ import {
   activateSystemAssetAction,
   deactivateSplashAction,
   archiveSystemAssetAction,
+  deleteSystemAssetAction,
+  updateSystemAssetHeightAction,
 } from '@/lib/master/system-assets';
 import { SystemAsset, AssetType, SystemBranding } from '@/types/system-assets';
 import BrandLogo from '@/components/shared/BrandLogo';
@@ -36,6 +38,9 @@ export default function SystemIdentityClientView({
   const [activeTab, setActiveTab] = useState<'logos' | 'splash' | 'preview' | 'history'>('logos');
   const [uploadType, setUploadType] = useState<AssetType>('logo_primary');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const [primaryHeight, setPrimaryHeight] = useState(initialBranding?.logo_primary?.height || 32);
+  const [compactHeight, setCompactHeight] = useState(initialBranding?.logo_compact?.height || 32);
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,12 +99,42 @@ export default function SystemIdentityClientView({
     }
   };
 
+  const handleDelete = async (assetId: string) => {
+    if (!confirm('Tem certeza que deseja excluir permanentemente este ativo? Esta ação não pode ser desfeita.')) return;
+    setLoading(true);
+    try {
+      await deleteSystemAssetAction(assetId);
+      router.refresh();
+    } catch (err: any) {
+      alert(err.message || 'Falha ao excluir ativo.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSaveHeight = async (assetId: string, height: number) => {
+    setLoading(true);
+    try {
+      await updateSystemAssetHeightAction(assetId, height);
+      alert('Tamanho atualizado com sucesso!');
+      router.refresh();
+    } catch (err: any) {
+      alert(err.message || 'Falha ao atualizar o tamanho.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* NAVEGAÇÃO POR ABAS */}
       <div className="flex border-b border-slate-800 space-x-6 text-sm font-medium">
         <button
-          onClick={() => setActiveTab('logos')}
+          onClick={() => {
+            setActiveTab('logos');
+            setUploadType('logo_primary');
+            setSelectedFile(null);
+          }}
           className={`pb-3 border-b-2 flex items-center gap-2 transition-all ${
             activeTab === 'logos'
               ? 'border-purple-500 text-purple-400 font-bold'
@@ -110,7 +145,11 @@ export default function SystemIdentityClientView({
         </button>
 
         <button
-          onClick={() => setActiveTab('splash')}
+          onClick={() => {
+            setActiveTab('splash');
+            setUploadType('splash_video');
+            setSelectedFile(null);
+          }}
           className={`pb-3 border-b-2 flex items-center gap-2 transition-all ${
             activeTab === 'splash'
               ? 'border-purple-500 text-purple-400 font-bold'
@@ -198,28 +237,90 @@ export default function SystemIdentityClientView({
             </h2>
 
             <div className="space-y-4 text-xs">
-              <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between">
-                <div>
-                  <span className="font-bold text-slate-400 uppercase text-[11px]">Logo Principal</span>
-                  <div className="mt-2">
-                    <BrandLogo type="primary" srcUrl={initialBranding?.logo_primary?.public_url} className="h-8" />
+              <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="font-bold text-slate-400 uppercase text-[11px]">Logo Principal</span>
+                    <div className="mt-2 p-2 bg-slate-900/50 rounded-lg inline-block">
+                      <BrandLogo 
+                        type="primary" 
+                        srcUrl={initialBranding?.logo_primary?.public_url} 
+                        height={primaryHeight}
+                        className="h-8" 
+                      />
+                    </div>
                   </div>
+                  <span className="text-emerald-400 font-bold flex items-center gap-1">
+                    <CheckCircle2 className="h-4 w-4" /> VIGENTE
+                  </span>
                 </div>
-                <span className="text-emerald-400 font-bold flex items-center gap-1">
-                  <CheckCircle2 className="h-4 w-4" /> VIGENTE
-                </span>
+                {initialBranding?.logo_primary && (
+                  <div className="flex items-center gap-4 pt-3 border-t border-slate-800/60">
+                    <div className="flex-1 space-y-2">
+                      <div className="flex justify-between">
+                        <label className="text-slate-400 text-[10px] font-bold uppercase">Ajustar Tamanho (Altura)</label>
+                        <span className="text-purple-400 font-bold">{primaryHeight}px</span>
+                      </div>
+                      <input 
+                        type="range" 
+                        min="20" max="120" step="4" 
+                        value={primaryHeight} 
+                        onChange={(e) => setPrimaryHeight(Number(e.target.value))}
+                        className="w-full accent-purple-500"
+                      />
+                    </div>
+                    <button 
+                      onClick={() => handleSaveHeight(initialBranding.logo_primary!.id, primaryHeight)}
+                      disabled={loading || primaryHeight === initialBranding.logo_primary.height}
+                      className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold transition-all disabled:opacity-50"
+                    >
+                      Salvar Tamanho
+                    </button>
+                  </div>
+                )}
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between">
-                <div>
-                  <span className="font-bold text-slate-400 uppercase text-[11px]">Logo Compacta</span>
-                  <div className="mt-2">
-                    <BrandLogo type="compact" srcUrl={initialBranding?.logo_compact?.public_url} className="h-8" />
+              <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="font-bold text-slate-400 uppercase text-[11px]">Logo Compacta</span>
+                    <div className="mt-2 p-2 bg-slate-900/50 rounded-lg inline-block">
+                      <BrandLogo 
+                        type="compact" 
+                        srcUrl={initialBranding?.logo_compact?.public_url} 
+                        height={compactHeight}
+                        className="h-8" 
+                      />
+                    </div>
                   </div>
+                  <span className="text-emerald-400 font-bold flex items-center gap-1">
+                    <CheckCircle2 className="h-4 w-4" /> VIGENTE
+                  </span>
                 </div>
-                <span className="text-emerald-400 font-bold flex items-center gap-1">
-                  <CheckCircle2 className="h-4 w-4" /> VIGENTE
-                </span>
+                {initialBranding?.logo_compact && (
+                  <div className="flex items-center gap-4 pt-3 border-t border-slate-800/60">
+                    <div className="flex-1 space-y-2">
+                      <div className="flex justify-between">
+                        <label className="text-slate-400 text-[10px] font-bold uppercase">Ajustar Tamanho (Altura)</label>
+                        <span className="text-purple-400 font-bold">{compactHeight}px</span>
+                      </div>
+                      <input 
+                        type="range" 
+                        min="16" max="80" step="2" 
+                        value={compactHeight} 
+                        onChange={(e) => setCompactHeight(Number(e.target.value))}
+                        className="w-full accent-purple-500"
+                      />
+                    </div>
+                    <button 
+                      onClick={() => handleSaveHeight(initialBranding.logo_compact!.id, compactHeight)}
+                      disabled={loading || compactHeight === initialBranding.logo_compact.height}
+                      className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold transition-all disabled:opacity-50"
+                    >
+                      Salvar Tamanho
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -319,7 +420,7 @@ export default function SystemIdentityClientView({
                 <Monitor className="h-4 w-4 text-purple-400" /> Preview na Sidebar Desktop
               </h3>
               <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl flex items-center gap-3">
-                <BrandLogo type="primary" srcUrl={initialBranding?.logo_primary?.public_url} className="h-8" />
+                <BrandLogo type="primary" srcUrl={initialBranding?.logo_primary?.public_url} height={initialBranding?.logo_primary?.height} className="h-8" />
               </div>
             </div>
 
@@ -329,7 +430,7 @@ export default function SystemIdentityClientView({
                 <Smartphone className="h-4 w-4 text-purple-400" /> Preview Header Mobile (Compacta)
               </h3>
               <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between">
-                <BrandLogo type="compact" srcUrl={initialBranding?.logo_compact?.public_url} className="h-8" />
+                <BrandLogo type="compact" srcUrl={initialBranding?.logo_compact?.public_url} height={initialBranding?.logo_compact?.height} className="h-8" />
                 <span className="text-xs text-slate-500">Menu ☰</span>
               </div>
             </div>
@@ -386,9 +487,17 @@ export default function SystemIdentityClientView({
                       {!asset.is_active && !asset.archived_at && (
                         <button
                           onClick={() => handleArchive(asset.id)}
-                          className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-rose-300 font-bold"
+                          className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold"
                         >
                           Arquivar
+                        </button>
+                      )}
+                      {!asset.is_active && (
+                        <button
+                          onClick={() => handleDelete(asset.id)}
+                          className="px-2.5 py-1 rounded-lg bg-red-950/40 hover:bg-red-900/60 text-red-400 font-bold border border-red-900/30"
+                        >
+                          Excluir
                         </button>
                       )}
                     </td>
