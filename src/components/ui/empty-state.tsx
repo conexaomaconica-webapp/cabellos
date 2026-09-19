@@ -20,12 +20,12 @@ export function EmptyState({
   actionHref,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50/50 p-8 text-center animate-in fade-in-50">
-      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-600 mb-4 shadow-inner">
+    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 p-8 text-center animate-in fade-in-50">
+      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 mb-4 shadow-inner">
         <Icon className="h-7 w-7" />
       </div>
-      <h3 className="text-lg font-semibold text-slate-900 mb-1">{title}</h3>
-      <p className="text-sm text-slate-500 max-w-sm mb-6">{description}</p>
+      <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-1">{title}</h3>
+      <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mb-6">{description}</p>
       {actionLabel && (
         <>
           {actionHref ? (

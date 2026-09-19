@@ -27,16 +27,16 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4">
-      <Card className="w-full max-w-md border-slate-800 bg-slate-900 text-slate-100 shadow-2xl">
+    <div className="min-h-screen flex items-center justify-center bg-slate-100 dark:bg-slate-950 p-4">
+      <Card className="w-full max-w-md border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-100 shadow-2xl">
         <CardHeader className="text-center space-y-2">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-800 border border-slate-700 text-amber-400">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-amber-400">
             <Scissors className="h-7 w-7" />
           </div>
-          <CardTitle className="text-2xl font-bold text-white tracking-tight">
+          <CardTitle className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
             Criar Conta no Cabellos
           </CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardDescription className="text-slate-500 dark:text-slate-400">
             Comece a gerenciar seu salão ou barbearia em poucos minutos
           </CardDescription>
         </CardHeader>
@@ -49,43 +49,43 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">Nome Completo</label>
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Nome Completo</label>
               <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <User className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
                 <Input
                   name="name"
                   type="text"
                   placeholder="Seu nome"
                   required
-                  className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
+                  className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">E-mail</label>
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">E-mail</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
                 <Input
                   name="email"
                   type="email"
                   placeholder="seu.email@salao.com"
                   required
-                  className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
+                  className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">Senha</label>
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Senha</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
                 <Input
                   name="password"
                   type="password"
                   placeholder="Mínimo 6 caracteres"
                   required
-                  className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
+                  className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
                 />
               </div>
             </div>
@@ -105,7 +105,7 @@ export default function RegisterPage() {
             </Button>
           </form>
 
-          <div className="mt-6 text-center text-xs text-slate-400">
+          <div className="mt-6 text-center text-xs text-slate-500 dark:text-slate-400">
             Já tem uma conta?{' '}
             <Link href="/login" className="font-semibold text-amber-400 hover:underline">
               Fazer login

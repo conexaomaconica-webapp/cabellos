@@ -78,29 +78,29 @@ export function CommissionsTable({ commissions }: CommissionsTableProps) {
   return (
     <div className="space-y-6">
       {/* Date Filter & Trigger Calculation */}
-      <Card className="p-5 bg-slate-900/80 border-slate-800 space-y-4">
+      <Card className="p-5 bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 space-y-4">
         <h2 className="text-base font-semibold text-slate-200 flex items-center gap-2">
           <Calculator className="w-5 h-5 text-amber-400" /> Nova Apuração de Comissão
         </h2>
 
         <div className="flex flex-col sm:flex-row items-end gap-4">
           <div className="flex-1 space-y-1">
-            <label className="text-xs text-slate-400 font-medium">Data Inicial</label>
+            <label className="text-xs text-slate-500 dark:text-slate-400 font-medium">Data Inicial</label>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-amber-500"
+              className="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-amber-500"
             />
           </div>
 
           <div className="flex-1 space-y-1">
-            <label className="text-xs text-slate-400 font-medium">Data Final</label>
+            <label className="text-xs text-slate-500 dark:text-slate-400 font-medium">Data Final</label>
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-amber-500"
+              className="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-amber-500"
             />
           </div>
 
@@ -130,7 +130,7 @@ export function CommissionsTable({ commissions }: CommissionsTableProps) {
       </Card>
 
       {/* Commissions History List */}
-      <Card className="p-5 bg-slate-900/80 border-slate-800 space-y-4">
+      <Card className="p-5 bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 space-y-4">
         <h2 className="text-base font-semibold text-slate-200">Histórico de Apurações</h2>
 
         {commissions.length === 0 ? (
@@ -139,8 +139,8 @@ export function CommissionsTable({ commissions }: CommissionsTableProps) {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-slate-300">
-              <thead className="bg-slate-950/60 text-xs text-slate-400 uppercase tracking-wider">
+            <table className="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+              <thead className="bg-slate-950/60 text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                 <tr>
                   <th className="py-3 px-4">Profissional</th>
                   <th className="py-3 px-4">Período</th>
@@ -160,11 +160,11 @@ export function CommissionsTable({ commissions }: CommissionsTableProps) {
                         <td className="py-3.5 px-4 font-semibold text-slate-100">
                           {comm.professional?.name || 'Profissional Desconhecido'}
                         </td>
-                        <td className="py-3.5 px-4 text-xs text-slate-400">
+                        <td className="py-3.5 px-4 text-xs text-slate-500 dark:text-slate-400">
                           {new Date(comm.period_start + 'T00:00:00').toLocaleDateString('pt-BR')} até{' '}
                           {new Date(comm.period_end + 'T00:00:00').toLocaleDateString('pt-BR')}
                         </td>
-                        <td className="py-3.5 px-4 text-right font-medium text-slate-300">
+                        <td className="py-3.5 px-4 text-right font-medium text-slate-700 dark:text-slate-300">
                           R$ {Number(comm.production_total).toFixed(2)}
                         </td>
                         <td className="py-3.5 px-4 text-right font-bold text-emerald-400">
@@ -184,7 +184,7 @@ export function CommissionsTable({ commissions }: CommissionsTableProps) {
                         <td className="py-3.5 px-4 text-right space-x-2">
                           <button
                             onClick={() => setExpandedId(isExpanded ? null : comm.id)}
-                            className="p-1.5 text-slate-400 hover:text-slate-200 rounded hover:bg-slate-800"
+                            className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-200 rounded hover:bg-slate-50 dark:bg-slate-800"
                             title="Ver Detalhes"
                           >
                             {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -195,7 +195,7 @@ export function CommissionsTable({ commissions }: CommissionsTableProps) {
                               size="sm"
                               onClick={() => handleApprove(comm.id)}
                               disabled={loading}
-                              className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs px-3 py-1"
+                              className="bg-emerald-600 hover:bg-emerald-500 text-slate-900 dark:text-white font-semibold text-xs px-3 py-1"
                             >
                               Aprovar
                             </Button>
@@ -207,19 +207,19 @@ export function CommissionsTable({ commissions }: CommissionsTableProps) {
                       {isExpanded && comm.commission_items && comm.commission_items.length > 0 && (
                         <tr className="bg-slate-950/80 border-t-0">
                           <td colSpan={6} className="p-4">
-                            <div className="bg-slate-900 rounded-lg p-3 border border-slate-800 space-y-2">
-                              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                            <div className="bg-white dark:bg-slate-900 rounded-lg p-3 border border-slate-200 dark:border-slate-800 space-y-2">
+                              <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                 Detalhamento dos Serviços Apurados
                               </p>
                               <div className="space-y-1 text-xs">
                                 {comm.commission_items.map((item) => (
                                   <div
                                     key={item.id}
-                                    className="flex items-center justify-between py-1.5 border-b border-slate-800/40 last:border-0 text-slate-300"
+                                    className="flex items-center justify-between py-1.5 border-b border-slate-200 dark:border-slate-800/40 last:border-0 text-slate-700 dark:text-slate-300"
                                   >
                                     <span>{item.appointment_service?.service?.name || 'Serviço'}</span>
                                     <div className="flex gap-4">
-                                      <span className="text-slate-400">
+                                      <span className="text-slate-500 dark:text-slate-400">
                                         Produção: R$ {Number(item.production_amount).toFixed(2)}
                                       </span>
                                       <span className="font-semibold text-emerald-400">

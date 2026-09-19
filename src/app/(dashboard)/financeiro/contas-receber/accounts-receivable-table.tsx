@@ -58,13 +58,13 @@ export function AccountsReceivableTable({ receivables, paymentMethods }: Account
   return (
     <div className="space-y-4">
       {receivables.length === 0 ? (
-        <Card className="p-8 text-center bg-slate-900/40 border-slate-800 text-slate-500 italic">
+        <Card className="p-8 text-center bg-white dark:bg-slate-900/40 border-slate-200 dark:border-slate-800 text-slate-500 italic">
           Nenhuma conta a receber cadastrada.
         </Card>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/40">
-          <table className="w-full text-left text-xs text-slate-300">
-            <thead className="bg-slate-900/80 text-slate-400 uppercase border-b border-slate-800">
+        <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40">
+          <table className="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+            <thead className="bg-white dark:bg-slate-900/80 text-slate-500 dark:text-slate-400 uppercase border-b border-slate-200 dark:border-slate-800">
               <tr>
                 <th className="p-3.5">Cliente</th>
                 <th className="p-3.5">Descrição / Origem</th>
@@ -80,8 +80,8 @@ export function AccountsReceivableTable({ receivables, paymentMethods }: Account
               {receivables.map((r) => (
                 <tr key={r.id} className="hover:bg-slate-800/30">
                   <td className="p-3.5 font-semibold text-slate-100">{r.client?.name || 'Cliente'}</td>
-                  <td className="p-3.5 text-slate-300">{r.description || 'Saldo Pendente'}</td>
-                  <td className="p-3.5 text-slate-400">{new Date(r.due_date).toLocaleDateString('pt-BR')}</td>
+                  <td className="p-3.5 text-slate-700 dark:text-slate-300">{r.description || 'Saldo Pendente'}</td>
+                  <td className="p-3.5 text-slate-500 dark:text-slate-400">{new Date(r.due_date).toLocaleDateString('pt-BR')}</td>
                   <td className="p-3.5">R$ {Number(r.original_amount).toFixed(2)}</td>
                   <td className="p-3.5 text-emerald-400 font-semibold">R$ {Number(r.paid_amount).toFixed(2)}</td>
                   <td className="p-3.5 text-amber-400 font-bold">R$ {Number(r.remaining_amount).toFixed(2)}</td>
@@ -116,21 +116,21 @@ export function AccountsReceivableTable({ receivables, paymentMethods }: Account
       {/* Modal de Baixa de Conta a Receber */}
       {selectedReceivable && (
         <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4 text-slate-100 shadow-2xl">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4 text-slate-100 shadow-2xl">
             <h3 className="font-bold text-base flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-emerald-400" /> Receber Pagamento de Cliente
             </h3>
 
-            <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs space-y-1">
-              <p className="text-slate-400">Cliente: <span className="text-slate-100 font-semibold">{selectedReceivable.client?.name}</span></p>
-              <p className="text-slate-400">Saldo Restante a Receber: <span className="text-amber-400 font-bold">R$ {Number(selectedReceivable.remaining_amount).toFixed(2)}</span></p>
+            <div className="p-3 bg-slate-100 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 text-xs space-y-1">
+              <p className="text-slate-500 dark:text-slate-400">Cliente: <span className="text-slate-100 font-semibold">{selectedReceivable.client?.name}</span></p>
+              <p className="text-slate-500 dark:text-slate-400">Saldo Restante a Receber: <span className="text-amber-400 font-bold">R$ {Number(selectedReceivable.remaining_amount).toFixed(2)}</span></p>
             </div>
 
             {errorMsg && <p className="text-xs text-rose-400 bg-rose-500/10 p-2.5 rounded border border-rose-500/20">{errorMsg}</p>}
 
             <form onSubmit={handlePaySubmit} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="font-semibold text-slate-300">Valor do Recebimento (R$) *</label>
+                <label className="font-semibold text-slate-700 dark:text-slate-300">Valor do Recebimento (R$) *</label>
                 <Input
                   type="number"
                   step="0.01"
@@ -138,17 +138,17 @@ export function AccountsReceivableTable({ receivables, paymentMethods }: Account
                   max={Number(selectedReceivable.remaining_amount)}
                   value={payAmount}
                   onChange={(e) => setPayAmount(Number(e.target.value))}
-                  className="bg-slate-950 border-slate-800 text-emerald-400 font-bold text-base"
+                  className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-emerald-400 font-bold text-base"
                   required
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="font-semibold text-slate-300">Forma de Pagamento *</label>
+                <label className="font-semibold text-slate-700 dark:text-slate-300">Forma de Pagamento *</label>
                 <select
                   value={paymentMethodId}
                   onChange={(e) => setPaymentMethodId(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded p-2.5 text-xs text-slate-200"
+                  className="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded p-2.5 text-xs text-slate-200"
                 >
                   {paymentMethods.map((pm) => (
                     <option key={pm.id} value={pm.id}>
@@ -158,8 +158,8 @@ export function AccountsReceivableTable({ receivables, paymentMethods }: Account
                 </select>
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-slate-800">
-                <Button type="button" variant="outline" onClick={() => setSelectedReceivable(null)} className="border-slate-800 text-slate-300">
+              <div className="flex justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+                <Button type="button" variant="outline" onClick={() => setSelectedReceivable(null)} className="border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
                   Cancelar
                 </Button>
                 <Button type="submit" disabled={isPending} className="bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold px-4">

@@ -22,12 +22,12 @@ export default async function NewPackagePage() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center justify-between border-b pb-4 border-slate-800">
+      <div className="flex items-center justify-between border-b pb-4 border-slate-200 dark:border-slate-800">
         <div>
-          <h1 className="text-2xl font-bold text-slate-100">Novo Pacote ou Plano</h1>
-          <p className="text-sm text-slate-400 mt-1">Configure as regras de utilização, validade, serviços e precificação do seu produto comercial.</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Novo Pacote ou Plano</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Configure as regras de utilização, validade, serviços e precificação do seu produto comercial.</p>
         </div>
-        <Link href="/pacotes" className="text-sm text-slate-400 hover:text-slate-200">
+        <Link href="/pacotes" className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-slate-200">
           ← Voltar para Pacotes
         </Link>
       </div>

@@ -49,10 +49,10 @@ export default async function AppointmentsPage({ searchParams }: AppointmentsPag
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <Calendar className="h-6 w-6 text-amber-400" /> Atendimentos
           </h1>
-          <p className="text-xs md:text-sm text-slate-400 mt-1">
+          <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 mt-1">
             Histórico completo de atendimentos registrados no seu estabelecimento
           </p>
         </div>
@@ -64,13 +64,13 @@ export default async function AppointmentsPage({ searchParams }: AppointmentsPag
       </div>
 
       {/* Filters Bar */}
-      <Card className="bg-slate-900 border-slate-800 p-4">
+      <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 p-4">
         <form method="GET" className="flex flex-wrap items-center gap-3">
           <div className="flex gap-2">
             <Link
               href="/atendimentos"
               className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
-                !period ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                !period ? 'bg-amber-500/10 text-amber-500 font-bold border border-amber-500/30' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               Todos
@@ -78,7 +78,7 @@ export default async function AppointmentsPage({ searchParams }: AppointmentsPag
             <Link
               href="/atendimentos?period=today"
               className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
-                period === 'today' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                period === 'today' ? 'bg-amber-500/10 text-amber-500 font-bold border border-amber-500/30' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               Hoje
@@ -86,7 +86,7 @@ export default async function AppointmentsPage({ searchParams }: AppointmentsPag
             <Link
               href="/atendimentos?period=yesterday"
               className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
-                period === 'yesterday' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                period === 'yesterday' ? 'bg-amber-500/10 text-amber-500 font-bold border border-amber-500/30' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               Ontem
@@ -97,14 +97,14 @@ export default async function AppointmentsPage({ searchParams }: AppointmentsPag
             <select
               name="status"
               defaultValue={status || ''}
-              className="h-10 px-3 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs font-medium focus:ring-2 focus:ring-amber-500"
+              className="h-10 px-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-medium focus:ring-2 focus:ring-amber-500"
             >
               <option value="">Todos os Status</option>
               <option value="completed">Concluídos</option>
               <option value="cancelled">Cancelados</option>
               <option value="draft">Rascunhos</option>
             </select>
-            <Button type="submit" variant="secondary" className="bg-slate-800 text-slate-200 hover:bg-slate-700">
+            <Button type="submit" variant="secondary" className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700">
               Filtrar
             </Button>
           </div>
@@ -130,13 +130,13 @@ export default async function AppointmentsPage({ searchParams }: AppointmentsPag
             return (
               <Card
                 key={app.id}
-                className="bg-slate-900 border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between shadow-lg"
+                className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-300 dark:border-slate-700 transition-all flex flex-col justify-between shadow-lg"
               >
                 <CardContent className="p-5 space-y-4">
                   <div className="flex items-start justify-between gap-2">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-slate-400 font-mono">
+                        <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                           {formatDate(app.finished_at || app.created_at)}
                         </span>
                         <Badge
@@ -155,35 +155,35 @@ export default async function AppointmentsPage({ searchParams }: AppointmentsPag
                             : app.status}
                         </Badge>
                       </div>
-                      <h3 className="font-bold text-base text-white truncate max-w-[200px]">
+                      <h3 className="font-bold text-base text-slate-900 dark:text-white truncate max-w-[200px]">
                         {clientName}
                       </h3>
                     </div>
 
                     <Link href={`/atendimentos/${app.id}`}>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-white hover:bg-slate-800">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white hover:bg-slate-50 dark:bg-slate-800">
                         <Eye className="h-4 w-4" />
                       </Button>
                     </Link>
                   </div>
 
-                  <div className="space-y-2 text-xs text-slate-300 bg-slate-950/50 p-3 rounded-xl border border-slate-800/80">
+                  <div className="space-y-2 text-xs text-slate-700 dark:text-slate-300 bg-slate-950/50 p-3 rounded-xl border border-slate-200 dark:border-slate-800/80">
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-400">Serviço(s)</span>
+                      <span className="text-slate-500 dark:text-slate-400">Serviço(s)</span>
                       <span className="text-slate-200 font-medium truncate max-w-[140px]">
                         {servicesList}
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between pt-1 border-t border-slate-800/60">
-                      <span className="text-slate-400">Profissional</span>
+                    <div className="flex items-center justify-between pt-1 border-t border-slate-200 dark:border-slate-800/60">
+                      <span className="text-slate-500 dark:text-slate-400">Profissional</span>
                       <span className="text-slate-200 font-medium truncate max-w-[140px]">
                         {profName}
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between pt-1 border-t border-slate-800/60">
-                      <span className="text-slate-400">Valor Total</span>
+                    <div className="flex items-center justify-between pt-1 border-t border-slate-200 dark:border-slate-800/60">
+                      <span className="text-slate-500 dark:text-slate-400">Valor Total</span>
                       <span className="text-amber-400 font-bold text-sm">
                         {formatCurrency(app.total)}
                       </span>

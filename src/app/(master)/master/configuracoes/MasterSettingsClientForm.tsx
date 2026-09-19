@@ -55,13 +55,13 @@ export default function MasterSettingsClientForm({ initialSettings }: { initialS
       )}
 
       {/* MODO DE MANUTENÇÃO */}
-      <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+      <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <ShieldAlert className="h-5 w-5 text-rose-400" /> Modo de Manutenção Global
             </h3>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Quando ativo, redireciona todos os usuários de salões para a tela de manutenção. O Master continua acessando o `/master`.
             </p>
           </div>
@@ -69,19 +69,19 @@ export default function MasterSettingsClientForm({ initialSettings }: { initialS
             type="checkbox"
             checked={maintenanceMode}
             onChange={(e) => setMaintenanceMode(e.target.checked)}
-            className="w-5 h-5 rounded bg-slate-950 border-slate-700 text-purple-600 focus:ring-0 cursor-pointer"
+            className="w-5 h-5 rounded bg-slate-100 dark:bg-slate-950 border-slate-300 dark:border-slate-700 text-purple-600 focus:ring-0 cursor-pointer"
           />
         </div>
       </div>
 
       {/* CADASTROS PÚBLICOS */}
-      <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+      <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Sliders className="h-5 w-5 text-purple-400" /> Permissão de Novos Cadastros Espontâneos
             </h3>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Se desabilitado, impede o onboarding público espontâneo. Login existente e convites do Master continuam válidos.
             </p>
           </div>
@@ -89,33 +89,33 @@ export default function MasterSettingsClientForm({ initialSettings }: { initialS
             type="checkbox"
             checked={allowSignups}
             onChange={(e) => setAllowSignups(e.target.checked)}
-            className="w-5 h-5 rounded bg-slate-950 border-slate-700 text-purple-600 focus:ring-0 cursor-pointer"
+            className="w-5 h-5 rounded bg-slate-100 dark:bg-slate-950 border-slate-300 dark:border-slate-700 text-purple-600 focus:ring-0 cursor-pointer"
           />
         </div>
       </div>
 
       {/* PARAMETROS NUMÉRICOS */}
-      <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
-        <h3 className="text-base font-bold text-white">Parâmetros de Operação</h3>
+      <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
+        <h3 className="text-base font-bold text-slate-900 dark:text-white">Parâmetros de Operação</h3>
 
         <div className="grid grid-cols-2 gap-4 text-xs">
           <div>
-            <label className="block font-bold text-slate-300 uppercase mb-1">Dias Padrão de Trial</label>
+            <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Dias Padrão de Trial</label>
             <input
               type="number"
               value={trialDays}
               onChange={(e) => setTrialDays(Number(e.target.value))}
-              className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-purple-500 outline-none font-bold"
+              className="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:border-purple-500 outline-none font-bold"
             />
           </div>
 
           <div>
-            <label className="block font-bold text-slate-300 uppercase mb-1">Dias de Retenção de Backup</label>
+            <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Dias de Retenção de Backup</label>
             <input
               type="number"
               value={retentionDays}
               onChange={(e) => setRetentionDays(Number(e.target.value))}
-              className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-purple-500 outline-none font-bold"
+              className="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:border-purple-500 outline-none font-bold"
             />
           </div>
         </div>
@@ -125,7 +125,7 @@ export default function MasterSettingsClientForm({ initialSettings }: { initialS
         <button
           type="submit"
           disabled={loading}
-          className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg shadow-purple-900/30 transition-all disabled:opacity-50"
+          className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-slate-900 dark:text-white font-bold text-xs shadow-lg shadow-purple-900/30 transition-all disabled:opacity-50"
         >
           {loading ? 'Salvando...' : 'Salvar Configurações'}
         </button>

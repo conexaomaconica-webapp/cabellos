@@ -95,9 +95,9 @@ export function ClientPackagesSection({
   };
 
   return (
-    <Card className="bg-slate-900 border-slate-800 text-white shadow-xl">
-      <CardHeader className="border-b border-slate-800 flex flex-row items-center justify-between">
-        <CardTitle className="text-lg font-bold text-white flex items-center gap-2">
+    <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xl">
+      <CardHeader className="border-b border-slate-200 dark:border-slate-800 flex flex-row items-center justify-between">
+        <CardTitle className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
           <PackageCheck className="h-5 w-5 text-amber-400" /> Pacotes e Planos Ativos
         </CardTitle>
         <Button onClick={handleOpenModal} className="bg-amber-600 hover:bg-amber-500 text-slate-950 font-semibold text-xs gap-1.5 shadow-md shadow-amber-600/20">
@@ -115,7 +115,7 @@ export function ClientPackagesSection({
             {clientPackages.map((cp) => (
               <div
                 key={cp.id}
-                className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-slate-700 transition-all"
+                className="p-4 rounded-xl bg-slate-950/60 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-slate-300 dark:hover:border-slate-300 dark:border-slate-700 transition-all"
               >
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2">
@@ -129,14 +129,14 @@ export function ClientPackagesSection({
                           ? 'border-blue-500/40 text-blue-400 bg-blue-500/10'
                           : cp.status === 'expired'
                           ? 'border-rose-500/40 text-rose-400 bg-rose-500/10'
-                          : 'border-slate-700 text-slate-500'
+                          : 'border-slate-300 dark:border-slate-700 text-slate-500'
                       }
                     >
                       {cp.status === 'active' ? 'Ativo' : cp.status === 'completed' ? 'Concluído' : cp.status === 'expired' ? 'Vencido' : 'Cancelado'}
                     </Badge>
                   </div>
 
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     Vigência: {new Date(cp.starts_at).toLocaleDateString('pt-BR')} até {new Date(cp.expires_at).toLocaleDateString('pt-BR')}
                   </p>
 
@@ -152,7 +152,7 @@ export function ClientPackagesSection({
 
                 <div className="flex items-center gap-3">
                   <Link href={`/clientes/${clientId}/pacotes/${cp.id}`}>
-                    <Button variant="outline" className="border-slate-700 text-slate-300 hover:bg-slate-800 text-xs">
+                    <Button variant="outline" className="border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:bg-slate-800 text-xs">
                       Ver Contrato & Detalhes →
                     </Button>
                   </Link>
@@ -166,7 +166,7 @@ export function ClientPackagesSection({
       {/* Modal de Venda de Pacote */}
       {isSellModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-lg space-y-5 shadow-2xl">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 w-full max-w-lg space-y-5 shadow-2xl">
             <h3 className="text-lg font-bold text-slate-100 flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-amber-400" /> Vender Pacote ou Plano
             </h3>
@@ -175,11 +175,11 @@ export function ClientPackagesSection({
 
             <form onSubmit={handleSellSubmit} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="font-semibold text-slate-300">Selecione o Pacote / Plano *</label>
+                <label className="font-semibold text-slate-700 dark:text-slate-300">Selecione o Pacote / Plano *</label>
                 <select
                   value={selectedPackageId}
                   onChange={(e) => handlePackageChange(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-md p-2.5 text-sm text-slate-100"
+                  className="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-md p-2.5 text-sm text-slate-100"
                 >
                   {availablePackages.map((p) => (
                     <option key={p.id} value={p.id}>
@@ -191,35 +191,35 @@ export function ClientPackagesSection({
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="font-semibold text-slate-300">Desconto (R$)</label>
+                  <label className="font-semibold text-slate-700 dark:text-slate-300">Desconto (R$)</label>
                   <Input
                     type="number"
                     step="0.01"
                     min="0"
                     value={discount}
                     onChange={(e) => handleDiscountChange(Number(e.target.value))}
-                    className="bg-slate-950 border-slate-800 text-slate-100 text-xs"
+                    className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-100 text-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-semibold text-slate-300">Valor Final Venda</label>
-                  <div className="p-2 bg-slate-950 border border-slate-800 rounded text-amber-400 font-bold text-sm">
+                  <label className="font-semibold text-slate-700 dark:text-slate-300">Valor Final Venda</label>
+                  <div className="p-2 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-amber-400 font-bold text-sm">
                     R$ {finalPrice.toFixed(2)}
                   </div>
                 </div>
               </div>
 
               {/* Registro do Pagamento Inicial */}
-              <div className="border-t border-slate-800 pt-3 space-y-3">
-                <p className="font-semibold text-slate-300">Pagamento Inicial (Opcional)</p>
+              <div className="border-t border-slate-200 dark:border-slate-800 pt-3 space-y-3">
+                <p className="font-semibold text-slate-700 dark:text-slate-300">Pagamento Inicial (Opcional)</p>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-slate-400">Forma de Pagamento</label>
+                    <label className="text-slate-500 dark:text-slate-400">Forma de Pagamento</label>
                     <select
                       value={selectedPaymentMethodId}
                       onChange={(e) => setSelectedPaymentMethodId(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded p-2 text-xs text-slate-200"
+                      className="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded p-2 text-xs text-slate-200"
                     >
                       {paymentMethods.map((pm) => (
                         <option key={pm.id} value={pm.id}>
@@ -230,31 +230,31 @@ export function ClientPackagesSection({
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-slate-400">Valor Pago Agora (R$)</label>
+                    <label className="text-slate-500 dark:text-slate-400">Valor Pago Agora (R$)</label>
                     <Input
                       type="number"
                       step="0.01"
                       min="0"
                       value={paymentAmount}
                       onChange={(e) => setPaymentAmount(Number(e.target.value))}
-                      className="bg-slate-950 border-slate-800 text-emerald-400 font-semibold text-xs"
+                      className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-emerald-400 font-semibold text-xs"
                     />
                   </div>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="font-semibold text-slate-300">Observações</label>
+                <label className="font-semibold text-slate-700 dark:text-slate-300">Observações</label>
                 <Input
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Ex: Pagamento 1ª parcela em dinheiro"
-                  className="bg-slate-950 border-slate-800 text-slate-100 text-xs"
+                  className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-100 text-xs"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
-                <Button type="button" variant="outline" onClick={() => setIsSellModalOpen(false)} className="border-slate-800 text-slate-300">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+                <Button type="button" variant="outline" onClick={() => setIsSellModalOpen(false)} className="border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
                   Cancelar
                 </Button>
                 <Button type="submit" disabled={isPending} className="bg-amber-600 hover:bg-amber-500 text-slate-950 font-semibold px-4">

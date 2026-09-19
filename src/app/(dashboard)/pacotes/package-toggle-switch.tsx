@@ -30,7 +30,7 @@ export function PackageToggleSwitch({ packageId, isActive }: PackageToggleSwitch
         className={
           isActive
             ? 'border-emerald-500/40 text-emerald-400 bg-emerald-500/10'
-            : 'border-slate-700 text-slate-500 bg-slate-800/40'
+            : 'border-slate-300 dark:border-slate-700 text-slate-500 bg-slate-800/40'
         }
       >
         {isPending ? 'Salvando...' : isActive ? 'Ativo' : 'Inativo'}

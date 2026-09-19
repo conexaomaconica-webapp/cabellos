@@ -43,7 +43,7 @@ export function ExportCsvButton({ reportType, label = 'Exportar CSV' }: ExportCs
     <button
       onClick={handleExport}
       disabled={loading}
-      className="flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-xl bg-slate-800 text-slate-200 hover:bg-slate-700 hover:text-white border border-slate-700 transition-all disabled:opacity-50"
+      className="flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-900 dark:text-white border border-slate-300 dark:border-slate-700 transition-all disabled:opacity-50"
     >
       {loading ? <Loader2 className="h-4 w-4 animate-spin text-amber-400" /> : <Download className="h-4 w-4 text-amber-400" />}
       <span>{label}</span>

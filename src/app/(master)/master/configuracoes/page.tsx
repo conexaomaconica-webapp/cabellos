@@ -16,10 +16,10 @@ export default async function MasterSettingsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Configurações da Plataforma</h1>
-          <p className="text-sm text-slate-400">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Configurações da Plataforma</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Parâmetros globais do SaaS, modo de manutenção e controle de cadastros públicos.
           </p>
         </div>

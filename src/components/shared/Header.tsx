@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 import {
   Scissors,
@@ -73,10 +74,19 @@ export function Header({
   systemBranding,
 }: HeaderProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [imgError, setImgError] = useState(false);
   const desktopMenuRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  const handleLogout = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push('/login');
+    router.refresh();
+  };
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -249,27 +259,36 @@ export function Header({
                     </Link>
                   )}
                   <Link
-                    href="/configuracoes/mensagens"
+                    href="/configuracoes/conta"
                     onClick={() => setDropdownOpen(false)}
                     className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
                   >
-                    <Settings className="h-4 w-4" />
-                    <span>Configurações do Salão</span>
+                    <User className="h-4 w-4" />
+                    <span>{(userRole === 'admin' || systemRole === 'master') ? 'Minha Conta / Assinatura' : 'Meu Perfil e Senha'}</span>
                   </Link>
+                  {(userRole === 'admin' || systemRole === 'master') && (
+                    <Link
+                      href="/configuracoes/estabelecimento"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+                    >
+                      <Settings className="h-4 w-4" />
+                      <span>Configurações do Salão</span>
+                    </Link>
+                  )}
                 </div>
 
                 <div className="my-1 border-t border-slate-100 dark:border-slate-800" />
 
-                {/* Logout Form */}
-                <form action={logoutAction}>
-                  <button
-                    type="submit"
-                    className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors text-left"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    <span>Sair da Conta</span>
-                  </button>
-                </form>
+                {/* Logout Button */}
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors text-left"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Sair da Conta</span>
+                </button>
               </div>
             )}
           </div>
@@ -349,15 +368,37 @@ export function Header({
                   </div>
                 </div>
 
-                <form action={logoutAction}>
-                  <button
-                    type="submit"
-                    className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors text-left"
+                <div className="space-y-1 mb-1">
+                  <Link
+                    href="/configuracoes/conta"
+                    onClick={() => setDropdownOpen(false)}
+                    className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
                   >
-                    <LogOut className="h-4 w-4" />
-                    <span>Sair da Conta</span>
-                  </button>
-                </form>
+                    <User className="h-4 w-4" />
+                    <span>{(userRole === 'admin' || systemRole === 'master') ? 'Minha Conta / Assinatura' : 'Meu Perfil e Senha'}</span>
+                  </Link>
+                  {(userRole === 'admin' || systemRole === 'master') && (
+                    <Link
+                      href="/configuracoes/estabelecimento"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+                    >
+                      <Settings className="h-4 w-4" />
+                      <span>Configurações do Salão</span>
+                    </Link>
+                  )}
+                </div>
+
+                <div className="my-1 border-t border-slate-100 dark:border-slate-800" />
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors text-left"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Sair da Conta</span>
+                </button>
               </div>
             )}
           </div>

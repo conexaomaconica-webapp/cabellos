@@ -18,10 +18,10 @@ export default async function MasterUsersPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Usuários Globais do Sistema</h1>
-          <p className="text-sm text-slate-400">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Usuários Globais do Sistema</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Gerenciamento do papel global da plataforma (system_role = master / user) e salvaguarda do último Master.
           </p>
         </div>
@@ -31,10 +31,10 @@ export default async function MasterUsersPage() {
         </div>
       </div>
 
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
+      <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-300">
-            <thead className="bg-slate-950 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-800">
+          <table className="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+            <thead className="bg-slate-100 dark:bg-slate-950 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
               <tr>
                 <th className="px-6 py-4">Usuário</th>
                 <th className="px-6 py-4">Papel no Sistema (system_role)</th>
@@ -46,10 +46,10 @@ export default async function MasterUsersPage() {
             <tbody className="divide-y divide-slate-800/60">
               {users.map((u) => (
                 <tr key={u.id} className="hover:bg-slate-800/40 transition-colors">
-                  <td className="px-6 py-4 font-semibold text-white">
+                  <td className="px-6 py-4 font-semibold text-slate-900 dark:text-white">
                     <div>
-                      <p className="text-white font-bold">{u.full_name || 'Sem nome'}</p>
-                      <p className="text-xs text-slate-400 font-normal">{u.email}</p>
+                      <p className="text-slate-900 dark:text-white font-bold">{u.full_name || 'Sem nome'}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 font-normal">{u.email}</p>
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -58,19 +58,19 @@ export default async function MasterUsersPage() {
                         <Crown className="h-3.5 w-3.5" /> MASTER GLOBAL
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-300 dark:border-slate-700">
                         USER (Comum)
                       </span>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-xs text-slate-300">
+                  <td className="px-6 py-4 text-xs text-slate-700 dark:text-slate-300">
                     {u.organization_users?.length > 0 ? (
                       u.organization_users.map((ou: any) => ou.organizations?.name).join(', ')
                     ) : (
                       <span className="text-slate-500 italic">Sem salão (Apenas Master ou Pendente)</span>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-xs text-slate-400">
+                  <td className="px-6 py-4 text-xs text-slate-500 dark:text-slate-400">
                     {new Date(u.created_at).toLocaleDateString('pt-BR')}
                   </td>
                   <td className="px-6 py-4 text-right">

@@ -83,7 +83,7 @@ export default function LoginClientView({ systemBranding }: { systemBranding: Sy
         )}
         
         {/* Barra de Progresso Laranja (Cabellos) */}
-        <div className="w-48 md:w-64 h-1.5 bg-slate-900 rounded-full mt-8 overflow-hidden shadow-inner">
+        <div className="w-48 md:w-64 h-1.5 bg-white dark:bg-slate-900 rounded-full mt-8 overflow-hidden shadow-inner">
           <div 
             className="h-full bg-amber-500 transition-all duration-75 ease-linear"
             style={{ width: `${progress}%` }}
@@ -94,8 +94,8 @@ export default function LoginClientView({ systemBranding }: { systemBranding: Sy
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4 relative">
-      <Card className="w-full max-w-md border-slate-800 bg-slate-900 text-slate-100 shadow-2xl relative z-10 animate-in fade-in zoom-in-95 duration-500">
+    <div className="min-h-screen flex items-center justify-center bg-slate-100 dark:bg-slate-950 p-4 relative">
+      <Card className="w-full max-w-md border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-100 shadow-2xl relative z-10 animate-in fade-in zoom-in-95 duration-500">
         <CardHeader className="text-center space-y-2">
           <div className="mx-auto flex items-center justify-center">
             {systemBranding.logo_primary?.public_url ? (
@@ -106,17 +106,17 @@ export default function LoginClientView({ systemBranding }: { systemBranding: Sy
                  className="h-16" 
                />
             ) : (
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-800 border border-slate-700 text-amber-400">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-amber-400">
                 <Scissors className="h-7 w-7" />
               </div>
             )}
           </div>
           {!systemBranding.logo_primary?.public_url && (
-            <CardTitle className="text-2xl font-bold text-white tracking-tight">
+            <CardTitle className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
               Cabellos
             </CardTitle>
           )}
-          <CardDescription className="text-slate-400 mt-2">
+          <CardDescription className="text-slate-500 dark:text-slate-400 mt-2">
             Entre na sua conta para acessar seu estabelecimento
           </CardDescription>
         </CardHeader>
@@ -129,22 +129,22 @@ export default function LoginClientView({ systemBranding }: { systemBranding: Sy
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">E-mail</label>
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">E-mail</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
                 <Input
                   name="email"
                   type="email"
                   placeholder="seu.email@salao.com"
                   required
-                  className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
+                  className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-medium text-slate-300">Senha</label>
+                <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Senha</label>
                 <Link
                   href="/forgot-password"
                   className="text-xs text-amber-400 hover:underline"
@@ -153,18 +153,18 @@ export default function LoginClientView({ systemBranding }: { systemBranding: Sy
                 </Link>
               </div>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
                 <Input
                   name="password"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••"
                   required
-                  className="pl-9 pr-10 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
+                  className="pl-9 pr-10 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2.5 p-0.5 text-slate-400 hover:text-slate-300"
+                  className="absolute right-3 top-2.5 p-0.5 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-slate-300"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
@@ -186,7 +186,7 @@ export default function LoginClientView({ systemBranding }: { systemBranding: Sy
             </Button>
           </form>
 
-          <div className="mt-6 text-center text-xs text-slate-400">
+          <div className="mt-6 text-center text-xs text-slate-500 dark:text-slate-400">
             Ainda não tem conta?{' '}
             <Link href="/register" className="font-semibold text-amber-400 hover:underline">
               Criar estabelecimento

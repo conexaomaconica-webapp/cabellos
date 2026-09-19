@@ -89,13 +89,13 @@ export function CashRegisterControl({ cashRegister, movements }: CashRegisterCon
 
   if (!cashRegister) {
     return (
-      <Card className="p-8 max-w-xl mx-auto bg-slate-900/80 border-slate-800 space-y-6 text-slate-100">
+      <Card className="p-8 max-w-xl mx-auto bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 space-y-6 text-slate-100">
         <div className="text-center space-y-2">
           <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 mx-auto flex items-center justify-center">
             <Landmark className="w-7 h-7" />
           </div>
           <h2 className="text-xl font-bold text-slate-100">O caixa físico está FECHADO</h2>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Abra o caixa diário informando o saldo inicial em espécie (troco de gaveta) para liberar recebimentos e saídas físicas.
           </p>
         </div>
@@ -104,14 +104,14 @@ export function CashRegisterControl({ cashRegister, movements }: CashRegisterCon
 
         <form onSubmit={handleOpenRegister} className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Saldo Inicial de Abertura (Troco em R$) *</label>
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Saldo Inicial de Abertura (Troco em R$) *</label>
             <Input
               type="number"
               step="0.01"
               min="0"
               value={openingBalance}
               onChange={(e) => setOpeningBalance(Number(e.target.value))}
-              className="bg-slate-950 border-slate-800 text-amber-400 font-bold text-lg text-center"
+              className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-amber-400 font-bold text-lg text-center"
               required
             />
           </div>
@@ -127,15 +127,15 @@ export function CashRegisterControl({ cashRegister, movements }: CashRegisterCon
   return (
     <div className="space-y-6">
       {/* Resumo da Gaveta de Caixa */}
-      <Card className="p-6 bg-slate-900/80 border-slate-800 space-y-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <Card className="p-6 bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 space-y-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
           <div>
             <div className="flex items-center gap-3">
               <Badge variant="outline" className="border-emerald-500/40 text-emerald-400 bg-emerald-500/10">
                 Caixa Aberto
               </Badge>
 
-              <span className="text-xs text-slate-400">Aberto às {new Date(cashRegister.opened_at).toLocaleTimeString('pt-BR')}</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400">Aberto às {new Date(cashRegister.opened_at).toLocaleTimeString('pt-BR')}</span>
             </div>
 
             <h2 className="text-2xl font-extrabold text-slate-100 mt-2">
@@ -145,10 +145,10 @@ export function CashRegisterControl({ cashRegister, movements }: CashRegisterCon
           </div>
 
           <div className="flex items-center gap-3">
-            <Button onClick={() => setIsMovementModalOpen(true)} variant="outline" className="border-slate-800 text-slate-200 hover:bg-slate-800 text-xs gap-1.5">
+            <Button onClick={() => setIsMovementModalOpen(true)} variant="outline" className="border-slate-200 dark:border-slate-800 text-slate-200 hover:bg-slate-50 dark:bg-slate-800 text-xs gap-1.5">
               <Plus className="w-3.5 h-3.5" /> Sangria / Suprimento
             </Button>
-            <Button onClick={() => { setClosingActualBalance(expectedPhysicalDrawer); setIsCloseModalOpen(true); }} className="bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs gap-1.5 shadow-lg">
+            <Button onClick={() => { setClosingActualBalance(expectedPhysicalDrawer); setIsCloseModalOpen(true); }} className="bg-rose-600 hover:bg-rose-500 text-slate-900 dark:text-white font-semibold text-xs gap-1.5 shadow-lg">
               <Lock className="w-3.5 h-3.5" /> Fechar Caixa Diário
             </Button>
           </div>
@@ -156,39 +156,39 @@ export function CashRegisterControl({ cashRegister, movements }: CashRegisterCon
 
         {/* Métrica da Gaveta */}
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2 text-center text-xs">
-          <div className="p-3 bg-slate-950/60 border border-slate-800 rounded-xl">
-            <p className="text-slate-400">Saldo Inicial</p>
+          <div className="p-3 bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl">
+            <p className="text-slate-500 dark:text-slate-400">Saldo Inicial</p>
             <p className="font-bold text-slate-200 mt-0.5">R$ {openingBal.toFixed(2)}</p>
           </div>
-          <div className="p-3 bg-slate-950/60 border border-slate-800 rounded-xl">
-            <p className="text-slate-400">Vendas (Espécie)</p>
+          <div className="p-3 bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl">
+            <p className="text-slate-500 dark:text-slate-400">Vendas (Espécie)</p>
             <p className="font-bold text-emerald-400 mt-0.5">+ R$ {salesCash.toFixed(2)}</p>
           </div>
-          <div className="p-3 bg-slate-950/60 border border-slate-800 rounded-xl">
-            <p className="text-slate-400">Suprimentos</p>
+          <div className="p-3 bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl">
+            <p className="text-slate-500 dark:text-slate-400">Suprimentos</p>
             <p className="font-bold text-sky-400 mt-0.5">+ R$ {supplies.toFixed(2)}</p>
           </div>
-          <div className="p-3 bg-slate-950/60 border border-slate-800 rounded-xl">
-            <p className="text-slate-400">Sangrias</p>
+          <div className="p-3 bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl">
+            <p className="text-slate-500 dark:text-slate-400">Sangrias</p>
             <p className="font-bold text-rose-400 mt-0.5">- R$ {withdrawals.toFixed(2)}</p>
           </div>
-          <div className="p-3 bg-slate-950/60 border border-slate-800 rounded-xl col-span-2 sm:col-span-1">
-            <p className="text-slate-400">Despesas (Espécie)</p>
+          <div className="p-3 bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl col-span-2 sm:col-span-1">
+            <p className="text-slate-500 dark:text-slate-400">Despesas (Espécie)</p>
             <p className="font-bold text-rose-400 mt-0.5">- R$ {expensesCash.toFixed(2)}</p>
           </div>
         </div>
       </Card>
 
       {/* Extrato de Movimentações da Gaveta (cash_movements) */}
-      <Card className="p-6 bg-slate-900/80 border-slate-800 space-y-4">
-        <h3 className="text-base font-semibold text-slate-200 border-b border-slate-800 pb-3">Movimentações Físicas da Gaveta</h3>
+      <Card className="p-6 bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 space-y-4">
+        <h3 className="text-base font-semibold text-slate-200 border-b border-slate-200 dark:border-slate-800 pb-3">Movimentações Físicas da Gaveta</h3>
 
         {movements.length === 0 ? (
           <p className="text-xs text-slate-500 italic py-4">Nenhuma movimentação física até o momento neste caixa.</p>
         ) : (
-          <div className="overflow-hidden rounded-xl border border-slate-800">
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-950 text-slate-400 uppercase border-b border-slate-800">
+          <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800">
+            <table className="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+              <thead className="bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-400 uppercase border-b border-slate-200 dark:border-slate-800">
                 <tr>
                   <th className="p-3">Hora</th>
                   <th className="p-3">Tipo</th>
@@ -220,7 +220,7 @@ export function CashRegisterControl({ cashRegister, movements }: CashRegisterCon
                           : 'Recebimento Espécie'}
                       </Badge>
                     </td>
-                    <td className="p-3 text-slate-300">{m.description || '-'}</td>
+                    <td className="p-3 text-slate-700 dark:text-slate-300">{m.description || '-'}</td>
                     <td className={`p-3 text-right font-bold ${['sale', 'receipt', 'supply', 'opening'].includes(m.type) ? 'text-emerald-400' : 'text-rose-400'}`}>
                       {['sale', 'receipt', 'supply', 'opening'].includes(m.type) ? '+' : '-'} R$ {Number(m.amount).toFixed(2)}
                     </td>
@@ -235,7 +235,7 @@ export function CashRegisterControl({ cashRegister, movements }: CashRegisterCon
       {/* Modal de Sangria / Suprimento */}
       {isMovementModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4 text-slate-100 shadow-2xl">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4 text-slate-100 shadow-2xl">
             <h3 className="font-bold text-base">Registrar Suprimento ou Sangria</h3>
             {errorMsg && <p className="text-xs text-rose-400 bg-rose-500/10 p-2.5 rounded border border-rose-500/20">{errorMsg}</p>}
 
@@ -262,31 +262,31 @@ export function CashRegisterControl({ cashRegister, movements }: CashRegisterCon
               </div>
 
               <div className="space-y-1">
-                <label className="font-semibold text-slate-300">Valor (R$) *</label>
+                <label className="font-semibold text-slate-700 dark:text-slate-300">Valor (R$) *</label>
                 <Input
                   type="number"
                   step="0.01"
                   min="0.01"
                   value={movementAmount || ''}
                   onChange={(e) => setMovementAmount(Number(e.target.value))}
-                  className="bg-slate-950 border-slate-800 text-amber-400 font-bold text-base"
+                  className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-amber-400 font-bold text-base"
                   required
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="font-semibold text-slate-300">Descrição / Motivo *</label>
+                <label className="font-semibold text-slate-700 dark:text-slate-300">Descrição / Motivo *</label>
                 <Input
                   value={movementDesc}
                   onChange={(e) => setMovementDesc(e.target.value)}
                   placeholder="Ex: Reforço de troco ou Depósito bancário"
-                  className="bg-slate-950 border-slate-800 text-slate-100 text-xs"
+                  className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-100 text-xs"
                   required
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-slate-800">
-                <Button type="button" variant="outline" onClick={() => setIsMovementModalOpen(false)} className="border-slate-800 text-slate-300">
+              <div className="flex justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+                <Button type="button" variant="outline" onClick={() => setIsMovementModalOpen(false)} className="border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
                   Cancelar
                 </Button>
                 <Button type="submit" disabled={isPending} className="bg-amber-600 hover:bg-amber-500 text-slate-950 font-semibold px-4">
@@ -301,13 +301,13 @@ export function CashRegisterControl({ cashRegister, movements }: CashRegisterCon
       {/* Modal de Fechamento de Caixa */}
       {isCloseModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4 text-slate-100 shadow-2xl">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4 text-slate-100 shadow-2xl">
             <h3 className="font-bold text-base flex items-center gap-2">
               <Lock className="w-5 h-5 text-rose-400" /> Fechamento do Caixa Diário
             </h3>
 
-            <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1 text-xs">
-              <p className="text-slate-400">Saldo Esperado na Gaveta:</p>
+            <div className="p-3 bg-slate-100 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1 text-xs">
+              <p className="text-slate-500 dark:text-slate-400">Saldo Esperado na Gaveta:</p>
               <p className="text-lg font-bold text-amber-400">R$ {expectedPhysicalDrawer.toFixed(2)}</p>
             </div>
 
@@ -315,14 +315,14 @@ export function CashRegisterControl({ cashRegister, movements }: CashRegisterCon
 
             <form onSubmit={handleCloseRegister} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="font-semibold text-slate-300">Valor Efetivamente Contado na Gaveta (R$) *</label>
+                <label className="font-semibold text-slate-700 dark:text-slate-300">Valor Efetivamente Contado na Gaveta (R$) *</label>
                 <Input
                   type="number"
                   step="0.01"
                   min="0"
                   value={closingActualBalance}
                   onChange={(e) => setClosingActualBalance(Number(e.target.value))}
-                  className="bg-slate-950 border-slate-800 text-slate-100 font-bold text-base"
+                  className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-100 font-bold text-base"
                   required
                 />
               </div>
@@ -334,20 +334,20 @@ export function CashRegisterControl({ cashRegister, movements }: CashRegisterCon
               )}
 
               <div className="space-y-1">
-                <label className="font-semibold text-slate-300">Justificativa / Observações</label>
+                <label className="font-semibold text-slate-700 dark:text-slate-300">Justificativa / Observações</label>
                 <Input
                   value={closingNotes}
                   onChange={(e) => setClosingNotes(e.target.value)}
                   placeholder="Justifique qualquer divergência de troco..."
-                  className="bg-slate-950 border-slate-800 text-slate-100 text-xs"
+                  className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-100 text-xs"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-slate-800">
-                <Button type="button" variant="outline" onClick={() => setIsCloseModalOpen(false)} className="border-slate-800 text-slate-300">
+              <div className="flex justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+                <Button type="button" variant="outline" onClick={() => setIsCloseModalOpen(false)} className="border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
                   Cancelar
                 </Button>
-                <Button type="submit" disabled={isPending} className="bg-rose-600 hover:bg-rose-500 text-white font-semibold px-4">
+                <Button type="submit" disabled={isPending} className="bg-rose-600 hover:bg-rose-500 text-slate-900 dark:text-white font-semibold px-4">
                   {isPending ? 'Fechando...' : 'Confirmar Fechamento'}
                 </Button>
               </div>

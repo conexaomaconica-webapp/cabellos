@@ -72,7 +72,7 @@ export function SimpleLineChart({ title, data }: SimpleLineChartProps) {
           {/* Linhas Guia */}
           <line x1={padding} y1={padding} x2={width - padding} y2={padding} stroke="currentColor" className="text-slate-200 dark:text-slate-800" strokeDasharray="3 3" />
           <line x1={padding} y1={height / 2} x2={width - padding} y2={height / 2} stroke="currentColor" className="text-slate-200 dark:text-slate-800" strokeDasharray="3 3" />
-          <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} stroke="currentColor" className="text-slate-300 dark:text-slate-700" />
+          <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} stroke="currentColor" className="text-slate-700 dark:text-slate-300 dark:text-slate-700" />
 
           {/* Linha Produção */}
           <polyline fill="none" stroke="#f59e0b" strokeWidth="2.5" points={getPoints('producao')} />

@@ -228,10 +228,10 @@ export function NewAppointmentForm({
       )}
 
       {/* SEÇÃO 1: SELEÇÃO DE CLIENTE */}
-      <Card className="bg-slate-900 border-slate-800 text-white shadow-xl">
+      <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xl">
         <CardContent className="p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-white flex items-center gap-2">
+            <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Users className="h-5 w-5 text-amber-400" /> 1. Cliente
             </h2>
             <Button
@@ -239,7 +239,7 @@ export function NewAppointmentForm({
               variant="outline"
               size="sm"
               onClick={() => setIsQuickClientOpen(true)}
-              className="border-slate-700 bg-slate-800 text-amber-400 hover:bg-slate-700 text-xs"
+              className="border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-amber-600 dark:text-amber-400 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs"
             >
               <Plus className="h-3.5 w-3.5 mr-1" /> Cadastro Rápido
             </Button>
@@ -250,7 +250,7 @@ export function NewAppointmentForm({
               <div>
                 <p className="font-bold text-base text-amber-400">{selectedClient.name}</p>
                 {selectedClient.whatsapp && (
-                  <p className="text-xs text-slate-300">
+                  <p className="text-xs text-slate-700 dark:text-slate-300">
                     WhatsApp: {formatPhoneNumber(selectedClient.whatsapp)}
                   </p>
                 )}
@@ -260,7 +260,7 @@ export function NewAppointmentForm({
                 variant="ghost"
                 size="sm"
                 onClick={() => setSelectedClientId('')}
-                className="text-slate-400 hover:text-white hover:bg-slate-800"
+                className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white hover:bg-slate-50 dark:bg-slate-800"
               >
                 Trocar Cliente
               </Button>
@@ -268,12 +268,12 @@ export function NewAppointmentForm({
           ) : (
             <div className="space-y-3">
               <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <Search className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
                 <Input
                   value={clientSearch}
                   onChange={(e) => setClientSearch(e.target.value)}
                   placeholder="Buscar cliente por nome ou WhatsApp..."
-                  className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
+                  className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
                 />
               </div>
 
@@ -283,15 +283,15 @@ export function NewAppointmentForm({
                     key={c.id}
                     type="button"
                     onClick={() => setSelectedClientId(c.id)}
-                    className="flex items-center justify-between p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 hover:bg-slate-800 hover:border-amber-500/50 text-left transition-all"
+                    className="flex items-center justify-between p-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 hover:bg-slate-200 dark:hover:bg-slate-800 hover:border-amber-500/50 text-left transition-all"
                   >
                     <div>
-                      <p className="font-semibold text-sm text-slate-100">{c.name}</p>
-                      <p className="text-xs text-slate-400">
+                      <p className="font-semibold text-sm text-slate-900 dark:text-slate-100">{c.name}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">
                         {c.whatsapp ? formatPhoneNumber(c.whatsapp) : 'Sem WhatsApp'}
                       </p>
                     </div>
-                    <Badge variant="outline" className="border-slate-700 text-slate-400 text-[10px]">
+                    <Badge variant="outline" className="border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px]">
                       Selecionar
                     </Badge>
                   </button>
@@ -303,19 +303,19 @@ export function NewAppointmentForm({
       </Card>
 
       {/* SEÇÃO 2: SERVIÇOS E PROFISSIONAIS */}
-      <Card className="bg-slate-900 border-slate-800 text-white shadow-xl">
+      <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xl">
         <CardContent className="p-6 space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <h2 className="text-base font-bold text-white flex items-center gap-2">
+            <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Wrench className="h-5 w-5 text-purple-400" /> 2. Serviços & Profissionais
             </h2>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-400">Profissional Responsável:</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400">Profissional Responsável:</span>
               <select
                 value={selectedMainProfId}
                 onChange={(e) => setSelectedMainProfId(e.target.value)}
-                className="h-9 px-2 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs focus:ring-2 focus:ring-purple-500"
+                className="h-9 px-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-purple-500"
               >
                 <option value="">Nenhum principal</option>
                 {professionals.map((p) => (
@@ -329,7 +329,7 @@ export function NewAppointmentForm({
 
           {/* Adicionar Serviço por Botões Rápidos */}
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
+            <label className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
               Selecione o Serviço para Adicionar:
             </label>
             <div className="flex flex-wrap gap-2">
@@ -338,7 +338,7 @@ export function NewAppointmentForm({
                   key={s.id}
                   type="button"
                   onClick={() => handleAddService(s.id)}
-                  className="px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs font-medium text-slate-200 hover:bg-slate-700 hover:border-purple-500/50 flex items-center gap-2 transition-all shadow-sm"
+                  className="px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-medium text-slate-900 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 hover:border-purple-500/50 flex items-center gap-2 transition-all shadow-sm"
                 >
                   <span>{s.name}</span>
                   <Badge variant="secondary" className="bg-purple-500/10 text-purple-300 text-[10px]">
@@ -351,8 +351,8 @@ export function NewAppointmentForm({
 
           {/* Lista de Serviços Adicionados */}
           {items.length > 0 && (
-            <div className="space-y-3 pt-3 border-t border-slate-800">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <div className="space-y-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+              <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                 Serviços Adicionados ({items.length})
               </p>
               <div className="space-y-3">
@@ -373,19 +373,19 @@ export function NewAppointmentForm({
                   return (
                     <div
                       key={idx}
-                      className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-3"
+                      className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 space-y-3"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-sm text-white">{service.name}</span>
-                          <span className="text-xs text-slate-400">({service.duration_minutes} min)</span>
+                          <span className="font-bold text-sm text-slate-900 dark:text-white">{service.name}</span>
+                          <span className="text-xs text-slate-500 dark:text-slate-400">({service.duration_minutes} min)</span>
                         </div>
                         <Button
                           type="button"
                           variant="ghost"
                           size="icon"
                           onClick={() => handleRemoveItem(idx)}
-                          className="h-7 w-7 text-slate-400 hover:text-red-400 hover:bg-slate-800"
+                          className="h-7 w-7 text-slate-500 dark:text-slate-400 hover:text-red-400 hover:bg-slate-50 dark:bg-slate-800"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -393,11 +393,11 @@ export function NewAppointmentForm({
 
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div>
-                          <label className="text-[11px] text-slate-400">Profissional Executante</label>
+                          <label className="text-[11px] text-slate-500 dark:text-slate-400">Profissional Executante</label>
                           <select
                             value={item.professionalId}
                             onChange={(e) => handleUpdateItem(idx, 'professionalId', e.target.value)}
-                            className="w-full h-9 px-2 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs focus:ring-2 focus:ring-purple-500"
+                            className="w-full h-9 px-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-purple-500"
                           >
                             {professionals
                               .filter((p) => linkedProfIds.includes(p.id))
@@ -410,21 +410,21 @@ export function NewAppointmentForm({
                         </div>
 
                         <div>
-                          <label className="text-[11px] text-slate-400">Qtd & Preço Unitário</label>
+                          <label className="text-[11px] text-slate-500 dark:text-slate-400">Qtd & Preço Unitário</label>
                           <div className="flex items-center gap-1.5">
                             <Input
                               type="number"
                               min="1"
                               value={item.quantity}
                               onChange={(e) => handleUpdateItem(idx, 'quantity', parseInt(e.target.value) || 1)}
-                              className="h-9 w-16 bg-slate-800 border-slate-700 text-white text-xs text-center"
+                              className="h-9 w-16 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs text-center"
                             />
-                            <span className="text-xs text-slate-400">x R$ {unitPrice}</span>
+                            <span className="text-xs text-slate-500 dark:text-slate-400">x R$ {unitPrice}</span>
                           </div>
                         </div>
 
                         <div>
-                          <label className="text-[11px] text-slate-400">Desconto (R$)</label>
+                          <label className="text-[11px] text-slate-500 dark:text-slate-400">Desconto (R$)</label>
                           <div className="flex items-center justify-between">
                             <Input
                               type="number"
@@ -432,9 +432,9 @@ export function NewAppointmentForm({
                               step="0.5"
                               value={item.discount}
                               onChange={(e) => handleUpdateItem(idx, 'discount', parseFloat(e.target.value) || 0)}
-                              className="h-9 w-24 bg-slate-800 border-slate-700 text-white text-xs"
+                              className="h-9 w-24 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs"
                             />
-                            <span className="text-xs font-bold text-amber-400">
+                            <span className="text-xs font-bold text-amber-600 dark:text-amber-400">
                               {formatCurrency(itemTotal)}
                             </span>
                           </div>
@@ -450,14 +450,14 @@ export function NewAppointmentForm({
       </Card>
 
       {/* SEÇÃO 3: FORMAS DE PAGAMENTO */}
-      <Card className="bg-slate-900 border-slate-800 text-white shadow-xl">
+      <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xl">
         <CardContent className="p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-white flex items-center gap-2">
+            <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <CreditCard className="h-5 w-5 text-emerald-400" /> 3. Pagamento
             </h2>
 
-            <div className="flex bg-slate-800 p-1 rounded-xl border border-slate-700 text-xs">
+            <div className="flex bg-slate-50 dark:bg-slate-800 p-1 rounded-xl border border-slate-300 dark:border-slate-700 text-xs">
               <button
                 type="button"
                 onClick={() => {
@@ -465,7 +465,7 @@ export function NewAppointmentForm({
                   setPayments(paymentMethods[0] ? [{ paymentMethodId: paymentMethods[0].id, amount: total }] : []);
                 }}
                 className={`px-3 py-1 rounded-lg font-medium transition-all ${
-                  paymentMode === 'single' ? 'bg-emerald-500 text-slate-950 shadow' : 'text-slate-400'
+                  paymentMode === 'single' ? 'bg-emerald-500 text-slate-950 shadow' : 'text-slate-600 dark:text-slate-400'
                 }`}
               >
                 Pagamento Único
@@ -477,7 +477,7 @@ export function NewAppointmentForm({
                   setPayments([]);
                 }}
                 className={`px-3 py-1 rounded-lg font-medium transition-all ${
-                  paymentMode === 'split' ? 'bg-emerald-500 text-slate-950 shadow' : 'text-slate-400'
+                  paymentMode === 'split' ? 'bg-emerald-500 text-slate-950 shadow' : 'text-slate-600 dark:text-slate-400'
                 }`}
               >
                 Pagamento Dividido
@@ -487,7 +487,7 @@ export function NewAppointmentForm({
 
           {paymentMode === 'single' ? (
             <div className="space-y-3">
-              <label className="text-xs font-medium text-slate-300">Forma de Pagamento</label>
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Forma de Pagamento</label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {paymentMethods.map((pm) => {
                   const isSelected = payments[0]?.paymentMethodId === pm.id;
@@ -499,7 +499,7 @@ export function NewAppointmentForm({
                       className={`p-3 rounded-xl border text-center text-xs transition-all ${
                         isSelected
                           ? 'bg-emerald-500/10 border-emerald-500 text-emerald-300 font-bold shadow'
-                          : 'bg-slate-800/60 border-slate-700 text-slate-300 hover:bg-slate-800'
+                          : 'bg-slate-100 dark:bg-slate-800/60 border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800'
                       }`}
                     >
                       {pm.name}
@@ -510,7 +510,7 @@ export function NewAppointmentForm({
             </div>
           ) : (
             <div className="space-y-3">
-              <p className="text-xs text-slate-400">Adicione as formas de pagamento divididas:</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Adicione as formas de pagamento divididas:</p>
               <div className="space-y-2">
                 {paymentMethods.map((pm) => {
                   const pItem = payments.find((p) => p.paymentMethodId === pm.id);
@@ -519,9 +519,9 @@ export function NewAppointmentForm({
                   return (
                     <div
                       key={pm.id}
-                      className="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800"
+                      className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800"
                     >
-                      <span className="text-xs font-medium text-slate-200">{pm.name}</span>
+                      <span className="text-xs font-medium text-slate-900 dark:text-slate-200">{pm.name}</span>
                       <div className="flex items-center gap-2">
                         <CurrencyInput
                           value={currentAmount}
@@ -534,7 +534,7 @@ export function NewAppointmentForm({
                               return filtered;
                             });
                           }}
-                          className="h-9 w-32 bg-slate-800 border-slate-700 text-white text-xs text-right font-semibold"
+                          className="h-9 w-32 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs text-right font-semibold"
                         />
                       </div>
                     </div>
@@ -545,15 +545,15 @@ export function NewAppointmentForm({
           )}
 
           {/* Resumo dos Valores de Pagamento */}
-          <div className="flex items-center justify-between p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 text-xs">
-            <span className="text-slate-300">Soma dos Pagamentos Informados:</span>
+          <div className="flex items-center justify-between p-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 text-xs">
+            <span className="text-slate-700 dark:text-slate-300">Soma dos Pagamentos Informados:</span>
             <span
               className={`font-bold ${
                 paymentsSum === total
-                  ? 'text-emerald-400'
+                  ? 'text-emerald-600 dark:text-emerald-400'
                   : paymentsSum > total
-                  ? 'text-red-400'
-                  : 'text-amber-400'
+                  ? 'text-red-600 dark:text-red-400'
+                  : 'text-amber-600 dark:text-amber-400'
               }`}
             >
               {formatCurrency(paymentsSum)} / Total {formatCurrency(total)}
@@ -563,24 +563,24 @@ export function NewAppointmentForm({
       </Card>
 
       {/* RESUMO DE VALORES E BOTÃO CONCLUIR */}
-      <Card className="bg-slate-900 border-slate-800 text-white shadow-2xl sticky bottom-2 z-30">
+      <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-2xl sticky bottom-2 z-30">
         <CardContent className="p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="space-y-1 text-center sm:text-left">
             <div className="flex items-center gap-3 justify-center sm:justify-start">
-              <span className="text-xs text-slate-400">Subtotal: {formatCurrency(subtotal)}</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400">Subtotal: {formatCurrency(subtotal)}</span>
               {totalDiscount > 0 && (
-                <span className="text-xs text-amber-400">Desconto: -{formatCurrency(totalDiscount)}</span>
+                <span className="text-xs text-amber-600 dark:text-amber-400">Desconto: -{formatCurrency(totalDiscount)}</span>
               )}
             </div>
-            <div className="text-2xl font-extrabold text-white flex items-center gap-2">
+            <div className="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
               <span>Total:</span>
-              <span className="text-amber-400">{formatCurrency(total)}</span>
+              <span className="text-amber-600 dark:text-amber-400">{formatCurrency(total)}</span>
             </div>
           </div>
 
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <Link href="/atendimentos" className="w-1/2 sm:w-auto">
-              <Button type="button" variant="secondary" className="w-full bg-slate-800 hover:bg-slate-700 text-slate-300">
+              <Button type="button" variant="secondary" className="w-full bg-slate-50 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300">
                 Cancelar
               </Button>
             </Link>
@@ -605,10 +605,10 @@ export function NewAppointmentForm({
       {/* MODAL DE CADASTRO RÁPIDO DE CLIENTE */}
       {isQuickClientOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-in fade-in-50">
-          <Card className="w-full max-w-md bg-slate-900 border-slate-800 text-white shadow-2xl relative">
+          <Card className="w-full max-w-md bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-2xl relative">
             <button
               onClick={() => setIsQuickClientOpen(false)}
-              className="absolute right-4 top-4 p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
+              className="absolute right-4 top-4 p-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white rounded-lg hover:bg-slate-50 dark:bg-slate-800"
             >
               <X className="h-4 w-4" />
             </button>
@@ -618,8 +618,8 @@ export function NewAppointmentForm({
                   <Users className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-base text-white">Cadastro Rápido de Cliente</h3>
-                  <p className="text-xs text-slate-400">Cadastre para continuar o atendimento</p>
+                  <h3 className="font-bold text-base text-slate-900 dark:text-white">Cadastro Rápido de Cliente</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Cadastre para continuar o atendimento</p>
                 </div>
               </div>
 
@@ -631,28 +631,28 @@ export function NewAppointmentForm({
 
               <form onSubmit={handleQuickCreateClient} className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-300">Nome Completo *</label>
+                  <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Nome Completo *</label>
                   <Input
                     value={quickName}
                     onChange={(e) => setQuickName(e.target.value)}
                     placeholder="Nome do cliente"
                     required
-                    className="bg-slate-800 border-slate-700 text-white"
+                    className="bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-300">WhatsApp</label>
+                  <label className="text-xs font-medium text-slate-700 dark:text-slate-300">WhatsApp</label>
                   <Input
                     value={quickWhatsapp}
                     onChange={(e) => setQuickWhatsapp(e.target.value)}
                     placeholder="(75) 99999-9999"
-                    className="bg-slate-800 border-slate-700 text-white"
+                    className="bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
                   />
                 </div>
 
                 <div className="flex justify-end gap-2 pt-2">
-                  <Button type="button" variant="secondary" onClick={() => setIsQuickClientOpen(false)} className="bg-slate-800 text-slate-300">
+                  <Button type="button" variant="secondary" onClick={() => setIsQuickClientOpen(false)} className="bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                     Cancelar
                   </Button>
                   <Button type="submit" disabled={quickLoading} className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold">

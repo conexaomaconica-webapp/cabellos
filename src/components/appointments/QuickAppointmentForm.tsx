@@ -291,17 +291,17 @@ export function QuickAppointmentForm({
       )}
 
       {/* BANNER DE INSTRUÇÃO E EXEMPLOS */}
-      <Card className="bg-slate-900/90 border-slate-800 text-white shadow-xl">
+      <Card className="bg-white dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xl">
         <CardContent className="p-6 space-y-4">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
               <Zap className="h-6 w-6" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white tracking-tight flex items-center gap-2">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
                 Atendimento Rápido por Texto <Sparkles className="h-4 w-4 text-amber-400" />
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Digite a frase em linguagem natural. O sistema identifica o cliente, os serviços e o valor automaticamente!
               </p>
             </div>
@@ -310,15 +310,15 @@ export function QuickAppointmentForm({
           {/* CAIXA DE TEXTO PRINCIPAL */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold text-slate-300">Descreva o Atendimento Realizado:</label>
-              <span className="text-[11px] text-amber-400 font-medium">Reconhecimento Automático Ativo</span>
+              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Descreva o Atendimento Realizado:</label>
+              <span className="text-[11px] text-amber-600 dark:text-amber-400 font-medium">Reconhecimento Automático Ativo</span>
             </div>
             <textarea
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Ex: Fiz Cabelo e barba de Eduardo Saba, cobrei 45 reais no pix"
               rows={3}
-              className="w-full rounded-xl bg-slate-950 border border-slate-700 p-3.5 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm font-medium shadow-inner"
+              className="w-full rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 p-3.5 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm font-medium shadow-inner"
             />
             <div className="flex items-center justify-between pt-1">
               <Button
@@ -335,7 +335,7 @@ export function QuickAppointmentForm({
                 <Zap className="h-4 w-4" /> Processar Texto
               </Button>
               {inputText.trim() && (
-                <span className="text-xs text-emerald-400 flex items-center gap-1 font-medium bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">
+                <span className="text-xs text-emerald-700 dark:text-emerald-400 flex items-center gap-1 font-medium bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">
                   <CheckCircle2 className="h-3.5 w-3.5" /> Frase Analisada
                 </span>
               )}
@@ -344,7 +344,7 @@ export function QuickAppointmentForm({
 
           {/* FRASES DE EXEMPLO PARA TESTE */}
           <div className="space-y-1.5 pt-1">
-            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
               Clique em um exemplo para testar:
             </span>
             <div className="flex flex-wrap gap-2">
@@ -357,7 +357,7 @@ export function QuickAppointmentForm({
                   key={i}
                   type="button"
                   onClick={() => handleUseExample(phrase)}
-                  className="px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 text-xs text-slate-300 hover:text-amber-300 transition-all text-left truncate max-w-full"
+                  className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 text-xs text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-300 transition-all text-left truncate max-w-full"
                 >
                   💬 &quot;{phrase}&quot;
                 </button>
@@ -371,10 +371,10 @@ export function QuickAppointmentForm({
       {inputText.trim() && (
         <div id="parsed-preview-section" className="space-y-4 animate-in fade-in-50">
           {/* 1. STATUS DO CLIENTE */}
-          <Card className="bg-slate-900 border-slate-800 text-white shadow-lg">
+          <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-lg">
             <CardContent className="p-5 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-2">
                   <Users className="h-4 w-4 text-amber-400" /> Cliente Reconhecido
                 </span>
                 {selectedClientId ? (
@@ -386,7 +386,7 @@ export function QuickAppointmentForm({
                     <UserPlus className="h-3.5 w-3.5" /> Novo Cliente Detectado
                   </Badge>
                 ) : (
-                  <Badge variant="outline" className="border-slate-700 text-slate-400">
+                  <Badge variant="outline" className="border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400">
                     Selecione um cliente
                   </Badge>
                 )}
@@ -409,23 +409,23 @@ export function QuickAppointmentForm({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                     <div className="space-y-1">
-                      <label className="text-xs font-medium text-slate-300">Nome do Cliente *</label>
+                      <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Nome do Cliente *</label>
                       <Input
                         value={extractedClientName}
                         onChange={(e) => setExtractedClientName(e.target.value)}
                         placeholder="Nome completo do cliente"
-                        className="bg-slate-800 border-slate-700 text-white text-xs h-10"
+                        className="bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs h-10"
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-medium text-slate-300 flex items-center gap-1">
+                      <label className="text-xs font-medium text-slate-700 dark:text-slate-300 flex items-center gap-1">
                         <Phone className="h-3.5 w-3.5 text-amber-400" /> WhatsApp / Telefone *
                       </label>
                       <Input
                         value={newClientWhatsapp}
                         onChange={(e) => setNewClientWhatsapp(e.target.value)}
                         placeholder="(75) 99999-9999"
-                        className="bg-slate-800 border-slate-700 text-white text-xs h-10 focus-visible:ring-amber-500"
+                        className="bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs h-10 focus-visible:ring-amber-500"
                       />
                     </div>
                   </div>
@@ -434,10 +434,10 @@ export function QuickAppointmentForm({
 
               {/* SE CLIENTE ENCONTRADO */}
               {selectedClientId && (
-                <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-800/80 border border-slate-700">
+                <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60">
                   <div>
-                    <p className="font-bold text-sm text-white">{extractedClientName}</p>
-                    <p className="text-xs text-slate-400">
+                    <p className="font-bold text-sm text-slate-900 dark:text-white">{extractedClientName}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
                       {clients.find((c) => c.id === selectedClientId)?.whatsapp
                         ? formatPhoneNumber(clients.find((c) => c.id === selectedClientId)!.whatsapp!)
                         : 'Sem WhatsApp registrado'}
@@ -451,7 +451,7 @@ export function QuickAppointmentForm({
                       setSelectedClientId('');
                       setIsNewClient(true);
                     }}
-                    className="text-xs text-slate-400 hover:text-white"
+                    className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white"
                   >
                     Trocar / Cadastrar Outro
                   </Button>
@@ -461,11 +461,11 @@ export function QuickAppointmentForm({
               {/* OPÇÃO DE SELECIONAR MANUALMENTE DA LISTA */}
               {!selectedClientId && (
                 <div className="space-y-1.5 pt-1">
-                  <label className="text-[11px] text-slate-400">Ou selecione um cliente existente na lista abaixo:</label>
+                  <label className="text-[11px] text-slate-500 dark:text-slate-400">Ou selecione um cliente existente na lista abaixo:</label>
                   <select
                     value={selectedClientId}
                     onChange={(e) => handleManualSelectClient(e.target.value)}
-                    className="w-full h-10 px-3 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs focus:ring-2 focus:ring-amber-500"
+                    className="w-full h-10 px-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-amber-500"
                   >
                     <option value="">Selecione um cliente cadastrado...</option>
                     {clients.map((c) => (
@@ -480,19 +480,19 @@ export function QuickAppointmentForm({
           </Card>
 
           {/* 2. SERVIÇOS E PROFISSIONAL */}
-          <Card className="bg-slate-900 border-slate-800 text-white shadow-lg">
+          <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-lg">
             <CardContent className="p-5 space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-2">
                   <Wrench className="h-4 w-4 text-purple-400" /> Serviços Detectados ({selectedServices.length})
                 </span>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-400">Profissional:</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">Profissional:</span>
                   <select
                     value={selectedProfId}
                     onChange={(e) => setSelectedProfId(e.target.value)}
-                    className="h-8 px-2 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs"
+                    className="h-8 px-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs"
                   >
                     {professionals.map((p) => (
                       <option key={p.id} value={p.id}>
@@ -515,7 +515,7 @@ export function QuickAppointmentForm({
                       className={`px-3 py-2 rounded-xl text-xs font-medium flex items-center gap-2 transition-all ${
                         isSelected
                           ? 'bg-purple-500/20 border-2 border-purple-500 text-purple-200 font-bold shadow'
-                          : 'bg-slate-800/60 border border-slate-700 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                          : 'bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
                       }`}
                     >
                       <span>{s.name}</span>
@@ -529,28 +529,28 @@ export function QuickAppointmentForm({
           </Card>
 
           {/* 3. VALOR E FORMA DE PAGAMENTO */}
-          <Card className="bg-slate-900 border-slate-800 text-white shadow-lg">
+          <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-lg">
             <CardContent className="p-5 space-y-4">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-2">
                 <CreditCard className="h-4 w-4 text-emerald-400" /> Valor e Forma de Pagamento
               </span>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-300">Valor Total do Atendimento (R$)</label>
+                  <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Valor Total do Atendimento (R$)</label>
                   <CurrencyInput
                     value={totalAmount}
                     onChangeValue={(num) => setTotalAmount(num)}
-                    className="bg-slate-800 border-slate-700 text-amber-400 font-bold text-base h-11"
+                    className="bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-amber-600 dark:text-amber-400 font-bold text-base h-11"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-300">Forma de Pagamento</label>
+                  <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Forma de Pagamento</label>
                   <select
                     value={selectedPaymentMethodId}
                     onChange={(e) => setSelectedPaymentMethodId(e.target.value)}
-                    className="w-full h-11 px-3 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs font-semibold focus:ring-2 focus:ring-emerald-500"
+                    className="w-full h-11 px-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-semibold focus:ring-2 focus:ring-emerald-500"
                   >
                     {paymentMethods.map((pm) => (
                       <option key={pm.id} value={pm.id}>
@@ -564,16 +564,16 @@ export function QuickAppointmentForm({
           </Card>
 
           {/* BOTÃO FINALIZAR ATENDIMENTO RÁPIDO */}
-          <Card className="bg-slate-900 border-slate-800 text-white shadow-2xl sticky bottom-2 z-30">
+          <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-2xl sticky bottom-2 z-30">
             <CardContent className="p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
-                <p className="text-xs text-slate-400">Total a Concluir:</p>
-                <p className="text-2xl font-black text-amber-400">{formatCurrency(totalAmount)}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Total a Concluir:</p>
+                <p className="text-2xl font-black text-amber-600 dark:text-amber-400">{formatCurrency(totalAmount)}</p>
               </div>
 
               <div className="flex items-center gap-3 w-full sm:w-auto">
                 <Link href="/atendimentos" className="w-1/2 sm:w-auto">
-                  <Button type="button" variant="secondary" className="w-full bg-slate-800 text-slate-300">
+                  <Button type="button" variant="secondary" className="w-full bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                     Cancelar
                   </Button>
                 </Link>

@@ -56,15 +56,15 @@ export default async function PackagesPage() {
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-5 border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-5 border-slate-200 dark:border-slate-800">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-100">Pacotes e Planos de Atendimento</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Pacotes e Planos de Atendimento</h1>
             <Badge variant="outline" className="border-amber-500/40 text-amber-400 bg-amber-500/10">
               ...
             </Badge>
           </div>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Gerencie opções de créditos fixos, assinaturas ilimitadas e planos recorrentes para seus clientes.
           </p>
         </div>
@@ -79,33 +79,33 @@ export default async function PackagesPage() {
 
       {/* Cards de Métricas */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="p-4 bg-slate-900/60 border-slate-800 flex items-center gap-4">
+        <Card className="p-4 bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 flex items-center gap-4">
           <div className="p-3 bg-amber-500/10 rounded-xl text-amber-400 border border-amber-500/20">
             <PackageCheck className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Modelos Criados</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">Modelos Criados</p>
 
-            <h3 className="text-2xl font-bold text-slate-100">{totalPackages}</h3>
+            <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{totalPackages}</h3>
           </div>
         </Card>
 
-        <Card className="p-4 bg-slate-900/60 border-slate-800 flex items-center gap-4">
+        <Card className="p-4 bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 flex items-center gap-4">
           <div className="p-3 bg-emerald-500/10 rounded-xl text-emerald-400 border border-emerald-500/20">
             <Sparkles className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Planos Ativos</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">Planos Ativos</p>
             <h3 className="text-2xl font-bold text-emerald-400">{activePackages}</h3>
           </div>
         </Card>
 
-        <Card className="p-4 bg-slate-900/60 border-slate-800 flex items-center gap-4">
+        <Card className="p-4 bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 flex items-center gap-4">
           <div className="p-3 bg-sky-500/10 rounded-xl text-sky-400 border border-sky-500/20">
             <Users className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Contratos Ativos no Mês</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">Contratos Ativos no Mês</p>
             <h3 className="text-2xl font-bold text-sky-400">{activeClientPackages}</h3>
           </div>
         </Card>
@@ -113,16 +113,16 @@ export default async function PackagesPage() {
 
       {/* Catálogo Comercial */}
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-slate-200">Catálogo Comercial</h2>
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-200">Catálogo Comercial</h2>
 
         {packages.length === 0 ? (
-          <Card className="p-12 text-center bg-slate-900/40 border-slate-800 space-y-4">
-            <div className="w-12 h-12 rounded-full bg-slate-800 mx-auto flex items-center justify-center text-slate-500">
+          <Card className="p-12 text-center bg-white dark:bg-slate-900/40 border-slate-200 dark:border-slate-800 space-y-4">
+            <div className="w-12 h-12 rounded-full bg-slate-50 dark:bg-slate-800 mx-auto flex items-center justify-center text-slate-500">
               <PackageCheck className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-slate-200 font-medium text-lg">Nenhum pacote ou plano cadastrado</h3>
-              <p className="text-slate-400 text-sm mt-1">Crie opções de créditos ou planos ilimitados para fidelizar seus clientes.</p>
+              <h3 className="text-slate-900 dark:text-slate-200 font-medium text-lg">Nenhum pacote ou plano cadastrado</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Crie opções de créditos ou planos ilimitados para fidelizar seus clientes.</p>
             </div>
             <Link href="/pacotes/novo">
               <Button className="bg-amber-600 hover:bg-amber-500 text-slate-950 font-semibold gap-2">
@@ -136,27 +136,27 @@ export default async function PackagesPage() {
             {packages.map((pkg) => (
               <Card
                 key={pkg.id}
-                className={`p-5 flex flex-col justify-between transition-all border ${pkg.is_active ? 'bg-slate-900/80 border-slate-800 hover:border-amber-500/40' : 'bg-slate-950/50 border-slate-900 opacity-60'
+                className={`p-5 flex flex-col justify-between transition-all border ${pkg.is_active ? 'bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 hover:border-amber-500/40' : 'bg-slate-50 dark:bg-slate-950/50 border-slate-200 dark:border-slate-900 opacity-60'
                   }`}
               >
                 <div className="space-y-4">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <h3 className="font-semibold text-lg text-slate-100">{pkg.name}</h3>
-                      {pkg.description && <p className="text-xs text-slate-400 mt-1 line-clamp-2">{pkg.description}</p>}
+                      <h3 className="font-semibold text-lg text-slate-900 dark:text-slate-100">{pkg.name}</h3>
+                      {pkg.description && <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">{pkg.description}</p>}
                     </div>
 
                     <PackageToggleSwitch packageId={pkg.id} isActive={pkg.is_active} />
                   </div>
 
                   {/* Preço e Tipo */}
-                  <div className="flex items-baseline justify-between border-y border-slate-800/60 py-3">
+                  <div className="flex items-baseline justify-between border-y border-slate-200 dark:border-slate-800/60 py-3">
                     <div>
                       <span className="text-2xl font-extrabold text-amber-400">R$ {Number(pkg.price).toFixed(2)}</span>
                       <span className="text-xs text-slate-500 ml-1">/ {pkg.billing_type === 'monthly' ? 'mês' : pkg.billing_type === 'yearly' ? 'ano' : 'único'}</span>
                     </div>
 
-                    <Badge variant="outline" className="bg-slate-800/80 text-slate-300 border-slate-700 text-xs">
+                    <Badge variant="outline" className="bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 text-xs">
                       {pkg.package_type === 'credits'
                         ? 'Créditos'
                         : pkg.package_type === 'subscription'
@@ -168,18 +168,18 @@ export default async function PackagesPage() {
                   </div>
 
                   {/* Validade */}
-                  <div className="flex items-center gap-2 text-xs text-slate-400">
+                  <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                     <Clock className="w-3.5 h-3.5 text-amber-500" />
                     <span>Validade de {pkg.validity_value} {pkg.validity_type === 'months' ? 'mês(es)' : pkg.validity_type === 'years' ? 'ano(s)' : 'dias'}</span>
                   </div>
 
                   {/* Serviços e Regras */}
                   <div className="space-y-2 pt-1">
-                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Regras & Serviços</p>
+                    <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Regras & Serviços</p>
                     <div className="space-y-1.5">
                       {pkg.rules && pkg.rules.length > 0 ? (
                         pkg.rules.map((rule) => (
-                          <div key={rule.id} className="text-xs bg-slate-800/50 p-2 rounded border border-slate-800 text-slate-300 flex items-center justify-between">
+                          <div key={rule.id} className="text-xs bg-slate-100 dark:bg-slate-800/50 p-2 rounded border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-between">
                             <span>{rule.service?.name || 'Todos os serviços'}</span>
                             <span className="font-semibold text-amber-400">
                               {rule.rule_type === 'service_credit'
@@ -199,7 +199,7 @@ export default async function PackagesPage() {
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-800/60 flex items-center justify-between text-xs">
+                <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800/60 flex items-center justify-between text-xs">
                   <span className="text-slate-500">{(pkg.items || []).length} serviço(s) incluído(s)</span>
                   <Link href={`/pacotes/${pkg.id}`} className="text-amber-400 hover:text-amber-300 font-medium">
                     Editar Detalhes →
@@ -213,12 +213,12 @@ export default async function PackagesPage() {
 
       {/* Recentes Vendas a Clientes */}
       {clientPackages.length > 0 && (
-        <div className="space-y-4 pt-4 border-t border-slate-800">
-          <h2 className="text-lg font-semibold text-slate-200">Últimos Pacotes/Planos Vendidos</h2>
+        <div className="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-200">Últimos Pacotes/Planos Vendidos</h2>
 
-          <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/40">
-            <table className="w-full text-left text-sm text-slate-300">
-              <thead className="bg-slate-900/80 text-xs uppercase text-slate-400 border-b border-slate-800">
+          <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40">
+            <table className="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+              <thead className="bg-white dark:bg-slate-900/80 text-xs uppercase text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">
                 <tr>
                   <th className="p-3.5">Cliente</th>
                   <th className="p-3.5">Pacote / Plano</th>
@@ -229,12 +229,12 @@ export default async function PackagesPage() {
                   <th className="p-3.5 text-right">Ação</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60">
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-800/60">
                 {clientPackages.map((cp) => (
-                  <tr key={cp.id} className="hover:bg-slate-800/30">
-                    <td className="p-3.5 font-medium text-slate-100">{cp.client?.name || 'Cliente'}</td>
-                    <td className="p-3.5 text-slate-300">{cp.package?.name || 'Pacote'}</td>
-                    <td className="p-3.5 text-xs text-slate-400">
+                  <tr key={cp.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                    <td className="p-3.5 font-medium text-slate-900 dark:text-slate-100">{cp.client?.name || 'Cliente'}</td>
+                    <td className="p-3.5 text-slate-700 dark:text-slate-300">{cp.package?.name || 'Pacote'}</td>
+                    <td className="p-3.5 text-xs text-slate-500 dark:text-slate-400">
                       {new Date(cp.starts_at).toLocaleDateString('pt-BR')} até {new Date(cp.expires_at).toLocaleDateString('pt-BR')}
                     </td>
                     <td className="p-3.5 font-semibold text-amber-400">R$ {Number(cp.amount_paid).toFixed(2)}</td>
@@ -253,7 +253,7 @@ export default async function PackagesPage() {
                               ? 'border-blue-500/40 text-blue-400 bg-blue-500/10'
                               : cp.status === 'expired'
                                 ? 'border-rose-500/40 text-rose-400 bg-rose-500/10'
-                                : 'border-slate-700 text-slate-500'
+                                : 'border-slate-300 dark:border-slate-700 text-slate-500'
                         }
                       >
                         {cp.status === 'active' ? 'Ativo' : cp.status === 'completed' ? 'Concluído' : cp.status === 'expired' ? 'Vencido' : 'Cancelado'}

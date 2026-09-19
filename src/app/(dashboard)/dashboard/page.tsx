@@ -109,12 +109,12 @@ export default async function DashboardPage() {
               </Button>
             </Link>
             <Link href="/retornos">
-              <Button variant="outline" className="border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500 hover:text-slate-950 hover:border-amber-500 dark:hover:text-slate-950 font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+              <Button variant="default" className="bg-amber-500 text-slate-950 hover:bg-amber-400 font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
                 <Clock className="h-4 w-4 mr-1.5" /> Central de Retornos
               </Button>
             </Link>
             <Link href="/atendimentos/novo">
-              <Button variant="outline" className="border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:bg-slate-800 hover:text-white dark:hover:bg-slate-200 dark:hover:text-slate-900 font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+              <Button variant="default" className="bg-amber-500 text-slate-950 hover:bg-amber-400 font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
                 <Plus className="h-4 w-4 mr-1.5" /> Novo Atendimento
               </Button>
             </Link>
@@ -261,7 +261,7 @@ export default async function DashboardPage() {
 
       {/* Cards de Métricas Cadastrais */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white hover:border-slate-300 dark:hover:border-slate-700 transition-all shadow-xs">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white hover:border-slate-300 dark:hover:border-slate-300 dark:border-slate-700 transition-all shadow-xs">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-500 dark:text-slate-400">Total de Clientes</CardTitle>
             <div className="h-9 w-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400">
@@ -275,14 +275,14 @@ export default async function DashboardPage() {
               <Link href="/clientes" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline flex items-center gap-1">
                 Ver todos →
               </Link>
-              <Link href="/clientes/novo" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium">
+              <Link href="/clientes/novo" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:text-white font-medium">
                 + Cadastrar
               </Link>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white hover:border-slate-300 dark:hover:border-slate-700 transition-all shadow-xs">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white hover:border-slate-300 dark:hover:border-slate-300 dark:border-slate-700 transition-all shadow-xs">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-500 dark:text-slate-400">Equipe de Profissionais</CardTitle>
             <div className="h-9 w-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
@@ -296,14 +296,14 @@ export default async function DashboardPage() {
               <Link href="/cadastros/profissionais" className="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1">
                 Gerenciar equipe →
               </Link>
-              <Link href="/cadastros/profissionais/novo" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium">
+              <Link href="/cadastros/profissionais/novo" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:text-white font-medium">
                 + Adicionar
               </Link>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white hover:border-slate-300 dark:hover:border-slate-700 transition-all shadow-xs">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white hover:border-slate-300 dark:hover:border-slate-300 dark:border-slate-700 transition-all shadow-xs">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-500 dark:text-slate-400">Catálogo de Serviços</CardTitle>
             <div className="h-9 w-9 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-600 dark:text-purple-400">
@@ -317,7 +317,7 @@ export default async function DashboardPage() {
               <Link href="/cadastros/servicos" className="text-purple-600 dark:text-purple-400 font-semibold hover:underline flex items-center gap-1">
                 Ver catálogo →
               </Link>
-              <Link href="/cadastros/servicos/novo" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium">
+              <Link href="/cadastros/servicos/novo" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:text-white font-medium">
                 + Adicionar
               </Link>
             </div>

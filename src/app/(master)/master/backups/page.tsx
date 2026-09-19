@@ -24,19 +24,19 @@ export default async function MasterBackupsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Exportações & Backups Lógicos</h1>
-          <p className="text-sm text-slate-400">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Exportações & Backups Lógicos</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Histórico de backups de segurança privados por tenant, checksum SHA-256 e download via URL assinada.
           </p>
         </div>
       </div>
 
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
+      <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-300">
-            <thead className="bg-slate-950 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-800">
+          <table className="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+            <thead className="bg-slate-100 dark:bg-slate-950 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
               <tr>
                 <th className="px-6 py-4">Salão / Tenant</th>
                 <th className="px-6 py-4">Solicitado Por</th>
@@ -56,10 +56,10 @@ export default async function MasterBackupsPage() {
               ) : (
                 backups.map((b) => (
                   <tr key={b.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-white">
+                    <td className="px-6 py-4 font-semibold text-slate-900 dark:text-white">
                       {b.organizations?.name || 'Tenant'}
                     </td>
-                    <td className="px-6 py-4 text-xs text-slate-400">
+                    <td className="px-6 py-4 text-xs text-slate-500 dark:text-slate-400">
                       {b.profiles?.email || 'Master'}
                     </td>
                     <td className="px-6 py-4">
@@ -79,10 +79,10 @@ export default async function MasterBackupsPage() {
                         </span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-xs font-mono text-slate-300">
+                    <td className="px-6 py-4 text-xs font-mono text-slate-700 dark:text-slate-300">
                       {formatBytes(b.size_bytes)}
                     </td>
-                    <td className="px-6 py-4 text-[11px] font-mono text-slate-400 truncate max-w-[150px]">
+                    <td className="px-6 py-4 text-[11px] font-mono text-slate-500 dark:text-slate-400 truncate max-w-[150px]">
                       {b.checksum || 'N/A'}
                     </td>
                     <td className="px-6 py-4 text-right">

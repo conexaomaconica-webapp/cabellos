@@ -60,7 +60,7 @@ export default function MasterOrgStatusActions({
         type="button"
         disabled={backupLoading}
         onClick={handleTriggerBackup}
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium transition-all"
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-200 text-xs font-medium transition-all"
       >
         <HardDriveDownload className="h-4 w-4 text-purple-400" />
         {backupLoading ? 'Gerando Backup...' : 'Gerar Exportação'}
@@ -71,7 +71,7 @@ export default function MasterOrgStatusActions({
           type="button"
           disabled={loading}
           onClick={() => handleStatusChange('active')}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-medium transition-all shadow"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-slate-900 dark:text-white text-xs font-medium transition-all shadow"
         >
           <CheckCircle2 className="h-4 w-4" /> Reativar Salão
         </button>
@@ -82,7 +82,7 @@ export default function MasterOrgStatusActions({
           type="button"
           disabled={loading}
           onClick={() => handleStatusChange('suspended')}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-medium transition-all shadow"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-slate-900 dark:text-white text-xs font-medium transition-all shadow"
         >
           <AlertTriangle className="h-4 w-4" /> Suspender
         </button>

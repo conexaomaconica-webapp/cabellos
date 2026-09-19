@@ -89,10 +89,10 @@ export function MessageTemplatesClient({ templates }: MessageTemplatesClientProp
     <div className="space-y-6 max-w-5xl mx-auto">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <MessageSquare className="h-6 w-6 text-amber-400" /> Modelos de Mensagens para WhatsApp
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Personalize os textos enviados aos clientes com suporte a interpolação inteligente de variáveis.
           </p>
         </div>
@@ -105,19 +105,19 @@ export function MessageTemplatesClient({ templates }: MessageTemplatesClientProp
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {templates && templates.length > 0 ? (
           templates.map((tmpl) => (
-            <Card key={tmpl.id} className={`bg-slate-900 border-slate-800 text-white shadow-lg ${!tmpl.is_active ? 'opacity-60' : ''}`}>
-              <CardHeader className="pb-3 border-b border-slate-800 flex flex-row items-start justify-between">
+            <Card key={tmpl.id} className={`bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-lg ${!tmpl.is_active ? 'opacity-60' : ''}`}>
+              <CardHeader className="pb-3 border-b border-slate-200 dark:border-slate-800 flex flex-row items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <CardTitle className="text-base font-bold text-white">{tmpl.name}</CardTitle>
+                    <CardTitle className="text-base font-bold text-slate-900 dark:text-white">{tmpl.name}</CardTitle>
                     {tmpl.is_default && (
                       <Badge variant="outline" className="text-[10px] text-amber-400 border-amber-500/30 bg-amber-500/10">
                         Padrão
                       </Badge>
                     )}
                   </div>
-                  <CardDescription className="text-xs text-slate-400 mt-0.5">
-                    Tipo: <span className="text-slate-300 font-medium">{tmpl.type}</span>
+                  <CardDescription className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    Tipo: <span className="text-slate-700 dark:text-slate-300 font-medium">{tmpl.type}</span>
                   </CardDescription>
                 </div>
                 <Badge variant={tmpl.is_active ? 'success' : 'secondary'} className="text-[10px]">
@@ -125,12 +125,12 @@ export function MessageTemplatesClient({ templates }: MessageTemplatesClientProp
                 </Badge>
               </CardHeader>
               <CardContent className="p-4 space-y-4">
-                <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-300 whitespace-pre-wrap font-mono">
+                <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 whitespace-pre-wrap font-mono">
                   {tmpl.content}
                 </div>
 
-                <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                  <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(tmpl)} className="text-slate-300 hover:text-white text-xs">
+                <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+                  <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(tmpl)} className="text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:text-white text-xs">
                     <Edit2 className="h-3.5 w-3.5 mr-1" /> Editar
                   </Button>
                   <Button
@@ -146,15 +146,15 @@ export function MessageTemplatesClient({ templates }: MessageTemplatesClientProp
             </Card>
           ))
         ) : (
-          <p className="col-span-full py-12 text-center text-slate-400 italic">Nenhum modelo de mensagem cadastrado.</p>
+          <p className="col-span-full py-12 text-center text-slate-500 dark:text-slate-400 italic">Nenhum modelo de mensagem cadastrado.</p>
         )}
       </div>
 
       {/* Modal de Criação / Edição */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-xl bg-slate-900 border border-slate-800 rounded-2xl p-6 text-white space-y-4 shadow-2xl">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
+          <div className="w-full max-w-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-slate-900 dark:text-white space-y-4 shadow-2xl">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <MessageSquare className="h-5 w-5 text-amber-400" />
               {editingTemplate ? 'Editar Modelo de Mensagem' : 'Novo Modelo de Mensagem'}
             </h3>
@@ -164,20 +164,20 @@ export function MessageTemplatesClient({ templates }: MessageTemplatesClientProp
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-medium text-slate-400 mb-1 block">Nome do Modelo</label>
+                  <label className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 block">Nome do Modelo</label>
                   <Input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Ex: Lembrete de Retorno 15 dias"
-                    className="bg-slate-950 border-slate-800 text-xs text-white"
+                    className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-slate-400 mb-1 block">Tipo de Mensagem</label>
+                  <label className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 block">Tipo de Mensagem</label>
                   <select
                     value={type}
                     onChange={(e) => setType(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                    className="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white"
                   >
                     <option value="return_reminder">Lembrete de Retorno</option>
                     <option value="overdue">Retorno em Atraso</option>
@@ -189,7 +189,7 @@ export function MessageTemplatesClient({ templates }: MessageTemplatesClientProp
               </div>
 
               <div>
-                <label className="text-xs font-medium text-slate-400 mb-1 block">Variáveis Disponíveis (clique para inserir)</label>
+                <label className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 block">Variáveis Disponíveis (clique para inserir)</label>
                 <div className="flex flex-wrap gap-1.5 mb-2">
                   {tags.map((t) => (
                     <button
@@ -206,14 +206,14 @@ export function MessageTemplatesClient({ templates }: MessageTemplatesClientProp
                   rows={6}
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-amber-500 font-mono"
+                  className="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-amber-500 font-mono"
                   placeholder="Digite o texto da mensagem..."
                 />
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-4 border-t border-slate-800">
-              <Button variant="ghost" onClick={() => setIsModalOpen(false)} className="text-slate-400 text-xs">
+            <div className="flex justify-end gap-2 pt-4 border-t border-slate-200 dark:border-slate-800">
+              <Button variant="ghost" onClick={() => setIsModalOpen(false)} className="text-slate-500 dark:text-slate-400 text-xs">
                 Cancelar
               </Button>
               <Button onClick={handleSave} disabled={loading} className="bg-amber-500 text-slate-950 hover:bg-amber-400 font-semibold text-xs">

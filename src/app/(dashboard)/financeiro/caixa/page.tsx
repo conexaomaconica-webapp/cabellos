@@ -41,17 +41,17 @@ export default async function CashRegisterPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-5 border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-5 border-slate-200 dark:border-slate-800">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-100 flex items-center gap-2">
             <Landmark className="w-7 h-7 text-amber-400" /> Fechamento e Caixa Diário
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Controle de abertura, suprimento, sangria, contagem de gaveta física e balanço de divergência.
           </p>
         </div>
 
-        <Link href="/financeiro" className="text-xs text-slate-400 hover:text-slate-200 border border-slate-800 px-3 py-1.5 rounded-lg">
+        <Link href="/financeiro" className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-200 border border-slate-200 dark:border-slate-800 px-3 py-1.5 rounded-lg">
           ← Voltar para Financeiro
         </Link>
       </div>
@@ -61,12 +61,12 @@ export default async function CashRegisterPage() {
 
       {/* Histórico de Caixas Fechados */}
       {pastRegisters.length > 0 && (
-        <div className="space-y-4 pt-4 border-t border-slate-800">
+        <div className="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-800">
           <h2 className="text-lg font-semibold text-slate-200">Histórico de Caixas Fechados</h2>
 
-          <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/40">
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-900/80 text-slate-400 uppercase border-b border-slate-800">
+          <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40">
+            <table className="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+              <thead className="bg-white dark:bg-slate-900/80 text-slate-500 dark:text-slate-400 uppercase border-b border-slate-200 dark:border-slate-800">
                 <tr>
                   <th className="p-3.5">Abertura</th>
                   <th className="p-3.5">Fechamento</th>
@@ -81,7 +81,7 @@ export default async function CashRegisterPage() {
                 {pastRegisters.map((cr) => (
                   <tr key={cr.id} className="hover:bg-slate-800/30">
                     <td className="p-3.5 font-medium">{new Date(cr.opened_at).toLocaleDateString('pt-BR')} {new Date(cr.opened_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</td>
-                    <td className="p-3.5 text-slate-400">{cr.closed_at ? `${new Date(cr.closed_at).toLocaleDateString('pt-BR')} ${new Date(cr.closed_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}` : '-'}</td>
+                    <td className="p-3.5 text-slate-500 dark:text-slate-400">{cr.closed_at ? `${new Date(cr.closed_at).toLocaleDateString('pt-BR')} ${new Date(cr.closed_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}` : '-'}</td>
                     <td className="p-3.5">R$ {Number(cr.opening_balance).toFixed(2)}</td>
                     <td className="p-3.5 text-amber-400 font-semibold">R$ {Number(cr.expected_balance || 0).toFixed(2)}</td>
                     <td className="p-3.5 font-bold text-slate-100">R$ {Number(cr.closing_balance || 0).toFixed(2)}</td>
@@ -89,7 +89,7 @@ export default async function CashRegisterPage() {
                       R$ {Number(cr.difference || 0).toFixed(2)}
                     </td>
                     <td className="p-3.5">
-                      <Badge variant="outline" className="border-slate-700 text-slate-400 bg-slate-800/40">
+                      <Badge variant="outline" className="border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 bg-slate-800/40">
                         Fechado
                       </Badge>
                     </td>

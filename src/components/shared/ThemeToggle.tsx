@@ -50,7 +50,7 @@ export function ThemeToggle({ className = '', showLabel = false }: ThemeTogglePr
       onClick={toggleTheme}
       type="button"
       title={theme === 'dark' ? 'Mudar para Tema Claro' : 'Mudar para Tema Escuro'}
-      className={`relative flex items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-100/80 dark:bg-slate-800/80 px-2.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all shadow-xs active:scale-95 ${className}`}
+      className={`relative flex items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-100/80 dark:bg-slate-800/80 px-2.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-slate-900 dark:text-white transition-all shadow-xs active:scale-95 ${className}`}
     >
       {theme === 'dark' ? (
         <>

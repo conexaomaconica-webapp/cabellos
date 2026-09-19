@@ -29,8 +29,8 @@ export default async function NewAppointmentPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white tracking-tight">Novo Atendimento</h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Novo Atendimento</h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
           Escolha entre Atendimento Rápido por Texto Livre ou Atendimento Manual Detalhado
         </p>
       </div>

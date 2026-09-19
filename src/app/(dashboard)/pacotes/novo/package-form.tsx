@@ -315,12 +315,12 @@ export function PackageForm({ services }: PackageFormProps) {
       )}
 
       {/* PAINEL DE MODELOS COMERCIAIS PRONTOS */}
-      <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-950/40 via-slate-900 to-amber-950/20 border border-amber-500/30 space-y-4 shadow-xl">
+      <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-100 dark:from-amber-950/40 via-amber-50 dark:via-slate-900 to-white dark:to-amber-950/20 border border-amber-500/30 space-y-4 shadow-xl">
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-amber-400" />
-          <h3 className="font-bold text-slate-100 text-sm">Modelos Comerciais Prontos</h3>
+          <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm">Modelos Comerciais Prontos</h3>
         </div>
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-slate-500 dark:text-slate-400">
           Escolha o modelo comercial que deseja criar para preencher automaticamente as configurações recomendadas:
         </p>
 
@@ -328,87 +328,87 @@ export function PackageForm({ services }: PackageFormProps) {
           <button
             type="button"
             onClick={applyQuantityPackagePreset}
-            className="p-3 rounded-xl bg-slate-900/90 border border-amber-500/40 hover:border-amber-400 text-left space-y-1 transition-all hover:scale-[1.02] shadow-md group"
+            className="p-3 rounded-xl bg-white dark:bg-slate-900/90 border border-amber-500/40 hover:border-amber-400 text-left space-y-1 transition-all hover:scale-[1.02] shadow-md group"
           >
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-amber-400 group-hover:text-amber-300">1. Por Quantidade</span>
               <Badge variant="outline" className="text-[9px] bg-amber-500/10 text-amber-400 border-amber-500/30">Pacote</Badge>
             </div>
-            <p className="text-[11px] text-slate-300 line-clamp-2">Ex: 4 cortes avulsos para uso no ritmo do cliente.</p>
+            <p className="text-[11px] text-slate-700 dark:text-slate-300 line-clamp-2">Ex: 4 cortes avulsos para uso no ritmo do cliente.</p>
           </button>
 
           <button
             type="button"
             onClick={applyMonthlyFixedPreset}
-            className="p-3 rounded-xl bg-slate-900/90 border border-emerald-500/40 hover:border-emerald-400 text-left space-y-1 transition-all hover:scale-[1.02] shadow-md group"
+            className="p-3 rounded-xl bg-white dark:bg-slate-900/90 border border-emerald-500/40 hover:border-emerald-400 text-left space-y-1 transition-all hover:scale-[1.02] shadow-md group"
           >
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-emerald-400 group-hover:text-emerald-300">2. Limite Mensal</span>
               <Badge variant="outline" className="text-[9px] bg-emerald-500/10 text-emerald-400 border-emerald-500/30">Plano</Badge>
             </div>
-            <p className="text-[11px] text-slate-300 line-clamp-2">Ex: 4 cortes por mês com renovação mensal.</p>
+            <p className="text-[11px] text-slate-700 dark:text-slate-300 line-clamp-2">Ex: 4 cortes por mês com renovação mensal.</p>
           </button>
 
           <button
             type="button"
             onClick={applyMonthlyUnlimitedPreset}
-            className="p-3 rounded-xl bg-slate-900/90 border border-sky-500/40 hover:border-sky-400 text-left space-y-1 transition-all hover:scale-[1.02] shadow-md group"
+            className="p-3 rounded-xl bg-white dark:bg-slate-900/90 border border-sky-500/40 hover:border-sky-400 text-left space-y-1 transition-all hover:scale-[1.02] shadow-md group"
           >
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-sky-400 group-hover:text-sky-300">3. Ilimitado</span>
               <Badge variant="outline" className="text-[9px] bg-sky-500/10 text-sky-400 border-sky-500/30">Plano</Badge>
             </div>
-            <p className="text-[11px] text-slate-300 line-clamp-2">Ex: Corte ou Barba ilimitados durante o mês.</p>
+            <p className="text-[11px] text-slate-700 dark:text-slate-300 line-clamp-2">Ex: Corte ou Barba ilimitados durante o mês.</p>
           </button>
 
           <button
             type="button"
             onClick={applyCombinedPlanPreset}
-            className="p-3 rounded-xl bg-slate-900/90 border border-purple-500/40 hover:border-purple-400 text-left space-y-1 transition-all hover:scale-[1.02] shadow-md group"
+            className="p-3 rounded-xl bg-white dark:bg-slate-900/90 border border-purple-500/40 hover:border-purple-400 text-left space-y-1 transition-all hover:scale-[1.02] shadow-md group"
           >
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-purple-400 group-hover:text-purple-300">4. Combinado</span>
               <Badge variant="outline" className="text-[9px] bg-purple-500/10 text-purple-400 border-purple-500/30">Plano</Badge>
             </div>
-            <p className="text-[11px] text-slate-300 line-clamp-2">Ex: 4 barbas + 2 cortes por mês.</p>
+            <p className="text-[11px] text-slate-700 dark:text-slate-300 line-clamp-2">Ex: 4 barbas + 2 cortes por mês.</p>
           </button>
 
           <button
             type="button"
             onClick={applySharedTotalLimitPreset}
-            className="p-3 rounded-xl bg-slate-900/90 border border-indigo-500/40 hover:border-indigo-400 text-left space-y-1 transition-all hover:scale-[1.02] shadow-md group"
+            className="p-3 rounded-xl bg-white dark:bg-slate-900/90 border border-indigo-500/40 hover:border-indigo-400 text-left space-y-1 transition-all hover:scale-[1.02] shadow-md group"
           >
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-indigo-400 group-hover:text-indigo-300">5. Total Flexível</span>
               <Badge variant="outline" className="text-[9px] bg-indigo-500/10 text-indigo-400 border-indigo-500/30">Plano</Badge>
             </div>
-            <p className="text-[11px] text-slate-300 line-clamp-2">Ex: 6 serviços/mês entre Corte e Barba.</p>
+            <p className="text-[11px] text-slate-700 dark:text-slate-300 line-clamp-2">Ex: 6 serviços/mês entre Corte e Barba.</p>
           </button>
         </div>
       </div>
 
       {/* 1. Dados Principais */}
-      <Card className="p-6 bg-slate-900/60 border-slate-800 space-y-6">
-        <h2 className="text-lg font-semibold text-slate-200 border-b border-slate-800 pb-3">Informações Básicas</h2>
+      <Card className="p-6 bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 space-y-6">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-200 border-b border-slate-200 dark:border-slate-800 pb-3">Informações Básicas</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Nome do Pacote / Plano *</label>
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Nome do Pacote / Plano *</label>
             <Input
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Ex: Plano Mensal Ilimitado ou Assinatura Anual VIP"
-              className="bg-slate-950 border-slate-800 text-slate-100 placeholder:text-slate-600"
+              className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-600"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Tipo do Pacote / Plano *</label>
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Tipo do Pacote / Plano *</label>
             <select
               value={packageType}
               onChange={(e) => setPackageType(e.target.value as PackageType)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-md p-2.5 text-sm text-slate-100 focus:ring-2 focus:ring-amber-500"
+              className="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-md p-2.5 text-sm text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-amber-500"
             >
               <option value="credits">Pacote de Créditos (Quantidade Fixa)</option>
               <option value="subscription">Assinatura Recorrente</option>
@@ -418,41 +418,41 @@ export function PackageForm({ services }: PackageFormProps) {
           </div>
 
           <div className="space-y-2 md:col-span-2">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Descrição Detalhada</label>
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Descrição Detalhada</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Descreva o benefício e detalhes comerciais do pacote..."
-              className="w-full bg-slate-950 border border-slate-800 rounded-md p-2.5 text-sm text-slate-100 placeholder:text-slate-600 min-h-[80px]"
+              className="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-md p-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-600 min-h-[80px]"
             />
           </div>
         </div>
       </Card>
 
       {/* 2. Preço e Validade */}
-      <Card className="p-6 bg-slate-900/60 border-slate-800 space-y-6">
-        <h2 className="text-lg font-semibold text-slate-200 border-b border-slate-800 pb-3">Precificação e Ciclo de Cobrança</h2>
+      <Card className="p-6 bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 space-y-6">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-200 border-b border-slate-200 dark:border-slate-800 pb-3">Precificação e Ciclo de Cobrança</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Valor Comercial (R$) *</label>
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Valor Comercial (R$) *</label>
             <Input
               type="number"
               step="0.01"
               min="0"
               value={price}
               onChange={(e) => setPrice(Number(e.target.value))}
-              className="bg-slate-950 border-slate-800 text-amber-400 font-bold text-lg"
+              className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-amber-400 font-bold text-lg"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Forma de Cobrança</label>
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Forma de Cobrança</label>
             <select
               value={billingType}
               onChange={(e) => setBillingType(e.target.value as BillingType)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-md p-2.5 text-sm text-slate-100"
+              className="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-md p-2.5 text-sm text-slate-900 dark:text-slate-100"
             >
               <option value="monthly">Mensalidade (Plano Mensal)</option>
               <option value="yearly">Anuidade (Plano Anual)</option>
@@ -461,20 +461,20 @@ export function PackageForm({ services }: PackageFormProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Validade da Vigência *</label>
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Validade da Vigência *</label>
             <div className="flex gap-2">
               <Input
                 type="number"
                 min="1"
                 value={validityValue}
                 onChange={(e) => setValidityValue(Number(e.target.value))}
-                className="bg-slate-950 border-slate-800 text-slate-100 w-24"
+                className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 w-24"
                 required
               />
               <select
                 value={validityType}
                 onChange={(e) => setValidityType(e.target.value as ValidityType)}
-                className="flex-1 bg-slate-950 border border-slate-800 rounded-md p-2 text-sm text-slate-100"
+                className="flex-1 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-md p-2 text-sm text-slate-900 dark:text-slate-100"
               >
                 <option value="months">Meses</option>
                 <option value="years">Anos</option>
@@ -486,12 +486,12 @@ export function PackageForm({ services }: PackageFormProps) {
       </Card>
 
       {/* 3. Benefícios Extras & Vantagens Exclusivas */}
-      <Card className="p-6 bg-slate-900/60 border-slate-800 space-y-4">
-        <div className="border-b border-slate-800 pb-3">
-          <h2 className="text-lg font-semibold text-slate-200 flex items-center gap-2">
+      <Card className="p-6 bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 space-y-4">
+        <div className="border-b border-slate-200 dark:border-slate-800 pb-3">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-200 flex items-center gap-2">
             <Gift className="w-5 h-5 text-amber-400" /> Benefícios Extras e Vantagens Exclusivas
           </h2>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Adicione benefícios para tornar o plano atrativo (cortesia de bebidas, desconto em produtos, prioridade, etc.).
           </p>
         </div>
@@ -507,7 +507,7 @@ export function PackageForm({ services }: PackageFormProps) {
                 className={`p-3 rounded-xl border text-xs text-left flex items-center justify-between transition-all ${
                   isSelected
                     ? 'bg-amber-500/10 border-amber-500/50 text-amber-300 font-semibold shadow'
-                    : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700'
+                    : 'bg-slate-50 dark:bg-slate-950/60 border-slate-300 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-400 dark:hover:border-slate-700'
                 }`}
               >
                 <span>{perk}</span>
@@ -518,20 +518,20 @@ export function PackageForm({ services }: PackageFormProps) {
         </div>
 
         <div className="space-y-1.5 pt-2">
-          <label className="text-xs text-slate-400 font-semibold">Outros Benefícios ou Observações Customizadas</label>
+          <label className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Outros Benefícios ou Observações Customizadas</label>
           <Input
             value={customBenefits}
             onChange={(e) => setCustomBenefits(e.target.value)}
             placeholder="Ex: 15% OFF em tratamentos químicos e acesso a sala VIP"
-            className="bg-slate-950 border-slate-800 text-slate-200 text-xs"
+            className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-200 text-xs"
           />
         </div>
       </Card>
 
       {/* 4. Seleção de Serviços Incluídos */}
-      <Card className="p-6 bg-slate-900/60 border-slate-800 space-y-4">
-        <h2 className="text-lg font-semibold text-slate-200 border-b border-slate-800 pb-3">Serviços Incluídos no Pacote *</h2>
-        <p className="text-xs text-slate-400">Marque quais serviços fazem parte do escopo deste pacote/plano.</p>
+      <Card className="p-6 bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 space-y-4">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-200 border-b border-slate-200 dark:border-slate-800 pb-3">Serviços Incluídos no Pacote *</h2>
+        <p className="text-xs text-slate-500 dark:text-slate-400">Marque quais serviços fazem parte do escopo deste pacote/plano.</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-2">
           {services.map((svc) => {
@@ -544,11 +544,11 @@ export function PackageForm({ services }: PackageFormProps) {
                 className={`p-3 rounded-xl border text-left flex items-center justify-between transition-all ${
                   isSelected
                     ? 'bg-amber-500/10 border-amber-500/40 text-amber-300'
-                    : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700'
+                    : 'bg-slate-50 dark:bg-slate-950/60 border-slate-300 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-400 dark:hover:border-slate-700'
                 }`}
               >
                 <div>
-                  <p className="font-medium text-sm text-slate-200">{svc.name}</p>
+                  <p className="font-medium text-sm text-slate-900 dark:text-slate-200">{svc.name}</p>
                   <p className="text-xs text-slate-500">R$ {Number(svc.price).toFixed(2)}</p>
                 </div>
                 {isSelected && <Check className="w-5 h-5 text-amber-400" />}
@@ -559,11 +559,11 @@ export function PackageForm({ services }: PackageFormProps) {
       </Card>
 
       {/* 5. Construtor Visual de Regras de Utilização */}
-      <Card className="p-6 bg-slate-900/60 border-slate-800 space-y-6">
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+      <Card className="p-6 bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 space-y-6">
+        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
           <div>
-            <h2 className="text-lg font-semibold text-slate-200">Regras de Utilização (Limites e Direitos)</h2>
-            <p className="text-xs text-slate-400">Configure créditos específicos, limites semanais/mensais ou direito ilimitado.</p>
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-200">Regras de Utilização (Limites e Direitos)</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Configure créditos específicos, limites semanais/mensais ou direito ilimitado.</p>
           </div>
           <Button type="button" onClick={handleAddRule} variant="outline" className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 text-xs gap-1">
             <Plus className="w-3.5 h-3.5" /> Adicionar Regra
@@ -572,7 +572,7 @@ export function PackageForm({ services }: PackageFormProps) {
 
         <div className="space-y-4">
           {rules.map((rule, idx) => (
-            <div key={rule.id} className="p-4 bg-slate-950/80 border border-slate-800 rounded-xl space-y-4">
+            <div key={rule.id} className="p-4 bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-xl space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">Regra #{idx + 1}</span>
                 {rules.length > 1 && (
@@ -584,11 +584,11 @@ export function PackageForm({ services }: PackageFormProps) {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-1">
-                  <label className="text-xs text-slate-400 font-semibold">Tipo de Regra</label>
+                  <label className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Tipo de Regra</label>
                   <select
                     value={rule.rule_type}
                     onChange={(e) => handleRuleChange(rule.id, 'rule_type', e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-md p-2 text-xs text-slate-200"
+                    className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md p-2 text-xs text-slate-900 dark:text-slate-200"
                   >
                     <option value="service_credit">Pacote por Quantidade (Ex: 4 cortes avulsos)</option>
                     <option value="period_limit">Limite por Período (Ex: 4 cortes por mês)</option>
@@ -599,11 +599,11 @@ export function PackageForm({ services }: PackageFormProps) {
 
                 {rule.rule_type !== 'total_limit' && (
                   <div className="space-y-1">
-                    <label className="text-xs text-slate-400 font-semibold">Serviço Alvo</label>
+                    <label className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Serviço Alvo</label>
                     <select
                       value={rule.service_id || ''}
                       onChange={(e) => handleRuleChange(rule.id, 'service_id', e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-800 rounded-md p-2 text-xs text-slate-200"
+                      className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md p-2 text-xs text-slate-900 dark:text-slate-200"
                     >
                       {services.map((s) => (
                         <option key={s.id} value={s.id}>
@@ -616,24 +616,24 @@ export function PackageForm({ services }: PackageFormProps) {
 
                 {rule.rule_type !== 'unlimited_service' && (
                   <div className="space-y-1">
-                    <label className="text-xs text-slate-400 font-semibold">Quantidade Permitida</label>
+                    <label className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Quantidade Permitida</label>
                     <Input
                       type="number"
                       min="1"
                       value={rule.limit_quantity || 1}
                       onChange={(e) => handleRuleChange(rule.id, 'limit_quantity', Number(e.target.value))}
-                      className="bg-slate-900 border-slate-800 text-slate-100 text-xs"
+                      className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 text-xs"
                     />
                   </div>
                 )}
 
                 {rule.rule_type !== 'service_credit' && rule.rule_type !== 'unlimited_service' && (
                   <div className="space-y-1">
-                    <label className="text-xs text-slate-400 font-semibold">Período de Renovação do Limite</label>
+                    <label className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Período de Renovação do Limite</label>
                     <select
                       value={rule.period_type || 'month'}
                       onChange={(e) => handleRuleChange(rule.id, 'period_type', e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-800 rounded-md p-2 text-xs text-slate-200"
+                      className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md p-2 text-xs text-slate-900 dark:text-slate-200"
                     >
                       <option value="week">Semanal (Semana Calendário)</option>
                       <option value="month">Mensal (Mês Calendário)</option>
@@ -648,8 +648,8 @@ export function PackageForm({ services }: PackageFormProps) {
       </Card>
 
       {/* Ações */}
-      <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
-        <Button type="button" variant="outline" onClick={() => router.push('/pacotes')} className="border-slate-800 text-slate-300">
+      <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+        <Button type="button" variant="outline" onClick={() => router.push('/pacotes')} className="border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
           Cancelar
         </Button>
         <Button type="submit" disabled={isPending} className="bg-amber-600 hover:bg-amber-500 text-slate-950 font-semibold px-6 shadow-lg shadow-amber-600/20">

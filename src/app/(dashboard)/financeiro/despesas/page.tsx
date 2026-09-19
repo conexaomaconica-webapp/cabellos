@@ -49,25 +49,25 @@ export default async function AccountsPayablePage() {
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-5 border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-5 border-slate-200 dark:border-slate-800">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-100 flex items-center gap-2">
             <ArrowDownRight className="w-7 h-7 text-rose-400" /> Contas a Pagar & Despesas
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Gestão de despesas operacionais do estabelecimento (aluguel, fornecedores, utilidades e comissões).
           </p>
         </div>
 
-        <Link href="/financeiro" className="text-xs text-slate-400 hover:text-slate-200 border border-slate-800 px-3 py-1.5 rounded-lg">
+        <Link href="/financeiro" className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-200 border border-slate-200 dark:border-slate-800 px-3 py-1.5 rounded-lg">
           ← Voltar para Financeiro
         </Link>
       </div>
 
       {/* Metric Card */}
-      <Card className="p-5 bg-slate-900/80 border-slate-800 flex items-center justify-between">
+      <Card className="p-5 bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 flex items-center justify-between">
         <div>
-          <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Total Pendente a Pagar</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Total Pendente a Pagar</p>
           <h2 className="text-3xl font-extrabold text-rose-400 mt-1">R$ {totalRemaining.toFixed(2)}</h2>
         </div>
 

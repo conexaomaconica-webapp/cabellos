@@ -15,19 +15,19 @@ export default async function MasterSubscriptionsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Assinaturas SaaS do Cabellos</h1>
-          <p className="text-sm text-slate-400">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Assinaturas SaaS do Cabellos</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Controle de contratos ativos, vigência, status de pagamento e histórico de eventos.
           </p>
         </div>
       </div>
 
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
+      <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-300">
-            <thead className="bg-slate-950 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-800">
+          <table className="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+            <thead className="bg-slate-100 dark:bg-slate-950 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
               <tr>
                 <th className="px-6 py-4">Salão / Tenant</th>
                 <th className="px-6 py-4">Plano Contratado</th>
@@ -47,7 +47,7 @@ export default async function MasterSubscriptionsPage() {
               ) : (
                 subscriptions.map((sub) => (
                   <tr key={sub.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-white">
+                    <td className="px-6 py-4 font-semibold text-slate-900 dark:text-white">
                       <div className="flex items-center gap-2">
                         <Building2 className="h-4 w-4 text-purple-400 shrink-0" />
                         <span>{sub.organizations?.name || 'Salão'}</span>
@@ -73,13 +73,13 @@ export default async function MasterSubscriptionsPage() {
                         </span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-xs capitalize text-slate-300">
+                    <td className="px-6 py-4 text-xs capitalize text-slate-700 dark:text-slate-300">
                       {sub.billing_cycle}
                     </td>
-                    <td className="px-6 py-4 font-bold text-white">
+                    <td className="px-6 py-4 font-bold text-slate-900 dark:text-white">
                       R$ {sub.price_snapshot}
                     </td>
-                    <td className="px-6 py-4 text-right text-xs text-slate-400">
+                    <td className="px-6 py-4 text-right text-xs text-slate-500 dark:text-slate-400">
                       {new Date(sub.current_period_end).toLocaleDateString('pt-BR')}
                     </td>
                   </tr>

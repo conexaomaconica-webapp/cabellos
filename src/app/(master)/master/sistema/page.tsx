@@ -18,12 +18,12 @@ export default async function MasterSystemIdentityPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <Sparkles className="h-6 w-6 text-purple-400" /> Identidade do Sistema
           </h1>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Administração dinâmica da Logo Oficial, Logo Compacta, Favicon e Mídia de Abertura / Splash Screen.
           </p>
         </div>

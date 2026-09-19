@@ -24,7 +24,7 @@ export default function MasterBackupClientButton({ backupId }: { backupId: strin
       type="button"
       disabled={loading}
       onClick={handleDownload}
-      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-600/80 hover:bg-purple-600 text-white text-xs font-bold transition-all shadow"
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-600/80 hover:bg-purple-600 text-slate-900 dark:text-white text-xs font-bold transition-all shadow"
     >
       <Download className="h-3.5 w-3.5" />
       {loading ? 'Obtendo URL...' : 'Baixar Exportação'}

@@ -31,16 +31,16 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4">
-      <Card className="w-full max-w-md border-slate-800 bg-slate-900 text-slate-100 shadow-2xl">
+    <div className="min-h-screen flex items-center justify-center bg-slate-100 dark:bg-slate-950 p-4">
+      <Card className="w-full max-w-md border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-100 shadow-2xl">
         <CardHeader className="text-center space-y-2">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-800 border border-slate-700 text-amber-400">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-amber-400">
             <Scissors className="h-7 w-7" />
           </div>
-          <CardTitle className="text-2xl font-bold text-white tracking-tight">
+          <CardTitle className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
             Recuperar Senha
           </CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardDescription className="text-slate-500 dark:text-slate-400">
             Digite seu e-mail cadastrado para receber o link de redefinição
           </CardDescription>
         </CardHeader>
@@ -59,15 +59,15 @@ export default function ForgotPasswordPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">E-mail</label>
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">E-mail</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
                 <Input
                   name="email"
                   type="email"
                   placeholder="seu.email@salao.com"
                   required
-                  className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
+                  className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
                 />
               </div>
             </div>
@@ -88,7 +88,7 @@ export default function ForgotPasswordPage() {
           </form>
 
           <div className="mt-6 text-center text-xs">
-            <Link href="/login" className="inline-flex items-center gap-1.5 text-slate-400 hover:text-white">
+            <Link href="/login" className="inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white">
               <ArrowLeft className="h-3.5 w-3.5" /> Voltar para o Login
             </Link>
           </div>

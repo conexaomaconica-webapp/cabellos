@@ -16,14 +16,12 @@ interface ProfessionalFormProps {
 }
 
 const PRESET_AVATARS = [
-  { id: 'barber-1', name: 'Barbeiro 1', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Barber1&backgroundColor=b6e3f4' },
-  { id: 'barber-2', name: 'Barbeiro 2', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos&backgroundColor=c0aede' },
-  { id: 'hair-1', name: 'Cabeleireira 1', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Julia&backgroundColor=ffd5dc' },
-  { id: 'hair-2', name: 'Cabeleireira 2', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ana&backgroundColor=d1d4f9' },
-  { id: 'stylist-1', name: 'Estilista 1', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Lucas&backgroundColor=ffdfbf' },
-  { id: 'stylist-2', name: 'Estilista 2', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pedro&backgroundColor=b6e3f4' },
-  { id: 'beauty-1', name: 'Manicure 1', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Fernanda&backgroundColor=ffd5dc' },
-  { id: 'beauty-2', name: 'Esteticista 2', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Camila&backgroundColor=c0aede' },
+  { id: 'barber-male-black', name: 'Barbeiro', url: '/avatars/barber_male_black.png' },
+  { id: 'barber-male-white', name: 'Barbeiro', url: '/avatars/barber_male_white.png' },
+  { id: 'barber-male-elderly', name: 'Barbeiro Clássico', url: '/avatars/barber_male_elderly.png' },
+  { id: 'hair-female-blonde', name: 'Cabeleireira', url: '/avatars/hairdresser_female_blonde.png' },
+  { id: 'hair-female-asian', name: 'Cabeleireira', url: '/avatars/hairdresser_female_asian.png' },
+  { id: 'hair-female-black', name: 'Cabeleireira', url: '/avatars/hairdresser_female_black.png' },
 ];
 
 export function ProfessionalForm({
@@ -101,7 +99,7 @@ export function ProfessionalForm({
   }
 
   return (
-    <Card className="bg-slate-900 border-slate-800 text-slate-100 shadow-xl">
+    <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-100 shadow-xl">
       <CardContent className="p-6">
         {error && (
           <div className="mb-6 rounded-lg bg-red-950/60 border border-red-800/80 p-3 text-sm text-red-300">
@@ -111,8 +109,8 @@ export function ProfessionalForm({
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* SEÇÃO FOTO DE PERFIL / AVATAR */}
-          <div className="space-y-3 p-4 rounded-xl bg-slate-950/60 border border-slate-800">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+          <div className="space-y-3 p-4 rounded-xl bg-slate-950/60 border border-slate-200 dark:border-slate-800">
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
               Foto de Perfil ou Avatar
             </label>
 
@@ -128,33 +126,33 @@ export function ProfessionalForm({
 
             <div className="flex flex-col sm:flex-row items-center gap-4">
               {/* Preview Avatar */}
-              <div className="relative h-20 w-20 shrink-0 rounded-2xl overflow-hidden border-2 border-emerald-500/50 bg-slate-900 flex items-center justify-center shadow-lg">
+              <div className="relative h-24 w-24 shrink-0 rounded-2xl overflow-visible border-2 border-amber-500/50 bg-white dark:bg-slate-900 flex items-center justify-center shadow-lg group">
                 {photoPreview ? (
-                  <img src={photoPreview} alt="Avatar Preview" className="h-full w-full object-cover" />
+                  <img src={photoPreview} alt="Avatar Preview" className="h-full w-full object-cover rounded-xl transition-transform duration-300 ease-out hover:scale-[2] hover:z-50 relative cursor-pointer hover:shadow-2xl hover:ring-4 hover:ring-amber-500/20" />
                 ) : (
-                  <UserCheck className="h-10 w-10 text-slate-600" />
+                  <UserCheck className="h-12 w-12 text-slate-600" />
                 )}
                 {photoPreview && (
                   <button
                     type="button"
                     onClick={handleRemovePhoto}
-                    className="absolute top-1 right-1 h-5 w-5 rounded-full bg-slate-950/80 text-slate-300 hover:text-red-400 flex items-center justify-center"
+                    className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-red-500 text-slate-900 dark:text-white hover:bg-red-600 flex items-center justify-center shadow-md z-[60]"
                     title="Remover foto"
                   >
-                    <Trash2 className="h-3 w-3" />
+                    <Trash2 className="h-3.5 w-3.5" />
                   </button>
                 )}
               </div>
 
               {/* Controles de Seleção */}
               <div className="flex-1 space-y-3 w-full">
-                <div className="flex bg-slate-800 p-1 rounded-xl border border-slate-700 text-xs w-fit">
+                <div className="flex bg-slate-50 dark:bg-slate-800 p-1 rounded-xl border border-slate-300 dark:border-slate-700 text-xs w-fit">
                   <button
                     type="button"
                     onClick={() => setPhotoSourceMode('avatar')}
-                    className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
+                    className={`px-3 py-1.5 rounded-lg font-medium transition-all duration-200 ${
                       photoSourceMode === 'avatar'
-                        ? 'bg-emerald-500 text-slate-950 font-bold shadow'
+                        ? 'bg-amber-500 text-slate-950 font-bold shadow'
                         : 'text-slate-400 hover:text-white'
                     }`}
                   >
@@ -163,9 +161,9 @@ export function ProfessionalForm({
                   <button
                     type="button"
                     onClick={() => setPhotoSourceMode('upload')}
-                    className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
+                    className={`px-3 py-1.5 rounded-lg font-medium transition-all duration-200 ${
                       photoSourceMode === 'upload'
-                        ? 'bg-emerald-500 text-slate-950 font-bold shadow'
+                        ? 'bg-amber-500 text-slate-950 font-bold shadow'
                         : 'text-slate-400 hover:text-white'
                     }`}
                   >
@@ -175,7 +173,7 @@ export function ProfessionalForm({
 
                 {photoSourceMode === 'avatar' ? (
                   <div className="space-y-1">
-                    <span className="text-[11px] text-slate-400 block">Clique para escolher um avatar ilustrado:</span>
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 block">Clique para escolher um avatar 3D Premium:</span>
                     <div className="flex flex-wrap gap-2">
                       {PRESET_AVATARS.map((av) => {
                         const isSelected = photoUrl === av.url;
@@ -184,10 +182,10 @@ export function ProfessionalForm({
                             key={av.id}
                             type="button"
                             onClick={() => handleSelectPresetAvatar(av.url)}
-                            className={`h-10 w-10 rounded-xl overflow-hidden border-2 transition-all p-0.5 bg-slate-800 ${
+                            className={`h-14 w-14 rounded-xl border-2 transition-all duration-300 p-0.5 bg-slate-50 dark:bg-slate-800 relative z-10 hover:scale-[2.5] hover:z-50 hover:shadow-2xl ${
                               isSelected
-                                ? 'border-emerald-400 scale-110 shadow-md ring-2 ring-emerald-500/30'
-                                : 'border-slate-700 hover:border-slate-500 opacity-80 hover:opacity-100'
+                                ? 'border-amber-400 scale-[1.15] shadow-md ring-2 ring-amber-500/30'
+                                : 'border-slate-700 hover:border-amber-500/50 opacity-80 hover:opacity-100 shadow-sm'
                             }`}
                             title={av.name}
                           >
@@ -204,7 +202,7 @@ export function ProfessionalForm({
                       variant="outline"
                       size="sm"
                       onClick={() => fileInputRef.current?.click()}
-                      className="border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs"
+                      className="border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-200 text-xs"
                     >
                       <ImagePlus className="h-4 w-4 mr-1.5" /> Selecionar Foto do Computador (PNG, JPG)
                     </Button>
@@ -215,45 +213,45 @@ export function ProfessionalForm({
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-300">
-              Nome do Profissional <span className="text-emerald-400">*</span>
+            <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+              Nome do Profissional <span className="text-amber-400">*</span>
             </label>
             <div className="relative">
-              <UserCheck className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+              <UserCheck className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
               <Input
                 name="name"
-                defaultValue={professional?.name || ''}
-                placeholder="Ex: Carlos Oliveira"
                 required
-                className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-emerald-500"
+                defaultValue={professional?.name || ''}
+                placeholder="Nome do Profissional"
+                className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">Telefone / WhatsApp</label>
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Telefone / WhatsApp</label>
               <div className="relative">
-                <Phone className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <Phone className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
                 <Input
                   name="phone"
                   defaultValue={professional?.phone || ''}
-                  placeholder="(75) 99999-0000"
-                  className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-emerald-500"
+                  placeholder="(00) 00000-0000"
+                  className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">E-mail</label>
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">E-mail (Opcional)</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
                 <Input
                   name="email"
                   type="email"
                   defaultValue={professional?.email || ''}
                   placeholder="profissional@email.com"
-                  className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-emerald-500"
+                  className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
                 />
               </div>
             </div>
@@ -261,12 +259,12 @@ export function ProfessionalForm({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">Tipo de Comissão</label>
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Tipo de Comissão</label>
               <select
                 name="commission_type"
                 value={commissionType}
                 onChange={(e) => setCommissionType(e.target.value)}
-                className="w-full h-11 px-3 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm focus-visible:ring-2 focus-visible:ring-emerald-500"
+                className="w-full h-11 px-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus-visible:ring-2 focus-visible:ring-amber-500"
               >
                 <option value="none">Sem Comissão</option>
                 <option value="percentage">Porcentagem (%)</option>
@@ -276,7 +274,7 @@ export function ProfessionalForm({
 
             {commissionType !== 'none' && (
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-300">
+                <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
                   {commissionType === 'percentage' ? 'Porcentagem (%)' : 'Valor Fixo (R$)'}
                 </label>
                 <Input
@@ -286,15 +284,15 @@ export function ProfessionalForm({
                   min="0"
                   defaultValue={professional?.commission_value || 0}
                   placeholder="Ex: 30"
-                  className="bg-slate-800 border-slate-700 text-white focus-visible:ring-emerald-500"
+                  className="bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white focus-visible:ring-amber-500"
                 />
               </div>
             )}
           </div>
 
           {/* Seleção de Serviços Prestados */}
-          <div className="space-y-2 pt-2 border-t border-slate-800">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+          <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
               Serviços Prestados por este Profissional
             </label>
             {services.length === 0 ? (
@@ -310,20 +308,20 @@ export function ProfessionalForm({
                       key={service.id}
                       type="button"
                       onClick={() => toggleService(service.id)}
-                      className={`flex items-center justify-between p-3 rounded-xl border text-left text-xs transition-all ${
+                      className={`flex items-center justify-between p-3 rounded-xl border text-left text-xs transition-all duration-200 ${
                         isChecked
-                          ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-300 font-medium'
+                          ? 'bg-amber-500/10 border-amber-500/50 text-amber-500 font-medium hover:bg-amber-500/20'
                           : 'bg-slate-800/60 border-slate-700/60 text-slate-300 hover:bg-slate-800'
                       }`}
                     >
                       <div>
                         <p className="font-semibold">{service.name}</p>
-                        <p className="text-[11px] text-slate-400">R$ {service.price}</p>
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400">R$ {service.price}</p>
                       </div>
                       <div
-                        className={`h-5 w-5 rounded-md flex items-center justify-center border transition-all ${
+                        className={`h-5 w-5 rounded-md flex items-center justify-center border transition-all duration-200 ${
                           isChecked
-                            ? 'bg-emerald-500 border-emerald-400 text-slate-950'
+                            ? 'bg-amber-500 border-amber-400 text-slate-950'
                             : 'border-slate-600 bg-slate-900'
                         }`}
                       >
@@ -336,16 +334,17 @@ export function ProfessionalForm({
             )}
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
             <Link href="/cadastros/profissionais">
-              <Button type="button" variant="secondary" className="bg-slate-800 hover:bg-slate-700 text-slate-300">
+              <Button type="button" variant="secondary" className="bg-slate-50 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300">
                 Cancelar
               </Button>
             </Link>
             <Button
               type="submit"
               disabled={loading}
-              className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold px-6 shadow-lg"
+              variant="default"
+              className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold px-6 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
             >
               {loading ? (
                 <span className="flex items-center gap-2">

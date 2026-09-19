@@ -54,10 +54,10 @@ export function PackageSettingsClient({
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
       <div>
-        <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
           <PackageCheck className="h-6 w-6 text-amber-400" /> Configurações de Pacotes e Planos
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
           Defina as regras financeiras, alertas de expiração e permissões de utilização para pacotes no seu estabelecimento.
         </p>
       </div>
@@ -76,20 +76,20 @@ export function PackageSettingsClient({
         )}
 
         {/* Card 1: Regras Financeiras */}
-        <Card className="bg-slate-900 border-slate-800 text-white shadow-xl">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xl">
           <CardHeader>
-            <CardTitle className="text-base font-bold text-white flex items-center gap-2">
+            <CardTitle className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <DollarSign className="h-5 w-5 text-amber-400" /> Regras Financeiras e Liberação
             </CardTitle>
-            <CardDescription className="text-slate-400 text-xs">
+            <CardDescription className="text-slate-500 dark:text-slate-400 text-xs">
               Controle a liberação de saldos e créditos para clientes com pagamentos parciais ou pendentes.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-between gap-4">
+            <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4">
               <div>
-                <p className="font-semibold text-sm text-white">Permitir uso de pacote com saldo financeiro pendente</p>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="font-semibold text-sm text-slate-900 dark:text-white">Permitir uso de pacote com saldo financeiro pendente</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                   Se ativado, clientes com pacotes pagos parcialmente continuam autorizados a abater saldos nos atendimentos. Se desativado, somente contratos totalmente pagos poderão ser consumidos.
                 </p>
               </div>
@@ -97,14 +97,14 @@ export function PackageSettingsClient({
                 type="checkbox"
                 checked={allowPending}
                 onChange={(e) => setAllowPending(e.target.checked)}
-                className="h-5 w-5 rounded border-slate-800 bg-slate-900 text-amber-500 focus:ring-amber-500 cursor-pointer shrink-0"
+                className="h-5 w-5 rounded border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-amber-500 focus:ring-amber-500 cursor-pointer shrink-0"
               />
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-between gap-4">
+            <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4">
               <div>
-                <p className="font-semibold text-sm text-white">Exigir quitação integral na venda do pacote</p>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="font-semibold text-sm text-slate-900 dark:text-white">Exigir quitação integral na venda do pacote</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                   Exige pagamento de 100% do valor total do pacote antes de liberar o primeiro agendamento.
                 </p>
               </div>
@@ -112,27 +112,27 @@ export function PackageSettingsClient({
                 type="checkbox"
                 checked={requireFullPayment}
                 onChange={(e) => setRequireFullPayment(e.target.checked)}
-                className="h-5 w-5 rounded border-slate-800 bg-slate-900 text-amber-500 focus:ring-amber-500 cursor-pointer shrink-0"
+                className="h-5 w-5 rounded border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-amber-500 focus:ring-amber-500 cursor-pointer shrink-0"
               />
             </div>
           </CardContent>
         </Card>
 
         {/* Card 2: Alertas e Validade */}
-        <Card className="bg-slate-900 border-slate-800 text-white shadow-xl">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xl">
           <CardHeader>
-            <CardTitle className="text-base font-bold text-white flex items-center gap-2">
+            <CardTitle className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <BellRing className="h-5 w-5 text-emerald-400" /> Alertas de Expiração e Vencimento
             </CardTitle>
-            <CardDescription className="text-slate-400 text-xs">
+            <CardDescription className="text-slate-500 dark:text-slate-400 text-xs">
               Mantenha os clientes informados para renovação antes do término do prazo.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-between gap-4">
+            <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4">
               <div>
-                <p className="font-semibold text-sm text-white">Notificar cliente sobre vencimento próximo</p>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="font-semibold text-sm text-slate-900 dark:text-white">Notificar cliente sobre vencimento próximo</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                   Dispara aviso automático via WhatsApp / E-mail lembrando da expiração dos créditos ou renovação do plano.
                 </p>
               </div>
@@ -140,15 +140,15 @@ export function PackageSettingsClient({
                 type="checkbox"
                 checked={autoNotifyExpiration}
                 onChange={(e) => setAutoNotifyExpiration(e.target.checked)}
-                className="h-5 w-5 rounded border-slate-800 bg-slate-900 text-emerald-500 focus:ring-emerald-500 cursor-pointer shrink-0"
+                className="h-5 w-5 rounded border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-emerald-500 focus:ring-emerald-500 cursor-pointer shrink-0"
               />
             </div>
 
             {autoNotifyExpiration && (
-              <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <p className="font-semibold text-sm text-white">Aviso prévio de expiração (dias)</p>
-                  <p className="text-xs text-slate-400 mt-0.5">
+                  <p className="font-semibold text-sm text-slate-900 dark:text-white">Aviso prévio de expiração (dias)</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                     Com quantos dias de antecedência o cliente deve ser alertado antes do pacote expirar.
                   </p>
                 </div>
@@ -158,7 +158,7 @@ export function PackageSettingsClient({
                   max="60"
                   value={expirationWarningDays}
                   onChange={(e) => setExpirationWarningDays(Number(e.target.value))}
-                  className="w-24 h-10 px-3 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm text-center font-bold focus:ring-2 focus:ring-emerald-500"
+                  className="w-24 h-10 px-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm text-center font-bold focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
             )}
@@ -166,20 +166,20 @@ export function PackageSettingsClient({
         </Card>
 
         {/* Card 3: Utilização e Dependente */}
-        <Card className="bg-slate-900 border-slate-800 text-white shadow-xl">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xl">
           <CardHeader>
-            <CardTitle className="text-base font-bold text-white flex items-center gap-2">
+            <CardTitle className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Users className="h-5 w-5 text-indigo-400" /> Compartilhamento e Uso Familiar
             </CardTitle>
-            <CardDescription className="text-slate-400 text-xs">
+            <CardDescription className="text-slate-500 dark:text-slate-400 text-xs">
               Defina se os créditos de um pacote podem ser compartilhados entre diferentes pessoas.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-between gap-4">
+            <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4">
               <div>
-                <p className="font-semibold text-sm text-white">Permitir uso do pacote por dependentes/familiares</p>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="font-semibold text-sm text-slate-900 dark:text-white">Permitir uso do pacote por dependentes/familiares</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                   Permite abater sessões do pacote do titular em atendimentos vinculados a familiares ou dependentes autorizados.
                 </p>
               </div>
@@ -187,7 +187,7 @@ export function PackageSettingsClient({
                 type="checkbox"
                 checked={allowShareFamily}
                 onChange={(e) => setAllowShareFamily(e.target.checked)}
-                className="h-5 w-5 rounded border-slate-800 bg-slate-900 text-indigo-500 focus:ring-indigo-500 cursor-pointer shrink-0"
+                className="h-5 w-5 rounded border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-indigo-500 focus:ring-indigo-500 cursor-pointer shrink-0"
               />
             </div>
           </CardContent>

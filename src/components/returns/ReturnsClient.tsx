@@ -167,22 +167,22 @@ export function ReturnsClient({ initialTab, alerts, templates, orgName, inactive
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <Clock className="h-6 w-6 text-amber-400" /> Central de Retornos & Engajamento
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Acompanhe a inteligência de recorrência por serviço e acione clientes no momento exato do retorno.
           </p>
         </div>
         <Link href="/configuracoes/mensagens">
-          <Button variant="outline" size="sm" className="border-slate-700 text-slate-300">
+          <Button variant="default" className="bg-amber-500 text-slate-950 hover:bg-amber-400 font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
             <MessageSquare className="h-4 w-4 mr-1.5" /> Modelos de Mensagem
           </Button>
         </Link>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 overflow-x-auto pb-2 border-b border-slate-800 scrollbar-none">
+      <div className="flex items-center gap-1 overflow-x-auto pb-2 border-b border-slate-200 dark:border-slate-800 scrollbar-none">
         {tabs.map((tab) => (
           <Link key={tab.id} href={`/retornos?tab=${tab.id}`}>
             <button
@@ -244,15 +244,15 @@ export function ReturnsClient({ initialTab, alerts, templates, orgName, inactive
               const isOverdue = alert.status === 'overdue' || alert.days_overdue > 0;
 
               return (
-                <Card key={alert.id} className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
+                <Card key={alert.id} className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xs hover:border-slate-300 dark:hover:border-slate-300 dark:border-slate-700 transition-all">
                   <CardContent className="p-5 space-y-4">
                     {/* Header do Card */}
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <h3 className="font-bold text-base text-white hover:text-amber-400 transition-colors">
+                        <h3 className="font-bold text-base text-slate-900 dark:text-white hover:text-amber-400 transition-colors">
                           <Link href={`/clientes/${alert.client_id}`}>{alert.client?.name}</Link>
                         </h3>
-                        <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
+                        <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-0.5">
                           <Wrench className="h-3.5 w-3.5 text-purple-400" /> {alert.service?.name}
                         </p>
                       </div>
@@ -283,7 +283,7 @@ export function ReturnsClient({ initialTab, alerts, templates, orgName, inactive
                     </div>
 
                     {/* Detalhes de Frequência */}
-                    <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 grid grid-cols-2 gap-2 text-xs">
+                    <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 grid grid-cols-2 gap-2 text-xs">
                       <div>
                         <span className="text-slate-500 block">Último Serviço:</span>
                         <span className="font-semibold text-slate-200">
@@ -305,12 +305,12 @@ export function ReturnsClient({ initialTab, alerts, templates, orgName, inactive
                     </div>
 
                     {/* Ações */}
-                    <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-800">
+                    <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
                       <Button
                         type="button"
                         size="sm"
                         onClick={() => handleOpenWhatsApp(alert)}
-                        className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md"
+                        className="bg-emerald-600 hover:bg-emerald-500 text-slate-900 dark:text-white font-semibold text-xs shadow-md"
                       >
                         <Send className="h-3.5 w-3.5 mr-1" /> WhatsApp
                       </Button>
@@ -323,7 +323,7 @@ export function ReturnsClient({ initialTab, alerts, templates, orgName, inactive
                           setSelectedAlert(alert);
                           setIsSnoozeModalOpen(true);
                         }}
-                        className="border-slate-700 text-slate-300 text-xs hover:bg-slate-800"
+                        className="border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs hover:bg-slate-50 dark:bg-slate-800"
                       >
                         <Clock className="h-3.5 w-3.5 mr-1" /> Adiar
                       </Button>
@@ -333,13 +333,13 @@ export function ReturnsClient({ initialTab, alerts, templates, orgName, inactive
                         variant="ghost"
                         size="sm"
                         onClick={() => handleIgnoreAlert(alert.id)}
-                        className="text-slate-400 hover:text-red-400 text-xs"
+                        className="text-slate-500 dark:text-slate-400 hover:text-red-400 text-xs"
                       >
                         <XCircle className="h-3.5 w-3.5 mr-1" /> Ignorar
                       </Button>
 
                       <Link href={`/clientes/${alert.client_id}`} className="ml-auto">
-                        <Button variant="ghost" size="sm" className="text-xs text-slate-400 hover:text-white">
+                        <Button variant="ghost" size="sm" className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white">
                           <Eye className="h-3.5 w-3.5 mr-1" /> Ficha
                         </Button>
                       </Link>
@@ -349,7 +349,7 @@ export function ReturnsClient({ initialTab, alerts, templates, orgName, inactive
               );
             })
           ) : (
-            <div className="col-span-full py-12 text-center text-slate-400 italic">
+            <div className="col-span-full py-12 text-center text-slate-500 dark:text-slate-400 italic">
               Nenhum alerta de retorno nesta categoria.
             </div>
           )}
@@ -456,29 +456,29 @@ export function ReturnsClient({ initialTab, alerts, templates, orgName, inactive
 
               {snoozeDaysOption === 'custom' && (
                 <div>
-                  <label className="text-xs font-medium text-slate-400 mb-1 block">Data de Reaparecimento</label>
+                  <label className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 block">Data de Reaparecimento</label>
                   <Input
                     type="date"
                     value={customSnoozeDate}
                     onChange={(e) => setCustomSnoozeDate(e.target.value)}
-                    className="bg-slate-950 border-slate-800 text-xs text-white"
+                    className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white"
                   />
                 </div>
               )}
 
               <div>
-                <label className="text-xs font-medium text-slate-400 mb-1 block">Motivo do Adiamento (opcional)</label>
+                <label className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 block">Motivo do Adiamento (opcional)</label>
                 <Input
                   value={snoozeReason}
                   onChange={(e) => setSnoozeReason(e.target.value)}
                   placeholder="Ex: cliente em viagem"
-                  className="bg-slate-950 border-slate-800 text-xs text-white"
+                  className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white"
                 />
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-4 border-t border-slate-800">
-              <Button variant="ghost" onClick={() => setIsSnoozeModalOpen(false)} className="text-slate-400 text-xs">
+            <div className="flex justify-end gap-2 pt-4 border-t border-slate-200 dark:border-slate-800">
+              <Button variant="ghost" onClick={() => setIsSnoozeModalOpen(false)} className="text-slate-500 dark:text-slate-400 text-xs">
                 Cancelar
               </Button>
               <Button onClick={handleSaveSnooze} disabled={loading} className="bg-amber-500 text-slate-950 hover:bg-amber-400 font-semibold text-xs">

@@ -65,7 +65,7 @@ export default function SplashScreen({
 
   return (
     <div
-      className={`fixed inset-0 z-[100] bg-slate-950 flex flex-col items-center justify-center p-6 transition-opacity duration-500 ${
+      className={`fixed inset-0 z-[100] bg-slate-100 dark:bg-slate-950 flex flex-col items-center justify-center p-6 transition-opacity duration-500 ${
         fadingOut ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
@@ -96,11 +96,11 @@ export default function SplashScreen({
       ) : (
         /* FALLBACK: ANIMAÇÃO DA LOGO E TESOURA / CABELLOS */
         <div className="flex flex-col items-center justify-center space-y-6 text-center animate-in zoom-in-95 duration-700">
-          <div className="p-5 bg-purple-600/90 text-white rounded-3xl shadow-2xl shadow-purple-900/50 animate-bounce">
+          <div className="p-5 bg-purple-600/90 text-slate-900 dark:text-white rounded-3xl shadow-2xl shadow-purple-900/50 animate-bounce">
             <Crown className="h-16 w-16" />
           </div>
           <div className="space-y-2">
-            <h1 className="text-4xl font-extrabold tracking-tight text-white">Cabellos</h1>
+            <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Cabellos</h1>
             <p className="text-sm font-medium text-purple-300 tracking-wide uppercase">
               Gestão para Barbearias e Salões
             </p>

@@ -85,11 +85,11 @@ export function RolePreviewSelector({
         {!hasOrgMembership ? (
           <div
             title="Selecione uma organização na qual você possua acesso operacional para pré-visualizar os papéis do salão."
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800/40 text-slate-400 text-xs cursor-not-allowed opacity-75"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800/40 text-slate-500 dark:text-slate-400 text-xs cursor-not-allowed opacity-75"
           >
             <Eye className="h-3.5 w-3.5" />
             <span className="font-medium hidden sm:inline">Simulador de Papéis</span>
-            <Info className="h-3.5 w-3.5 text-slate-400" />
+            <Info className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
           </div>
         ) : (
           <button

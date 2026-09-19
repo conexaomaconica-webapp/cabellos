@@ -125,7 +125,7 @@ export default async function ExecutiveReportPage({ searchParams }: PageProps) {
             <h4 className="font-bold text-slate-900 dark:text-white text-sm group-hover:text-amber-600 dark:group-hover:text-amber-400">Análise de Clientes & Retenção</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400">Recorrência, novos clientes e alertas inativos.</p>
           </div>
-          <ArrowRight className="h-5 w-5 text-slate-400 dark:text-slate-500 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-all" />
+          <ArrowRight className="h-5 w-5 text-slate-500 dark:text-slate-400 dark:text-slate-500 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-all" />
         </Link>
 
         <Link
@@ -136,7 +136,7 @@ export default async function ExecutiveReportPage({ searchParams }: PageProps) {
             <h4 className="font-bold text-slate-900 dark:text-white text-sm group-hover:text-amber-600 dark:group-hover:text-amber-400">Ranking de Serviços</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400">Serviços mais produzidos e categorias.</p>
           </div>
-          <ArrowRight className="h-5 w-5 text-slate-400 dark:text-slate-500 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-all" />
+          <ArrowRight className="h-5 w-5 text-slate-500 dark:text-slate-400 dark:text-slate-500 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-all" />
         </Link>
 
         <Link
@@ -147,7 +147,7 @@ export default async function ExecutiveReportPage({ searchParams }: PageProps) {
             <h4 className="font-bold text-slate-900 dark:text-white text-sm group-hover:text-amber-600 dark:group-hover:text-amber-400">Produção de Profissionais</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400">Desempenho por profissional e comissões.</p>
           </div>
-          <ArrowRight className="h-5 w-5 text-slate-400 dark:text-slate-500 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-all" />
+          <ArrowRight className="h-5 w-5 text-slate-500 dark:text-slate-400 dark:text-slate-500 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-all" />
         </Link>
       </div>
     </div>

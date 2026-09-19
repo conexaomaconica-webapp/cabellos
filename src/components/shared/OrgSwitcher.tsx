@@ -43,7 +43,7 @@ export function OrgSwitcher({ organizations, activeOrgId }: OrgSwitcherProps) {
             />
           ) : (
             <div
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-white font-bold text-xs shadow-xs"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-900 dark:text-white font-bold text-xs shadow-xs"
               style={{ backgroundColor: activeOrg.primary_color || '#0f172a' }}
             >
               {activeOrg.name.substring(0, 2).toUpperCase()}
@@ -54,12 +54,12 @@ export function OrgSwitcher({ organizations, activeOrgId }: OrgSwitcherProps) {
             <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate mt-0.5">{activeOrg.name}</p>
           </div>
         </div>
-        <ChevronDown className="h-4 w-4 text-slate-400 shrink-0" />
+        <ChevronDown className="h-4 w-4 text-slate-500 dark:text-slate-400 shrink-0" />
       </Button>
 
       {isOpen && (
         <div className="absolute left-0 right-0 mt-2 z-50 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-1.5 animate-in fade-in-50 zoom-in-95">
-          <p className="px-2.5 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+          <p className="px-2.5 py-1 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
             Seus Estabelecimentos
           </p>
           <div className="space-y-0.5 max-h-48 overflow-y-auto">
@@ -87,7 +87,7 @@ export function OrgSwitcher({ organizations, activeOrgId }: OrgSwitcherProps) {
                       />
                     ) : (
                       <div
-                        className="h-5 w-5 rounded shrink-0 flex items-center justify-center text-[10px] text-white font-bold"
+                        className="h-5 w-5 rounded shrink-0 flex items-center justify-center text-[10px] text-slate-900 dark:text-white font-bold"
                         style={{ backgroundColor: org.primary_color || '#0f172a' }}
                       >
                         {org.name.substring(0, 1).toUpperCase()}

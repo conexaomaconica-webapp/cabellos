@@ -93,11 +93,11 @@ export function ClientForm({ client, professionals, services }: ClientFormProps)
   }
 
   return (
-    <Card className="bg-slate-900 border-slate-800 text-slate-100 shadow-xl">
+    <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-100 shadow-xl">
       <CardContent className="p-6">
         {!client && typeof window !== 'undefined' && 'contacts' in navigator && 'ContactsManager' in window && (
           <div className="mb-6 flex items-center justify-between p-3 rounded-xl bg-slate-950/80 border border-emerald-500/30">
-            <div className="flex items-center gap-2 text-xs text-slate-300">
+            <div className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300">
               <Smartphone className="h-4 w-4 text-emerald-400" />
               <span>Preencher com contato da agenda do celular?</span>
             </div>
@@ -128,49 +128,49 @@ export function ClientForm({ client, professionals, services }: ClientFormProps)
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-300">
+            <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
               Nome do Cliente <span className="text-amber-400">*</span>
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+              <User className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
               <Input
                 name="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Ex: João da Silva"
                 required
-                className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
+                className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">WhatsApp</label>
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">WhatsApp</label>
               <div className="relative">
-                <MessageSquare className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <MessageSquare className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
                 <Input
                   name="whatsapp"
                   value={whatsapp}
                   onChange={(e) => setWhatsapp(e.target.value)}
                   onBlur={handleCheckDuplicate}
                   placeholder="(75) 99999-9999"
-                  className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
+                  className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">Telefone Secundário</label>
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Telefone Secundário</label>
               <div className="relative">
-                <Phone className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <Phone className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
                 <Input
                   name="phone"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   onBlur={handleCheckDuplicate}
                   placeholder="(75) 3333-2222"
-                  className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
+                  className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
                 />
               </div>
             </div>
@@ -178,29 +178,29 @@ export function ClientForm({ client, professionals, services }: ClientFormProps)
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">E-mail</label>
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">E-mail</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
                 <Input
                   name="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="cliente@email.com"
-                  className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
+                  className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">Data de Nascimento</label>
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Data de Nascimento</label>
               <div className="relative">
-                <Calendar className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <Calendar className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
                 <Input
                   name="birth_date"
                   type="date"
                   defaultValue={client?.birth_date || ''}
-                  className="pl-9 bg-slate-800 border-slate-700 text-white focus-visible:ring-amber-500"
+                  className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white focus-visible:ring-amber-500"
                 />
               </div>
             </div>
@@ -208,11 +208,11 @@ export function ClientForm({ client, professionals, services }: ClientFormProps)
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">Profissional Preferido</label>
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Profissional Preferido</label>
               <select
                 name="preferred_professional_id"
                 defaultValue={client?.preferred_professional_id || ''}
-                className="w-full h-11 px-3 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm focus-visible:ring-2 focus-visible:ring-amber-500"
+                className="w-full h-11 px-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus-visible:ring-2 focus-visible:ring-amber-500"
               >
                 <option value="">Nenhum preferido</option>
                 {professionals.map((p) => (
@@ -224,11 +224,11 @@ export function ClientForm({ client, professionals, services }: ClientFormProps)
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">Serviço Habitual</label>
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Serviço Habitual</label>
               <select
                 name="preferred_service_id"
                 defaultValue={client?.preferred_service_id || ''}
-                className="w-full h-11 px-3 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm focus-visible:ring-2 focus-visible:ring-amber-500"
+                className="w-full h-11 px-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus-visible:ring-2 focus-visible:ring-amber-500"
               >
                 <option value="">Nenhum preferido</option>
                 {services.map((s) => (
@@ -241,7 +241,7 @@ export function ClientForm({ client, professionals, services }: ClientFormProps)
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-300 flex items-center justify-between">
+            <label className="text-xs font-medium text-slate-700 dark:text-slate-300 flex items-center justify-between">
               <span>Frequência Manual de Retorno (Dias)</span>
               <span className="text-amber-400 font-mono text-xs">Prioritário no cálculo</span>
             </label>
@@ -252,31 +252,31 @@ export function ClientForm({ client, professionals, services }: ClientFormProps)
               max="365"
               defaultValue={client?.custom_return_interval_days || ''}
               placeholder="Ex: 15 (dias)"
-              className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
+              className="bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-300">Observações Internas</label>
+            <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Observações Internas</label>
             <textarea
               name="notes"
               rows={3}
               defaultValue={client?.notes || ''}
               placeholder="Preferências de horário, sensibilidade a produtos, estilo..."
-              className="w-full rounded-lg bg-slate-800 border border-slate-700 p-3 text-sm text-white placeholder:text-slate-500 focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none"
+              className="w-full rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 p-3 text-sm text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none"
             />
           </div>
 
-          <div className="flex items-center justify-between pt-4 border-t border-slate-800">
+          <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
             <div className="flex items-center gap-2">
               <input
                 type="checkbox"
                 id="allow_whatsapp"
                 name="allow_whatsapp"
                 defaultChecked={client ? client.allow_whatsapp : true}
-                className="h-4 w-4 rounded border-slate-700 bg-slate-800 text-amber-500 focus:ring-amber-500"
+                className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-amber-500 focus:ring-amber-500"
               />
-              <label htmlFor="allow_whatsapp" className="text-xs text-slate-300">
+              <label htmlFor="allow_whatsapp" className="text-xs text-slate-700 dark:text-slate-300">
                 Permitir contato de retorno via WhatsApp
               </label>
             </div>
@@ -303,7 +303,7 @@ export function ClientForm({ client, professionals, services }: ClientFormProps)
 
           <div className="flex items-center justify-end gap-3 pt-4">
             <Link href="/clientes">
-              <Button type="button" variant="secondary" className="bg-slate-800 hover:bg-slate-700 text-slate-300">
+              <Button type="button" variant="secondary" className="bg-slate-50 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300">
                 Cancelar
               </Button>
             </Link>

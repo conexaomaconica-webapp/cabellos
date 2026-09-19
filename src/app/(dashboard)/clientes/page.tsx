@@ -43,10 +43,10 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
       {/* Top Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <Users className="h-6 w-6 text-amber-400" /> Clientes
           </h1>
-          <p className="text-xs md:text-sm text-slate-400 mt-1">
+          <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 mt-1">
             Gerencie a base de clientes do seu estabelecimento
           </p>
         </div>
@@ -61,27 +61,27 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
       </div>
 
       {/* Search and Filters Bar */}
-      <Card className="bg-slate-900 border-slate-800 p-4">
+      <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 p-4">
         <form method="GET" className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+            <Search className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
             <Input
               name="q"
               defaultValue={q || ''}
               placeholder="Buscar por nome, telefone ou WhatsApp..."
-              className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
+              className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
             />
           </div>
           <div className="flex gap-2">
             <select
               name="status"
               defaultValue={status || 'active'}
-              className="h-11 px-3 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="h-11 px-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500"
             >
               <option value="active">Clientes Ativos</option>
               <option value="inactive">Inativos / Arquivados</option>
             </select>
-            <Button type="submit" variant="secondary" className="bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700">
+            <Button type="submit" variant="secondary" className="bg-slate-50 dark:bg-slate-800 text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700">
               Filtrar
             </Button>
           </div>
@@ -106,12 +106,12 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
           {clients.map((client) => (
             <Card
               key={client.id}
-              className="bg-slate-900 border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between shadow-lg"
+              className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-300 dark:border-slate-700 transition-all flex flex-col justify-between shadow-lg"
             >
               <CardContent className="p-5 space-y-4">
                 <div className="flex items-start justify-between gap-2">
                   <div className="space-y-1">
-                    <h3 className="font-bold text-base text-white truncate max-w-[200px]">
+                    <h3 className="font-bold text-base text-slate-900 dark:text-white truncate max-w-[200px]">
                       {client.name}
                     </h3>
                     <div className="flex items-center gap-2 flex-wrap">
@@ -127,16 +127,16 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
                   </div>
 
                   <Link href={`/clientes/${client.id}`}>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-white hover:bg-slate-800">
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white hover:bg-slate-50 dark:bg-slate-800">
                       <Edit3 className="h-4 w-4" />
                     </Button>
                   </Link>
                 </div>
 
-                <div className="space-y-2 text-xs text-slate-300 bg-slate-950/50 p-3 rounded-xl border border-slate-800/80">
+                <div className="space-y-2 text-xs text-slate-700 dark:text-slate-300 bg-slate-950/50 p-3 rounded-xl border border-slate-200 dark:border-slate-800/80">
                   {client.whatsapp && (
                     <div className="flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 text-slate-400">
+                      <span className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
                         <MessageSquare className="h-3.5 w-3.5 text-emerald-400" /> WhatsApp
                       </span>
                       <span className="font-mono text-slate-200 font-medium">
@@ -147,7 +147,7 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
 
                   {client.phone && !client.whatsapp && (
                     <div className="flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 text-slate-400">
+                      <span className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
                         <Phone className="h-3.5 w-3.5 text-blue-400" /> Telefone
                       </span>
                       <span className="font-mono text-slate-200 font-medium">
@@ -157,8 +157,8 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
                   )}
 
                   {client.preferred_professional && (
-                    <div className="flex items-center justify-between pt-1 border-t border-slate-800/60">
-                      <span className="flex items-center gap-1.5 text-slate-400">
+                    <div className="flex items-center justify-between pt-1 border-t border-slate-200 dark:border-slate-800/60">
+                      <span className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
                         <UserCheck className="h-3.5 w-3.5 text-amber-400" /> Profissional
                       </span>
                       <span className="text-slate-200 font-medium truncate max-w-[120px]">
@@ -167,8 +167,8 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between pt-1 border-t border-slate-800/60">
-                    <span className="text-slate-400">Total Gasto</span>
+                  <div className="flex items-center justify-between pt-1 border-t border-slate-200 dark:border-slate-800/60">
+                    <span className="text-slate-500 dark:text-slate-400">Total Gasto</span>
                     <span className="text-amber-400 font-bold">
                       {formatCurrency(client.total_spent)}
                     </span>
@@ -176,7 +176,7 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
                 </div>
 
                 {client.notes && (
-                  <p className="text-xs text-slate-400 italic line-clamp-2">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 italic line-clamp-2">
                     &quot;{client.notes}&quot;
                   </p>
                 )}

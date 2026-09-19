@@ -103,8 +103,8 @@ export default async function EditClientPage({ params }: EditClientPageProps) {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white tracking-tight">Ficha do Cliente</h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Ficha do Cliente</h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
           Edite os dados cadastrais, pacotes e planos vigentes, frequências e histórico de atendimentos de {client.name}
         </p>
       </div>
@@ -124,12 +124,12 @@ export default async function EditClientPage({ params }: EditClientPageProps) {
       <ClientServiceFrequencies clientId={id} frequencies={frequencies} contacts={contacts} />
 
       {/* SEÇÃO HISTÓRICO DE ATENDIMENTOS */}
-      <Card className="bg-slate-900 border-slate-800 text-white shadow-xl">
-        <CardHeader className="border-b border-slate-800 flex flex-row items-center justify-between">
-          <CardTitle className="text-lg font-bold text-white flex items-center gap-2">
+      <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xl">
+        <CardHeader className="border-b border-slate-200 dark:border-slate-800 flex flex-row items-center justify-between">
+          <CardTitle className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <History className="h-5 w-5 text-amber-400" /> Histórico de Atendimentos
           </CardTitle>
-          <Badge variant="outline" className="border-slate-700 text-slate-300">
+          <Badge variant="outline" className="border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300">
             {appointments.length} Atendimento(s)
           </Badge>
         </CardHeader>
@@ -150,11 +150,11 @@ export default async function EditClientPage({ params }: EditClientPageProps) {
                 return (
                   <div
                     key={app.id}
-                    className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-slate-700 transition-all"
+                    className="p-4 rounded-xl bg-slate-950/60 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-slate-300 dark:hover:border-slate-300 dark:border-slate-700 transition-all"
                   >
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-slate-400 font-mono">
+                        <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                           {formatDate(app.finished_at || app.created_at)}
                         </span>
                         <Badge
@@ -173,20 +173,20 @@ export default async function EditClientPage({ params }: EditClientPageProps) {
                             : app.status}
                         </Badge>
                       </div>
-                      <p className="font-bold text-sm text-white">{servicesText}</p>
-                      <p className="text-xs text-slate-400 flex items-center gap-2">
+                      <p className="font-bold text-sm text-slate-900 dark:text-white">{servicesText}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2">
                         <span>Profissional: {app.professional?.name || 'Vários'}</span>
                         <span>•</span>
                         <span>Pagamento: {paymentsText}</span>
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-800">
+                    <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-200 dark:border-slate-800">
                       <span className="text-base font-extrabold text-amber-400">
                         {formatCurrency(app.total)}
                       </span>
                       <Link href={`/atendimentos/${app.id}`}>
-                        <Badge variant="outline" className="border-slate-700 text-slate-300 hover:bg-slate-800">
+                        <Badge variant="outline" className="border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:bg-slate-800">
                           Detalhes
                         </Badge>
                       </Link>

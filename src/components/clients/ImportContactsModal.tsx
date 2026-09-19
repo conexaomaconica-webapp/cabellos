@@ -255,7 +255,7 @@ export function ImportContactsModal() {
         type="button"
         variant="outline"
         onClick={() => setIsOpen(true)}
-        className="border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium gap-1.5 shadow"
+        className="border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-200 text-xs font-medium gap-1.5 shadow"
       >
         <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
         Importar Contatos / Excel
@@ -271,17 +271,17 @@ export function ImportContactsModal() {
 
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <Card className="bg-slate-900 border-slate-800 text-slate-100 max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl">
+          <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-100 max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl">
             {/* Modal Header */}
-            <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+            <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <FileSpreadsheet className="w-5 h-5 text-emerald-400" />
-                <h3 className="font-bold text-base text-white">Importar Clientes (Agenda / Excel)</h3>
+                <h3 className="font-bold text-base text-slate-900 dark:text-white">Importar Clientes (Agenda / Excel)</h3>
               </div>
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg"
+                className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white p-1 rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -305,7 +305,7 @@ export function ImportContactsModal() {
 
               {contacts.length === 0 ? (
                 <div className="space-y-4 py-2 text-center">
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     Selecione como deseja carregar os dados dos seus clientes:
                   </p>
 
@@ -325,7 +325,7 @@ export function ImportContactsModal() {
                           Desktop / PC
                         </span>
                       </div>
-                      <p className="text-xs text-slate-300">
+                      <p className="text-xs text-slate-700 dark:text-slate-300">
                         Carregue planilhas do Excel ou CSV com colunas de Nome, WhatsApp, Telefone e E-mail.
                       </p>
                     </button>
@@ -345,14 +345,14 @@ export function ImportContactsModal() {
                           Mobile
                         </span>
                       </div>
-                      <p className="text-xs text-slate-300">
+                      <p className="text-xs text-slate-700 dark:text-slate-300">
                         Abre a agenda nativa do smartphone para escolher múltiplos contatos de uma só vez.
                       </p>
                     </button>
 
                     {/* Botão Baixar Modelo */}
-                    <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between">
-                      <span className="text-[11px] text-slate-400">Não tem a planilha no formato?</span>
+                    <div className="pt-2 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between">
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400">Não tem a planilha no formato?</span>
                       <Button
                         type="button"
                         variant="ghost"
@@ -367,7 +367,7 @@ export function ImportContactsModal() {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-800">
+                  <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-200 dark:border-slate-800">
                     <button
                       type="button"
                       onClick={toggleSelectAll}
@@ -376,7 +376,7 @@ export function ImportContactsModal() {
                       {contacts.every((c) => c.selected) ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
                       Selecionar Todos ({contacts.length})
                     </button>
-                    <span className="text-slate-400">
+                    <span className="text-slate-500 dark:text-slate-400">
                       {contacts.filter((c) => c.selected).length} selecionado(s)
                     </span>
                   </div>
@@ -394,7 +394,7 @@ export function ImportContactsModal() {
                       >
                         <div className="truncate">
                           <p className="font-semibold text-slate-200">{c.name}</p>
-                          {(c.phone || c.whatsapp) && <p className="text-[11px] text-slate-400">{c.whatsapp || c.phone}</p>}
+                          {(c.phone || c.whatsapp) && <p className="text-[11px] text-slate-500 dark:text-slate-400">{c.whatsapp || c.phone}</p>}
                         </div>
                         {c.selected ? <CheckSquare className="w-4 h-4 text-amber-400 shrink-0 ml-2" /> : <Square className="w-4 h-4 shrink-0 ml-2" />}
                       </div>
@@ -405,7 +405,7 @@ export function ImportContactsModal() {
             </div>
 
             {/* Modal Footer */}
-            <div className="p-4 border-t border-slate-800 flex items-center justify-between gap-3">
+            <div className="p-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
               {contacts.length > 0 ? (
                 <>
                   <Button
@@ -413,7 +413,7 @@ export function ImportContactsModal() {
                     variant="ghost"
                     size="sm"
                     onClick={() => setContacts([])}
-                    className="text-slate-400 hover:text-white"
+                    className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white"
                   >
                     Voltar
                   </Button>
@@ -433,7 +433,7 @@ export function ImportContactsModal() {
                   variant="secondary"
                   size="sm"
                   onClick={() => setIsOpen(false)}
-                  className="w-full bg-slate-800 text-slate-300 hover:bg-slate-700"
+                  className="w-full bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
                 >
                   Fechar
                 </Button>

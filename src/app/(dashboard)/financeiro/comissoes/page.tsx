@@ -45,19 +45,19 @@ export default async function CommissionsPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-5 border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-5 border-slate-200 dark:border-slate-800">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-100 flex items-center gap-2">
             <Award className="w-7 h-7 text-amber-400" /> Comissões de Profissionais
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Apuração histórica de comissões por produção de serviço com snapshot de taxas e geração de contas a pagar.
           </p>
         </div>
 
         <Link
           href="/financeiro"
-          className="text-xs text-slate-400 hover:text-slate-200 border border-slate-800 px-3 py-1.5 rounded-lg flex items-center gap-1 w-fit"
+          className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-200 border border-slate-200 dark:border-slate-800 px-3 py-1.5 rounded-lg flex items-center gap-1 w-fit"
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Voltar para Financeiro
         </Link>
@@ -65,9 +65,9 @@ export default async function CommissionsPage() {
 
       {/* Metrics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Card className="p-5 bg-slate-900/80 border-slate-800 flex items-center justify-between">
+        <Card className="p-5 bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 flex items-center justify-between">
           <div>
-            <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Aguardando Aprovação</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Aguardando Aprovação</p>
             <h2 className="text-2xl font-extrabold text-amber-400 mt-1">R$ {totalCalculated.toFixed(2)}</h2>
           </div>
           <Badge variant="outline" className="border-amber-500/40 text-amber-400 bg-amber-500/10">
@@ -75,9 +75,9 @@ export default async function CommissionsPage() {
           </Badge>
         </Card>
 
-        <Card className="p-5 bg-slate-900/80 border-slate-800 flex items-center justify-between">
+        <Card className="p-5 bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 flex items-center justify-between">
           <div>
-            <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Aprovadas (Em Contas a Pagar)</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Aprovadas (Em Contas a Pagar)</p>
             <h2 className="text-2xl font-extrabold text-sky-400 mt-1">R$ {totalApproved.toFixed(2)}</h2>
           </div>
           <Badge variant="outline" className="border-sky-500/40 text-sky-400 bg-sky-500/10">

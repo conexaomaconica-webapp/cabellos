@@ -21,10 +21,10 @@ export default async function MasterOrganizationsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Salões & Tenants</h1>
-          <p className="text-sm text-slate-400">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Salões & Tenants</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Gerenciamento global de estabelecimentos, status de operação e assinaturas associadas.
           </p>
         </div>
@@ -33,10 +33,10 @@ export default async function MasterOrganizationsPage() {
       </div>
 
       {/* TABELA DE SALÕES */}
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
+      <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-300">
-            <thead className="bg-slate-950 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-800">
+          <table className="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+            <thead className="bg-slate-100 dark:bg-slate-950 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
               <tr>
                 <th className="px-6 py-4">Salão / Tenant</th>
                 <th className="px-6 py-4">Localização</th>
@@ -60,18 +60,18 @@ export default async function MasterOrganizationsPage() {
 
                   return (
                     <tr key={org.id} className="hover:bg-slate-800/40 transition-colors">
-                      <td className="px-6 py-4 font-semibold text-white">
+                      <td className="px-6 py-4 font-semibold text-slate-900 dark:text-white">
                         <div className="flex items-center gap-3">
                           <div className="p-2 bg-purple-950/60 border border-purple-800/40 rounded-lg text-purple-400">
                             <Building2 className="h-5 w-5" />
                           </div>
                           <div>
-                            <p className="text-white font-bold">{org.name}</p>
-                            <span className="text-xs text-slate-400 font-normal">ID: {org.id.slice(0, 8)}...</span>
+                            <p className="text-slate-900 dark:text-white font-bold">{org.name}</p>
+                            <span className="text-xs text-slate-500 dark:text-slate-400 font-normal">ID: {org.id.slice(0, 8)}...</span>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-slate-300">
+                      <td className="px-6 py-4 text-slate-700 dark:text-slate-300">
                         {org.city && org.state ? `${org.city} - ${org.state}` : 'Não informado'}
                       </td>
                       <td className="px-6 py-4">
@@ -86,7 +86,7 @@ export default async function MasterOrganizationsPage() {
                           </span>
                         )}
                         {org.status === 'archived' && (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-300 dark:border-slate-700">
                             <Archive className="h-3.5 w-3.5" /> Arquivado
                           </span>
                         )}
@@ -96,7 +96,7 @@ export default async function MasterOrganizationsPage() {
                           {plan?.name || 'Plano Legado'}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-xs text-slate-400">
+                      <td className="px-6 py-4 text-xs text-slate-500 dark:text-slate-400">
                         {new Date(org.created_at).toLocaleDateString('pt-BR')}
                       </td>
                       <td className="px-6 py-4 text-right">

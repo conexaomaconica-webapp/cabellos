@@ -51,18 +51,18 @@ export function ReturnSettingsClient({ initialSettings }: ReturnSettingsProps) {
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
       <div>
-        <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
           <Clock className="h-6 w-6 text-amber-400" /> Configurações Gerais de Retorno
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
           Defina os parâmetros padrão de recorrência, antecedência de alertas e cálculo estatístico do estabelecimento.
         </p>
       </div>
 
-      <Card className="bg-slate-900 border-slate-800 text-white shadow-xl">
+      <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xl">
         <CardHeader>
-          <CardTitle className="text-lg font-bold text-white">Regras da Central de Retornos</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-lg font-bold text-slate-900 dark:text-white">Regras da Central de Retornos</CardTitle>
+          <CardDescription className="text-slate-500 dark:text-slate-400">
             Parâmetros aplicados na ausência de intervalos específicos por serviço ou preferências do cliente.
           </CardDescription>
         </CardHeader>
@@ -83,7 +83,7 @@ export function ReturnSettingsClient({ initialSettings }: ReturnSettingsProps) {
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 block">
                     Frequência Global Padrão (dias)
                   </label>
                   <Input
@@ -91,7 +91,7 @@ export function ReturnSettingsClient({ initialSettings }: ReturnSettingsProps) {
                     min={1}
                     value={defaultInterval}
                     onChange={(e) => setDefaultInterval(parseInt(e.target.value))}
-                    className="bg-slate-950 border-slate-800 text-xs text-white"
+                    className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white"
                   />
                   <span className="text-[11px] text-slate-500 mt-1 block">
                     Utilizada quando o serviço ou cliente não possuem padrão específico.
@@ -99,7 +99,7 @@ export function ReturnSettingsClient({ initialSettings }: ReturnSettingsProps) {
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 block">
                     Mínimo de Visitas para Média Automática
                   </label>
                   <Input
@@ -107,7 +107,7 @@ export function ReturnSettingsClient({ initialSettings }: ReturnSettingsProps) {
                     min={1}
                     value={minVisits}
                     onChange={(e) => setMinVisits(parseInt(e.target.value))}
-                    className="bg-slate-950 border-slate-800 text-xs text-white"
+                    className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white"
                   />
                   <span className="text-[11px] text-slate-500 mt-1 block">
                     Quantidade de visitas concluídas necessárias para ativar a média automática.
@@ -117,7 +117,7 @@ export function ReturnSettingsClient({ initialSettings }: ReturnSettingsProps) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 block">
                     Antecedência de Alerta (dias)
                   </label>
                   <Input
@@ -125,7 +125,7 @@ export function ReturnSettingsClient({ initialSettings }: ReturnSettingsProps) {
                     min={1}
                     value={leadDays}
                     onChange={(e) => setLeadDays(parseInt(e.target.value))}
-                    className="bg-slate-950 border-slate-800 text-xs text-white"
+                    className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white"
                   />
                   <span className="text-[11px] text-slate-500 mt-1 block">
                     Quantos dias antes do retorno o alerta deve surgir como &quot;Próximo&quot;.
@@ -133,7 +133,7 @@ export function ReturnSettingsClient({ initialSettings }: ReturnSettingsProps) {
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 block">
                     Prazo para Cliente Inativo (dias)
                   </label>
                   <Input
@@ -141,7 +141,7 @@ export function ReturnSettingsClient({ initialSettings }: ReturnSettingsProps) {
                     min={15}
                     value={inactiveDays}
                     onChange={(e) => setInactiveDays(parseInt(e.target.value))}
-                    className="bg-slate-950 border-slate-800 text-xs text-white"
+                    className="bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white"
                   />
                   <span className="text-[11px] text-slate-500 mt-1 block">
                     Dias sem nenhum atendimento para considerar cliente inativo.
@@ -149,10 +149,10 @@ export function ReturnSettingsClient({ initialSettings }: ReturnSettingsProps) {
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-between">
+              <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
                 <div>
-                  <p className="font-semibold text-sm text-white">Criar Alertas Automatizados</p>
-                  <p className="text-xs text-slate-400">
+                  <p className="font-semibold text-sm text-slate-900 dark:text-white">Criar Alertas Automatizados</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     Gerar e atualizar automaticamente ciclos de retornos ao concluir atendimentos.
                   </p>
                 </div>
@@ -160,12 +160,12 @@ export function ReturnSettingsClient({ initialSettings }: ReturnSettingsProps) {
                   type="checkbox"
                   checked={autoCreate}
                   onChange={(e) => setAutoCreate(e.target.checked)}
-                  className="h-5 w-5 rounded border-slate-800 bg-slate-900 text-amber-500 focus:ring-amber-500"
+                  className="h-5 w-5 rounded border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-amber-500 focus:ring-amber-500"
                 />
               </div>
             </div>
 
-            <div className="flex justify-end pt-4 border-t border-slate-800">
+            <div className="flex justify-end pt-4 border-t border-slate-200 dark:border-slate-800">
               <Button type="submit" disabled={loading} className="bg-amber-500 text-slate-950 hover:bg-amber-400 font-semibold text-xs shadow-lg">
                 {loading ? <Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> : <Save className="h-4 w-4 mr-1.5" />} Salvar Configurações
               </Button>

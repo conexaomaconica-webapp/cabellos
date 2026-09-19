@@ -1,5 +1,3 @@
-'use client';
-
 import { LucideIcon, TrendingUp, TrendingDown, Minus, Sparkles } from 'lucide-react';
 
 interface KpiCardProps {
