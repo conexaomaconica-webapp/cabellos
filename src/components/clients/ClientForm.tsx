@@ -6,7 +6,7 @@ import { createClientAction, updateClientAction, inactivateClientAction, checkDu
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { User, Phone, MessageSquare, Mail, Calendar, Sparkles, Loader2, AlertTriangle, Archive } from 'lucide-react';
+import { User, Phone, MessageSquare, Mail, Calendar, Sparkles, Loader2, AlertTriangle, Archive, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 
 interface ClientFormProps {
@@ -21,8 +21,33 @@ export function ClientForm({ client, professionals, services }: ClientFormProps)
   const [inactivating, setInactivating] = useState(false);
   const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
 
+  const [name, setName] = useState(client?.name || '');
   const [phone, setPhone] = useState(client?.phone || '');
   const [whatsapp, setWhatsapp] = useState(client?.whatsapp || '');
+  const [email, setEmail] = useState(client?.email || '');
+
+  async function handlePickSingleContact() {
+    if (typeof window !== 'undefined' && 'contacts' in navigator && 'ContactsManager' in window) {
+      try {
+        const raw = await (navigator as any).contacts.select(['name', 'tel', 'email'], { multiple: false });
+        if (raw && raw[0]) {
+          const c = raw[0];
+          const pickedName = Array.isArray(c.name) ? c.name[0] : c.name || '';
+          const pickedTel = Array.isArray(c.tel) ? c.tel[0] : c.tel || '';
+          const pickedEmail = Array.isArray(c.email) ? c.email[0] : c.email || '';
+
+          if (pickedName) setName(pickedName);
+          if (pickedTel) {
+            setWhatsapp(pickedTel);
+            setPhone(pickedTel);
+          }
+          if (pickedEmail) setEmail(pickedEmail);
+        }
+      } catch (e) {
+        // Ignora se cancelado
+      }
+    }
+  }
 
   async function handleCheckDuplicate() {
     if (client) return; // Don't check on edit mode
@@ -70,6 +95,24 @@ export function ClientForm({ client, professionals, services }: ClientFormProps)
   return (
     <Card className="bg-slate-900 border-slate-800 text-slate-100 shadow-xl">
       <CardContent className="p-6">
+        {!client && typeof window !== 'undefined' && 'contacts' in navigator && 'ContactsManager' in window && (
+          <div className="mb-6 flex items-center justify-between p-3 rounded-xl bg-slate-950/80 border border-emerald-500/30">
+            <div className="flex items-center gap-2 text-xs text-slate-300">
+              <Smartphone className="h-4 w-4 text-emerald-400" />
+              <span>Preencher com contato da agenda do celular?</span>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handlePickSingleContact}
+              className="border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10 text-xs gap-1 h-8"
+            >
+              <Smartphone className="h-3.5 w-3.5" /> Puxar Contato
+            </Button>
+          </div>
+        )}
+
         {error && (
           <div className="mb-6 rounded-lg bg-red-950/60 border border-red-800/80 p-3 text-sm text-red-300">
             {error}
@@ -92,7 +135,8 @@ export function ClientForm({ client, professionals, services }: ClientFormProps)
               <User className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
               <Input
                 name="name"
-                defaultValue={client?.name || ''}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="Ex: João da Silva"
                 required
                 className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
@@ -140,7 +184,8 @@ export function ClientForm({ client, professionals, services }: ClientFormProps)
                 <Input
                   name="email"
                   type="email"
-                  defaultValue={client?.email || ''}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="cliente@email.com"
                   className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-amber-500"
                 />

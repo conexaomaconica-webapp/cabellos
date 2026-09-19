@@ -12,9 +12,9 @@ CREATE POLICY "RLS Select appointments" ON public.appointments FOR SELECT USING 
         public.user_has_org_role(organization_id, ARRAY['professional'])
         AND (
             professional_id IN (
-                SELECT id FROM public.professionals WHERE user_id = auth.uid() AND organization_id = appointments.organization_id AND is_active = TRUE
+                SELECT professionals.id FROM public.professionals WHERE user_id = auth.uid() AND organization_id = appointments.organization_id AND is_active = TRUE
             )
-            OR id IN (
+            OR appointments.id IN (
                 SELECT appointment_id FROM public.appointment_services aps
                 JOIN public.professionals p ON p.id = aps.professional_id
                 WHERE p.user_id = auth.uid() AND p.organization_id = appointments.organization_id AND p.is_active = TRUE
@@ -30,10 +30,10 @@ CREATE POLICY "RLS Select appointment_services" ON public.appointment_services F
         public.user_has_org_role(organization_id, ARRAY['professional'])
         AND (
             professional_id IN (
-                SELECT id FROM public.professionals WHERE user_id = auth.uid() AND organization_id = appointment_services.organization_id AND is_active = TRUE
+                SELECT professionals.id FROM public.professionals WHERE user_id = auth.uid() AND organization_id = appointment_services.organization_id AND is_active = TRUE
             )
             OR appointment_id IN (
-                SELECT id FROM public.appointments a
+                SELECT a.id FROM public.appointments a
                 JOIN public.professionals p ON p.id = a.professional_id
                 WHERE p.user_id = auth.uid() AND p.organization_id = appointment_services.organization_id AND p.is_active = TRUE
             )
@@ -47,13 +47,13 @@ CREATE POLICY "RLS Select appointment_payments" ON public.appointment_payments F
     OR (
         public.user_has_org_role(organization_id, ARRAY['professional'])
         AND appointment_id IN (
-            SELECT id FROM public.appointments
+            SELECT appointments.id FROM public.appointments
             WHERE organization_id = appointment_payments.organization_id
               AND (
                 professional_id IN (
-                    SELECT id FROM public.professionals WHERE user_id = auth.uid() AND organization_id = appointment_payments.organization_id AND is_active = TRUE
+                    SELECT professionals.id FROM public.professionals WHERE user_id = auth.uid() AND organization_id = appointment_payments.organization_id AND is_active = TRUE
                 )
-                OR id IN (
+                OR appointments.id IN (
                     SELECT appointment_id FROM public.appointment_services aps
                     JOIN public.professionals p ON p.id = aps.professional_id
                     WHERE p.user_id = auth.uid() AND p.organization_id = appointment_payments.organization_id AND p.is_active = TRUE

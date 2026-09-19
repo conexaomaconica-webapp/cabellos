@@ -221,3 +221,49 @@ export async function setManualServiceFrequencyAction(payload: {
   return { success: true };
 }
 
+export interface BatchClientItem {
+  name: string;
+  phone?: string | null;
+  whatsapp?: string | null;
+  email?: string | null;
+}
+
+export async function importClientsBatchAction(clientsList: BatchClientItem[]) {
+  const supabase = await createClient();
+  const activeOrgId = await getActiveOrganizationId();
+
+  if (!activeOrgId) return { error: 'Organização não selecionada' };
+  if (!clientsList || clientsList.length === 0) return { error: 'Nenhum contato enviado' };
+
+  const validClients = clientsList
+    .filter((c) => c.name && c.name.trim().length >= 2)
+    .map((c) => {
+      const normTel = c.whatsapp ? normalizePhoneNumber(c.whatsapp) : (c.phone ? normalizePhoneNumber(c.phone) : null);
+      return {
+        organization_id: activeOrgId,
+        name: c.name.trim(),
+        phone: c.phone ? normalizePhoneNumber(c.phone) : normTel,
+        whatsapp: normTel,
+        email: c.email && c.email.includes('@') ? c.email.trim() : null,
+        is_active: true,
+        allow_whatsapp: true,
+      };
+    });
+
+  if (validClients.length === 0) {
+    return { error: 'Nenhum contato válido para importar' };
+  }
+
+  const { data, error } = await supabase
+    .from('clients')
+    .insert(validClients)
+    .select('id');
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath('/clientes');
+  return { success: true, count: data?.length || 0 };
+}
+

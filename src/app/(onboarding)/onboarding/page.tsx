@@ -1,16 +1,38 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { createOrganizationAction } from '../actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Building2, Phone, MessageSquare, Palette, Loader2, CheckCircle2 } from 'lucide-react';
+import { Building2, Phone, MessageSquare, Palette, Loader2, CheckCircle2, UploadCloud, ImagePlus, Trash2 } from 'lucide-react';
 
 export default function OnboardingPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [primaryColor, setPrimaryColor] = useState('#0f172a');
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleLogoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setError('O tamanho da logomarca deve ser de no máximo 5MB.');
+        return;
+      }
+      setError(null);
+      const url = URL.createObjectURL(file);
+      setLogoPreview(url);
+    }
+  }
+
+  function handleRemoveLogo() {
+    setLogoPreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -48,6 +70,74 @@ export default function OnboardingPage() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Campo de Logomarca */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-300 flex items-center justify-between">
+                <span>Logomarca do Estabelecimento</span>
+                <span className="text-slate-500 text-[11px]">Opcional (PNG, JPG, SVG até 5MB)</span>
+              </label>
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                name="logo"
+                accept="image/png, image/jpeg, image/webp, image/svg+xml"
+                onChange={handleLogoChange}
+                className="hidden"
+              />
+
+              {logoPreview ? (
+                <div className="flex items-center gap-4 p-3 rounded-xl bg-slate-800/70 border border-slate-700">
+                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-slate-600 bg-slate-950 flex items-center justify-center shadow">
+                    <img src={logoPreview} alt="Logomarca Preview" className="h-full w-full object-contain p-1" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-medium text-slate-200 truncate">Logomarca Selecionada</p>
+                    <p className="text-[11px] text-emerald-400 flex items-center gap-1 mt-0.5">
+                      <CheckCircle2 className="h-3.5 w-3.5" /> Pronta para envio
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="h-8 text-xs border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200"
+                    >
+                      Alterar
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleRemoveLogo}
+                      className="h-8 w-8 p-0 text-slate-400 hover:text-red-400 hover:bg-slate-800"
+                      title="Remover imagem"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-slate-700 hover:border-amber-500/50 rounded-xl bg-slate-800/40 hover:bg-slate-800/70 cursor-pointer transition-all text-center group"
+                >
+                  <div className="h-10 w-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 group-hover:text-amber-400 group-hover:border-amber-500/30 transition-all mb-1.5">
+                    <ImagePlus className="h-5 w-5" />
+                  </div>
+                  <p className="text-xs font-medium text-slate-300 group-hover:text-amber-300 transition-colors">
+                    Clique para selecionar a Logomarca
+                  </p>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    Formatos suportados: PNG, JPG, WEBP, SVG (max 5MB)
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Nome do Estabelecimento */}
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-slate-300">
                 Nome do Estabelecimento <span className="text-amber-400">*</span>
@@ -92,6 +182,7 @@ export default function OnboardingPage() {
               </div>
             </div>
 
+            {/* Cor Primária */}
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-slate-300 flex items-center justify-between">
                 <span>Cor Primária da Marca</span>
@@ -129,9 +220,9 @@ export default function OnboardingPage() {
                 <CheckCircle2 className="h-4 w-4 text-emerald-400" /> O que será gerado automaticamente:
               </div>
               <ul className="list-disc list-inside space-y-1 pl-1">
-                <li>Sua conta será configurada como <strong>Proprietário (Owner)</strong></li>
+                <li>Sua conta será configurada como <strong>Administrador</strong> do estabelecimento</li>
                 <li>Categorias padrão de serviços (Cabelo, Barba, Unhas, Estética)</li>
-                <li>Ambiente isolado e seguro de dados por tenant</li>
+                <li>Ambiente isolado e seguro de dados por tenant com logomarca personalizada</li>
               </ul>
             </div>
 

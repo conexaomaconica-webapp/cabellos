@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Users, Plus, Search, Phone, MessageSquare, Edit3, UserCheck, ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
+import { ImportContactsModal } from '@/components/clients/ImportContactsModal';
 
 interface ClientsPageProps {
   searchParams: Promise<{ q?: string; status?: string }>;
@@ -49,11 +50,14 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
             Gerencie a base de clientes do seu estabelecimento
           </p>
         </div>
-        <Link href="/clientes/novo">
-          <Button variant="default" className="bg-amber-500 text-slate-950 hover:bg-amber-400 font-semibold shadow-lg w-full sm:w-auto">
-            <Plus className="h-4 w-4 mr-1.5" /> Novo Cliente
-          </Button>
-        </Link>
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <ImportContactsModal />
+          <Link href="/clientes/novo">
+            <Button variant="default" className="bg-amber-500 text-slate-950 hover:bg-amber-400 font-semibold shadow-lg w-full sm:w-auto">
+              <Plus className="h-4 w-4 mr-1.5" /> Novo Cliente
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Search and Filters Bar */}

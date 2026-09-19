@@ -9,7 +9,7 @@ RETURNS VOID AS $$
 DECLARE
     v_org RECORD;
 BEGIN
-    FOR v_org IN SELECT id FROM public.organizations WHERE is_active = TRUE LOOP
+    FOR v_org IN SELECT organizations.id FROM public.organizations WHERE is_active = TRUE LOOP
         PERFORM public.update_return_alert_statuses(v_org.id);
     END LOOP;
 END;
@@ -24,7 +24,7 @@ REVOKE EXECUTE ON FUNCTION public.run_daily_return_alert_updates FROM authentica
 -- Função Chamada: public.run_daily_return_alert_updates() -> public.update_return_alert_statuses(p_org_id)
 -- Idempotência: Operação baseada em comparação de datas (NOW() vs expected_return_at), pode ser executada repetidamente sem duplicação ou corrupção.
 
-DO $$
+DO $do$
 BEGIN
     IF EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_cron') THEN
         -- Remover agendamento anterior se houver para evitar duplicidade
@@ -35,11 +35,11 @@ BEGIN
         PERFORM cron.schedule(
             'cabellos_daily_return_alerts_update',
             '0 3 * * *',
-            $$SELECT public.run_daily_return_alert_updates()$$
+            'SELECT public.run_daily_return_alert_updates()'
         );
     END IF;
 EXCEPTION
     WHEN OTHERS THEN
         -- Se pg_cron não for suportado no ambiente local/sandbox, o fallback dinâmico no carregamento da página /retornos continuará garantindo a integridade dos dados.
         NULL;
-END $$;
+END $do$;

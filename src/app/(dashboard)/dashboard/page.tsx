@@ -16,6 +16,7 @@ import {
   AlertTriangle,
   Send,
   ArrowRight,
+  BarChart3,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -93,7 +94,7 @@ export default async function DashboardPage() {
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold mb-2">
-              <Sparkles className="h-3.5 w-3.5" /> Sprint 3 — Retornos & Engajamento por Serviço
+              <Sparkles className="h-3.5 w-3.5" /> Retornos & Engajamento por Serviço
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
               {activeOrg?.name || 'Bem-vindo ao Cabellos'}
@@ -103,8 +104,13 @@ export default async function DashboardPage() {
             </p>
           </div>
           <div className="flex flex-wrap gap-2 shrink-0">
-            <Link href="/retornos">
+            <Link href="/relatorios">
               <Button variant="default" className="bg-amber-500 text-slate-950 hover:bg-amber-400 font-semibold shadow-lg">
+                <BarChart3 className="h-4 w-4 mr-1.5" /> Ver Relatórios
+              </Button>
+            </Link>
+            <Link href="/retornos">
+              <Button variant="outline" className="border-slate-700 text-slate-200 hover:bg-slate-800 font-semibold">
                 <Clock className="h-4 w-4 mr-1.5" /> Central de Retornos
               </Button>
             </Link>

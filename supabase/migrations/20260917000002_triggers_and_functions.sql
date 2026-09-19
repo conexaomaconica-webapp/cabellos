@@ -118,12 +118,16 @@ CREATE TRIGGER trg_validate_cross_tenant_professionals BEFORE INSERT OR UPDATE O
 
 
 -- 3. RPC TRANSACIONAL DE ONBOARDING ATÔMICO
+DROP FUNCTION IF EXISTS public.create_organization_with_owner(TEXT, TEXT, TEXT, TEXT, TEXT);
+DROP FUNCTION IF EXISTS public.create_organization_with_owner(TEXT, TEXT, TEXT, TEXT, TEXT, TEXT);
+DROP FUNCTION IF EXISTS public.create_organization_with_owner(TEXT, TEXT, TEXT, TEXT, TEXT, TEXT, TEXT, TEXT);
 CREATE OR REPLACE FUNCTION public.create_organization_with_owner(
     p_name TEXT,
     p_phone TEXT DEFAULT NULL,
     p_whatsapp TEXT DEFAULT NULL,
     p_primary_color TEXT DEFAULT '#0f172a',
-    p_secondary_color TEXT DEFAULT '#64748b'
+    p_secondary_color TEXT DEFAULT '#64748b',
+    p_logo_url TEXT DEFAULT NULL
 )
 RETURNS JSONB AS $$
 DECLARE
@@ -139,9 +143,9 @@ BEGIN
 
     -- 1. Criar Organização
     INSERT INTO public.organizations (
-        name, phone, whatsapp, primary_color, secondary_color
+        name, phone, whatsapp, primary_color, secondary_color, logo_url
     ) VALUES (
-        p_name, p_phone, p_whatsapp, COALESCE(p_primary_color, '#0f172a'), COALESCE(p_secondary_color, '#64748b')
+        p_name, p_phone, p_whatsapp, COALESCE(p_primary_color, '#0f172a'), COALESCE(p_secondary_color, '#64748b'), p_logo_url
     ) RETURNING id INTO v_org_id;
 
     -- 2. Vincular usuário logado como OWNER
@@ -160,13 +164,14 @@ BEGIN
 
     -- 4. Retornar JSON com dados da nova organização
     SELECT jsonb_build_object(
-        'id', id,
+        'id', organizations.id,
         'name', name,
         'primary_color', primary_color,
-        'secondary_color', secondary_color
+        'secondary_color', secondary_color,
+        'logo_url', logo_url
     ) INTO v_result
     FROM public.organizations
-    WHERE id = v_org_id;
+    WHERE organizations.id = v_org_id;
 
     RETURN v_result;
 EXCEPTION
@@ -175,5 +180,5 @@ EXCEPTION
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp;
 
-REVOKE EXECUTE ON FUNCTION public.create_organization_with_owner FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION public.create_organization_with_owner TO authenticated;
+REVOKE EXECUTE ON FUNCTION public.create_organization_with_owner(TEXT, TEXT, TEXT, TEXT, TEXT, TEXT) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.create_organization_with_owner(TEXT, TEXT, TEXT, TEXT, TEXT, TEXT) TO authenticated;

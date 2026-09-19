@@ -24,6 +24,8 @@ export async function createProfessionalAction(formData: FormData, selectedServi
   const email = formData.get('email') as string;
   const commission_type = formData.get('commission_type') as 'none' | 'percentage' | 'fixed' | 'custom';
   const commission_value = formData.get('commission_value') as string;
+  let photo_url = (formData.get('photo_url') as string) || null;
+  const photoFile = formData.get('photo_file') as File | null;
 
   const validated = professionalSchema.safeParse({
     name,
@@ -37,6 +39,31 @@ export async function createProfessionalAction(formData: FormData, selectedServi
     return { error: validated.error.errors[0].message };
   }
 
+  // Se um arquivo de imagem foi enviado, fazer upload no Supabase Storage
+  if (photoFile && photoFile.size > 0 && photoFile.name) {
+    try {
+      const ext = photoFile.name.split('.').pop() || 'png';
+      const filePath = `professionals/${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${ext}`;
+      const buffer = Buffer.from(await photoFile.arrayBuffer());
+
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('logos')
+        .upload(filePath, buffer, {
+          contentType: photoFile.type || 'image/png',
+          upsert: true,
+        });
+
+      if (!uploadError && uploadData) {
+        const { data: publicUrlData } = supabase.storage
+          .from('logos')
+          .getPublicUrl(filePath);
+        photo_url = publicUrlData.publicUrl;
+      }
+    } catch (storageErr) {
+      console.error('Erro ao fazer upload da foto do profissional:', storageErr);
+    }
+  }
+
   // Insere o profissional garantindo o organization_id
   const { data: prof, error } = await supabase
     .from('professionals')
@@ -45,6 +72,7 @@ export async function createProfessionalAction(formData: FormData, selectedServi
       name: validated.data.name,
       phone: validated.data.phone || null,
       email: validated.data.email || null,
+      photo_url: photo_url,
       commission_type: validated.data.commission_type,
       commission_value: validated.data.commission_value,
       is_active: true,
@@ -81,6 +109,8 @@ export async function updateProfessionalAction(id: string, formData: FormData, s
   const email = formData.get('email') as string;
   const commission_type = formData.get('commission_type') as 'none' | 'percentage' | 'fixed' | 'custom';
   const commission_value = formData.get('commission_value') as string;
+  let photo_url = (formData.get('photo_url') as string) || null;
+  const photoFile = formData.get('photo_file') as File | null;
 
   const validated = professionalSchema.safeParse({
     name,
@@ -94,12 +124,38 @@ export async function updateProfessionalAction(id: string, formData: FormData, s
     return { error: validated.error.errors[0].message };
   }
 
+  // Se um arquivo de imagem foi enviado, fazer upload no Supabase Storage
+  if (photoFile && photoFile.size > 0 && photoFile.name) {
+    try {
+      const ext = photoFile.name.split('.').pop() || 'png';
+      const filePath = `professionals/${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${ext}`;
+      const buffer = Buffer.from(await photoFile.arrayBuffer());
+
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('logos')
+        .upload(filePath, buffer, {
+          contentType: photoFile.type || 'image/png',
+          upsert: true,
+        });
+
+      if (!uploadError && uploadData) {
+        const { data: publicUrlData } = supabase.storage
+          .from('logos')
+          .getPublicUrl(filePath);
+        photo_url = publicUrlData.publicUrl;
+      }
+    } catch (storageErr) {
+      console.error('Erro ao fazer upload da foto do profissional:', storageErr);
+    }
+  }
+
   const { error } = await supabase
     .from('professionals')
     .update({
       name: validated.data.name,
       phone: validated.data.phone || null,
       email: validated.data.email || null,
+      photo_url: photo_url,
       commission_type: validated.data.commission_type,
       commission_value: validated.data.commission_value,
     })

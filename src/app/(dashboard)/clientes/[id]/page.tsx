@@ -1,7 +1,8 @@
 import { createClient, getActiveOrganizationId } from '@/lib/supabase/server';
 import { ClientForm } from '@/components/clients/ClientForm';
 import { ClientServiceFrequencies } from '@/components/clients/ClientServiceFrequencies';
-import { Client, Professional, Service, Appointment, ClientServiceFrequency, ClientContact } from '@/types/database';
+import { ClientPackagesSection } from '@/components/clients/ClientPackagesSection';
+import { Client, Professional, Service, Appointment, ClientServiceFrequency, ClientContact, ClientPackage, Package, PaymentMethod } from '@/types/database';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -25,6 +26,9 @@ export default async function EditClientPage({ params }: EditClientPageProps) {
     { data: appointmentsData },
     { data: frequenciesData },
     { data: contactsData },
+    { data: clientPackagesData },
+    { data: availablePackagesData },
+    { data: paymentMethodsData },
   ] = await Promise.all([
     supabase
       .from('clients')
@@ -62,6 +66,24 @@ export default async function EditClientPage({ params }: EditClientPageProps) {
       .eq('client_id', id)
       .eq('organization_id', activeOrgId!)
       .order('contacted_at', { ascending: false }),
+    supabase
+      .from('client_packages')
+      .select('*, package:packages(*)')
+      .eq('client_id', id)
+      .eq('organization_id', activeOrgId!)
+      .order('created_at', { ascending: false }),
+    supabase
+      .from('packages')
+      .select('*')
+      .eq('organization_id', activeOrgId!)
+      .eq('is_active', true)
+      .order('name'),
+    supabase
+      .from('payment_methods')
+      .select('*')
+      .eq('organization_id', activeOrgId!)
+      .eq('is_active', true)
+      .order('sort_order'),
   ]);
 
   if (!clientData) {
@@ -74,18 +96,29 @@ export default async function EditClientPage({ params }: EditClientPageProps) {
   const appointments = (appointmentsData || []) as Appointment[];
   const frequencies = (frequenciesData || []) as ClientServiceFrequency[];
   const contacts = (contactsData || []) as ClientContact[];
+  const clientPackages = (clientPackagesData || []) as ClientPackage[];
+  const availablePackages = (availablePackagesData || []) as Package[];
+  const paymentMethods = (paymentMethodsData || []) as PaymentMethod[];
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-white tracking-tight">Ficha do Cliente</h1>
         <p className="text-sm text-slate-400 mt-1">
-          Edite os dados cadastrais, frequências por serviço e veja o histórico de atendimentos de {client.name}
+          Edite os dados cadastrais, pacotes e planos vigentes, frequências e histórico de atendimentos de {client.name}
         </p>
       </div>
 
       {/* Form de Edição */}
       <ClientForm client={client} professionals={professionals} services={services} />
+
+      {/* SEÇÃO PACOTES E PLANOS DO CLIENTE (SPRINT 4) */}
+      <ClientPackagesSection
+        clientId={id}
+        clientPackages={clientPackages}
+        availablePackages={availablePackages}
+        paymentMethods={paymentMethods}
+      />
 
       {/* SEÇÃO FREQUÊNCIA POR SERVIÇO & HISTÓRICO DE CONTATOS (SPRINT 3) */}
       <ClientServiceFrequencies clientId={id} frequencies={frequencies} contacts={contacts} />
@@ -168,3 +201,4 @@ export default async function EditClientPage({ params }: EditClientPageProps) {
     </div>
   );
 }
+

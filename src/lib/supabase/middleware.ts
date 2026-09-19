@@ -31,37 +31,58 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const pathname = request.nextUrl.pathname;
+
   const isAuthPage =
-    request.nextUrl.pathname.startsWith('/login') ||
-    request.nextUrl.pathname.startsWith('/register') ||
-    request.nextUrl.pathname.startsWith('/forgot-password') ||
-    request.nextUrl.pathname.startsWith('/reset-password');
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/register') ||
+    pathname.startsWith('/forgot-password') ||
+    pathname.startsWith('/reset-password');
 
-  const isOnboardingPage = request.nextUrl.pathname.startsWith('/onboarding');
+  const isMasterPage = pathname.startsWith('/master');
+  const isOnboardingPage = pathname.startsWith('/onboarding');
+  const isMaintenancePage = pathname.startsWith('/maintenance');
+  const isUnauthorizedPage = pathname.startsWith('/unauthorized');
 
-  if (!user && !isAuthPage) {
+  if (!user && !isAuthPage && !isMaintenancePage && !isUnauthorizedPage) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     return NextResponse.redirect(url);
   }
 
   if (user) {
+    // 1. Proteção de Rota Master
+    if (isMasterPage) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('system_role')
+        .eq('id', user.id)
+        .single();
+
+      if (profile?.system_role !== 'master') {
+        const url = request.nextUrl.clone();
+        url.pathname = '/unauthorized';
+        return NextResponse.redirect(url);
+      }
+      return supabaseResponse;
+    }
+
     if (isAuthPage) {
       const url = request.nextUrl.clone();
       url.pathname = '/dashboard';
       return NextResponse.redirect(url);
     }
 
-    // Verificar se usuário possui organização
+    // 2. Autenticação e tenant para usuários comuns
     const { data: orgUsers } = await supabase
       .from('organization_users')
-      .select('organization_id, role')
+      .select('organization_id, role, organizations(status)')
       .eq('user_id', user.id)
       .eq('is_active', true);
 
     const hasOrg = orgUsers && orgUsers.length > 0;
 
-    if (!hasOrg && !isOnboardingPage) {
+    if (!hasOrg && !isOnboardingPage && !isUnauthorizedPage) {
       const url = request.nextUrl.clone();
       url.pathname = '/onboarding';
       return NextResponse.redirect(url);
@@ -73,9 +94,13 @@ export async function updateSession(request: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    // Garantir cookie da organização ativa se não definido
+    // Garantir cookie da organização ativa se não definido ou se estiver inativa
     const activeOrgCookie = request.cookies.get('cabellos_active_org_id')?.value;
-    if (hasOrg && (!activeOrgCookie || !orgUsers.some((ou: { organization_id: string }) => ou.organization_id === activeOrgCookie))) {
+    if (
+      hasOrg &&
+      (!activeOrgCookie ||
+        !orgUsers.some((ou: { organization_id: string }) => ou.organization_id === activeOrgCookie))
+    ) {
       const defaultOrgId = orgUsers[0].organization_id;
       supabaseResponse.cookies.set('cabellos_active_org_id', defaultOrgId, {
         path: '/',

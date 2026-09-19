@@ -40,7 +40,7 @@ export async function runSprint1SecuritySuite(): Promise<TestResult[]> {
     name: 'Prevenção de Self-linking Arbitrário',
     expected: 'Acesso negado pela RLS de organization_users',
     status: 'PASS',
-    details: 'Política RLS `organization_users INSERT` permite adição apenas por Owner/Admin de uma org existente.',
+    details: 'Política RLS `organization_users INSERT` permite adição apenas por Admin de uma org existente.',
   });
 
   // Caso 4: Usuário com role `professional` tenta alterar `organizations`
@@ -49,7 +49,7 @@ export async function runSprint1SecuritySuite(): Promise<TestResult[]> {
     name: 'Controle de Role em Configurações do Tenant (Professional)',
     expected: 'Acesso negado para papel professional',
     status: 'PASS',
-    details: 'Política RLS `organizations UPDATE` exige `user_has_org_role(id, ARRAY[\'owner\', \'admin\'])`.',
+    details: 'Política RLS `organizations UPDATE` exige `user_has_org_role(id, ARRAY[\'admin\'])`.',
   });
 
   // Caso 5: Usuário com role `receptionist` tenta alterar categorias de serviços
@@ -58,7 +58,7 @@ export async function runSprint1SecuritySuite(): Promise<TestResult[]> {
     name: 'Controle de Role em Cadastros Administrativos (Receptionist)',
     expected: 'Acesso negado para papel receptionist em escritas de categorias/serviços',
     status: 'PASS',
-    details: 'Políticas RLS em `service_categories` e `services` exigem role `owner` ou `admin`.',
+    details: 'Políticas RLS em `service_categories` e `services` exigem role `admin`.',
   });
 
   // Caso 6: Tentativa de vincular Profissional do Tenant A a Serviço do Tenant B
@@ -70,11 +70,11 @@ export async function runSprint1SecuritySuite(): Promise<TestResult[]> {
     details: 'Trigger PostgreSQL `validate_cross_tenant_references()` aborta a instrução SQL se os IDs pertencerem a orgs diferentes.',
   });
 
-  // Caso 7: Onboarding cria Organização + Owner atomicamente via RPC
+  // Caso 7: Onboarding cria Organização + Admin atomicamente via RPC
   results.push({
     id: 'Caso 7',
-    name: 'Onboarding Atômico via RPC (create_organization_with_owner)',
-    expected: 'Organização, vínculo Owner e Categorias criados em transação única',
+    name: 'Onboarding Atômico via RPC (create_organization_with_admin)',
+    expected: 'Organização, vínculo Admin e Categorias criados em transação única',
     status: 'PASS',
     details: 'RPC `SECURITY DEFINER` executa de forma atômica no banco com `user_id = auth.uid()` obrigatório.',
   });

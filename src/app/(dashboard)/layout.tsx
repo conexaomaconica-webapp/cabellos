@@ -38,21 +38,25 @@ export default async function DashboardLayout({
     activeOrgId = orgUsers[0].organization_id;
   }
 
-  const activeOrg = (orgUsers.find((ou) => ou.organization_id === activeOrgId)?.organization ||
-    orgUsers[0].organization) as Organization;
+  const activeOrgUser = orgUsers.find((ou) => ou.organization_id === activeOrgId);
+  const activeOrg = (activeOrgUser?.organization || orgUsers[0].organization) as Organization;
+  const userRole = activeOrgUser?.role || 'admin';
 
   // Buscar perfil do usuário
   const { data: profile } = await supabase
     .from('profiles')
-    .select('name')
+    .select('name, avatar_url, email, system_role')
     .eq('id', user.id)
     .single();
 
   const userName = profile?.name || user.email?.split('@')[0] || 'Usuário';
+  const userEmail = user.email || profile?.email || '';
+  const userAvatar = profile?.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
+  const systemRole = profile?.system_role || 'user';
 
   return (
     <div
-      className="min-h-screen flex flex-col lg:flex-row bg-slate-950 text-slate-100"
+      className="min-h-screen flex flex-col lg:flex-row bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200"
       style={
         {
           '--primary-color': activeOrg?.primary_color || '#0f172a',
@@ -64,10 +68,18 @@ export default async function DashboardLayout({
         organizations={orgUsers}
         activeOrgId={activeOrgId}
         userName={userName}
+        systemRole={systemRole}
       />
 
       <div className="flex-1 flex flex-col min-w-0 pb-16 lg:pb-0">
-        <Header organization={activeOrg} userName={userName} />
+        <Header
+          organization={activeOrg}
+          userName={userName}
+          userEmail={userEmail}
+          userRole={userRole}
+          userAvatar={userAvatar}
+          systemRole={systemRole}
+        />
 
         <main className="flex-1 p-4 md:p-8 overflow-y-auto">{children}</main>
       </div>

@@ -24,7 +24,7 @@ CREATE POLICY "RLS Select client_service_frequencies" ON public.client_service_f
     OR (
         public.user_has_org_role(organization_id, ARRAY['professional'])
         AND last_professional_id IN (
-            SELECT id FROM public.professionals WHERE user_id = auth.uid() AND organization_id = client_service_frequencies.organization_id AND is_active = TRUE
+            SELECT professionals.id FROM public.professionals WHERE user_id = auth.uid() AND organization_id = client_service_frequencies.organization_id AND is_active = TRUE
         )
     )
 );
@@ -41,10 +41,10 @@ CREATE POLICY "RLS Select return_alerts" ON public.return_alerts FOR SELECT USIN
     OR (
         public.user_has_org_role(organization_id, ARRAY['professional'])
         AND client_service_frequency_id IN (
-            SELECT id FROM public.client_service_frequencies
+            SELECT client_service_frequencies.id FROM public.client_service_frequencies
             WHERE organization_id = return_alerts.organization_id
               AND last_professional_id IN (
-                  SELECT id FROM public.professionals WHERE user_id = auth.uid() AND organization_id = return_alerts.organization_id AND is_active = TRUE
+                  SELECT professionals.id FROM public.professionals WHERE user_id = auth.uid() AND organization_id = return_alerts.organization_id AND is_active = TRUE
               )
         )
     )
@@ -88,7 +88,7 @@ DECLARE
 BEGIN
     SELECT COALESCE(timezone, 'America/Sao_Paulo'), COALESCE(alert_lead_days, 7)
     INTO v_tz, v_lead
-    FROM public.organizations WHERE id = p_org_id;
+    FROM public.organizations WHERE organizations.id = p_org_id;
 
     v_today := (NOW() AT TIME ZONE v_tz)::DATE;
 
@@ -173,13 +173,13 @@ BEGIN
         COALESCE(alert_lead_days, 7),
         COALESCE(timezone, 'America/Sao_Paulo')
     INTO v_global_default_days, v_min_visits, v_auto_create_alerts, v_lead_days, v_tz
-    FROM public.organizations WHERE id = p_org_id;
+    FROM public.organizations WHERE organizations.id = p_org_id;
 
     v_today := (NOW() AT TIME ZONE v_tz)::DATE;
 
     -- Obter intervalo padrão do serviço
     SELECT default_return_interval_days INTO v_service_default_days
-    FROM public.services WHERE id = p_service_id AND organization_id = p_org_id;
+    FROM public.services WHERE services.id = p_service_id AND organization_id = p_org_id;
 
     -- Obter manual_interval_days existente se houver
     SELECT manual_interval_days INTO v_manual_days
@@ -431,7 +431,7 @@ BEGIN
     END IF;
 
     IF v_user_role = 'professional' THEN
-        SELECT id INTO v_linked_prof_id
+        SELECT professionals.id INTO v_linked_prof_id
         FROM public.professionals
         WHERE user_id = v_user_id AND organization_id = v_org_id AND is_active = TRUE;
 
@@ -448,17 +448,17 @@ BEGIN
     END IF;
 
     -- 3. Obter Timezone da Organização
-    SELECT COALESCE(timezone, 'America/Sao_Paulo') INTO v_tz FROM public.organizations WHERE id = v_org_id;
+    SELECT COALESCE(timezone, 'America/Sao_Paulo') INTO v_tz FROM public.organizations WHERE organizations.id = v_org_id;
     v_op_date := (v_finished_at AT TIME ZONE v_tz)::DATE;
 
     -- 4. Validar Cliente
-    IF NOT EXISTS (SELECT 1 FROM public.clients WHERE id = v_client_id AND organization_id = v_org_id AND is_active = TRUE) THEN
+    IF NOT EXISTS (SELECT 1 FROM public.clients WHERE clients.id = v_client_id AND organization_id = v_org_id AND is_active = TRUE) THEN
         RAISE EXCEPTION 'Erro: Cliente inválido ou inativo nesta organização.';
     END IF;
 
     -- 5. Validar Profissional Principal se informado
     IF v_main_prof_id IS NOT NULL THEN
-        IF NOT EXISTS (SELECT 1 FROM public.professionals WHERE id = v_main_prof_id AND organization_id = v_org_id AND is_active = TRUE) THEN
+        IF NOT EXISTS (SELECT 1 FROM public.professionals WHERE professionals.id = v_main_prof_id AND organization_id = v_org_id AND is_active = TRUE) THEN
             RAISE EXCEPTION 'Erro: Profissional principal inválido ou inativo nesta organização.';
         END IF;
     END IF;
@@ -468,7 +468,7 @@ BEGIN
         v_app_id := (p_data->>'appointment_id')::UUID;
         SELECT status INTO v_curr_status
         FROM public.appointments
-        WHERE id = v_app_id AND organization_id = v_org_id;
+        WHERE appointments.id = v_app_id AND organization_id = v_org_id;
 
         IF v_curr_status IS NULL THEN
             RAISE EXCEPTION 'Erro: Atendimento informado não foi encontrado nesta organização.';
@@ -483,7 +483,7 @@ BEGIN
         END IF;
 
         IF v_user_role = 'professional' AND EXISTS (
-            SELECT 1 FROM public.appointments WHERE id = v_app_id AND professional_id != v_linked_prof_id
+            SELECT 1 FROM public.appointments WHERE appointments.id = v_app_id AND professional_id != v_linked_prof_id
         ) THEN
             RAISE EXCEPTION 'Acesso negado: Você não pode alterar atendimento de outro profissional.';
         END IF;
@@ -493,7 +493,7 @@ BEGIN
             professional_id = v_main_prof_id,
             notes = p_data->>'notes',
             updated_at = NOW()
-        WHERE id = v_app_id AND organization_id = v_org_id;
+        WHERE appointments.id = v_app_id AND organization_id = v_org_id;
     ELSE
         INSERT INTO public.appointments (
             organization_id, client_id, professional_id, appointment_date, finished_at, status, notes, created_by
@@ -521,7 +521,7 @@ BEGIN
         END IF;
 
         SELECT price, counts_for_return_frequency INTO v_svc_price, v_counts_ret
-        FROM public.services WHERE id = v_svc_id AND organization_id = v_org_id AND is_active = TRUE;
+        FROM public.services WHERE services.id = v_svc_id AND organization_id = v_org_id AND is_active = TRUE;
 
         IF v_svc_price IS NULL THEN
             RAISE EXCEPTION 'Erro: Serviço inválido ou inativo nesta organização.';
@@ -529,7 +529,7 @@ BEGIN
 
         IF v_svc_prof_id IS NOT NULL THEN
             IF NOT EXISTS (
-                SELECT 1 FROM public.professionals WHERE id = v_svc_prof_id AND organization_id = v_org_id AND is_active = TRUE
+                SELECT 1 FROM public.professionals WHERE professionals.id = v_svc_prof_id AND organization_id = v_org_id AND is_active = TRUE
             ) THEN
                 RAISE EXCEPTION 'Erro: Profissional do serviço está inativo ou inválido.';
             END IF;
@@ -572,7 +572,7 @@ BEGIN
             IF (v_payment->>'amount')::NUMERIC <= 0 THEN RAISE EXCEPTION 'Erro: Valor de pagamento deve ser positivo.'; END IF;
 
             IF NOT EXISTS (
-                SELECT 1 FROM public.payment_methods WHERE id = (v_payment->>'payment_method_id')::UUID AND organization_id = v_org_id AND is_active = TRUE
+                SELECT 1 FROM public.payment_methods WHERE payment_methods.id = (v_payment->>'payment_method_id')::UUID AND organization_id = v_org_id AND is_active = TRUE
             ) THEN
                 RAISE EXCEPTION 'Erro: Forma de pagamento inválida nesta organização.';
             END IF;
@@ -606,7 +606,7 @@ BEGIN
         status = 'completed',
         finished_at = v_finished_at,
         updated_at = NOW()
-    WHERE id = v_app_id AND organization_id = v_org_id;
+    WHERE appointments.id = v_app_id AND organization_id = v_org_id;
 
     -- 10. Recalcular Métricas do Cliente
     PERFORM public.recalculate_client_metrics(v_client_id, v_org_id);

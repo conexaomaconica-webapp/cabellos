@@ -1,5 +1,5 @@
 import { createClient, getActiveOrganizationId } from '@/lib/supabase/server';
-import { NewAppointmentForm } from '@/components/appointments/NewAppointmentForm';
+import { NewAppointmentWrapper } from '@/components/appointments/NewAppointmentWrapper';
 import { Client, Professional, Service, PaymentMethod, ProfessionalService } from '@/types/database';
 
 export default async function NewAppointmentPage() {
@@ -31,11 +31,11 @@ export default async function NewAppointmentPage() {
       <div>
         <h1 className="text-2xl font-bold text-white tracking-tight">Novo Atendimento</h1>
         <p className="text-sm text-slate-400 mt-1">
-          Registre os serviços prestados, profissionais e forma de pagamento
+          Escolha entre Atendimento Rápido por Texto Livre ou Atendimento Manual Detalhado
         </p>
       </div>
 
-      <NewAppointmentForm
+      <NewAppointmentWrapper
         clients={clients}
         professionals={professionals}
         services={services}

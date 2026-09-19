@@ -6,6 +6,7 @@ import { completeAppointmentAction, quickCreateClientAction } from '@/app/(dashb
 import { formatCurrency, formatPhoneNumber } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { CurrencyInput } from '@/components/ui/currency-input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -522,14 +523,9 @@ export function NewAppointmentForm({
                     >
                       <span className="text-xs font-medium text-slate-200">{pm.name}</span>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-slate-400">R$</span>
-                        <Input
-                          type="number"
-                          step="0.5"
-                          min="0"
-                          value={currentAmount || ''}
-                          onChange={(e) => {
-                            const val = parseFloat(e.target.value) || 0;
+                        <CurrencyInput
+                          value={currentAmount}
+                          onChangeValue={(val) => {
                             setPayments((prev) => {
                               const filtered = prev.filter((p) => p.paymentMethodId !== pm.id);
                               if (val > 0) {
@@ -538,8 +534,7 @@ export function NewAppointmentForm({
                               return filtered;
                             });
                           }}
-                          placeholder="0.00"
-                          className="h-9 w-28 bg-slate-800 border-slate-700 text-white text-xs text-right"
+                          className="h-9 w-32 bg-slate-800 border-slate-700 text-white text-xs text-right font-semibold"
                         />
                       </div>
                     </div>

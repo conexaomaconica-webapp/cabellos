@@ -150,7 +150,7 @@ BEGIN
         total_spent = v_spent,
         average_ticket = v_avg,
         updated_at = NOW()
-    WHERE id = p_client_id AND organization_id = p_org_id;
+    WHERE clients.id = p_client_id AND clients.organization_id = p_org_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp;
 
@@ -205,7 +205,7 @@ BEGIN
 
     SELECT role INTO v_user_role
     FROM public.organization_users
-    WHERE organization_id = v_org_id AND user_id = v_user_id AND is_active = TRUE;
+    WHERE organization_users.organization_id = v_org_id AND organization_users.user_id = v_user_id AND organization_users.is_active = TRUE;
 
     IF v_user_role IS NULL THEN
         RAISE EXCEPTION 'Acesso negado: Perfil do usuário não encontrado nesta organização.';
@@ -213,9 +213,9 @@ BEGIN
 
     -- Se papel for professional, mapear profissionais.user_id = auth.uid()
     IF v_user_role = 'professional' THEN
-        SELECT id INTO v_linked_prof_id
+        SELECT professionals.id INTO v_linked_prof_id
         FROM public.professionals
-        WHERE user_id = v_user_id AND organization_id = v_org_id AND is_active = TRUE;
+        WHERE professionals.user_id = v_user_id AND professionals.organization_id = v_org_id AND professionals.is_active = TRUE;
 
         IF v_linked_prof_id IS NULL THEN
             RAISE EXCEPTION 'Acesso negado: O usuário não possui cadastro de profissional ativo nesta organização.';
@@ -231,17 +231,17 @@ BEGIN
     END IF;
 
     -- 3. Obter Timezone da Organização
-    SELECT COALESCE(timezone, 'America/Sao_Paulo') INTO v_tz FROM public.organizations WHERE id = v_org_id;
+    SELECT COALESCE(timezone, 'America/Sao_Paulo') INTO v_tz FROM public.organizations WHERE organizations.id = v_org_id;
     v_op_date := (v_finished_at AT TIME ZONE v_tz)::DATE;
 
     -- 4. Validar Cliente
-    IF NOT EXISTS (SELECT 1 FROM public.clients WHERE id = v_client_id AND organization_id = v_org_id AND is_active = TRUE) THEN
+    IF NOT EXISTS (SELECT 1 FROM public.clients WHERE clients.id = v_client_id AND clients.organization_id = v_org_id AND clients.is_active = TRUE) THEN
         RAISE EXCEPTION 'Erro: Cliente inválido ou inativo nesta organização.';
     END IF;
 
     -- 5. Validar Profissional Principal se informado
     IF v_main_prof_id IS NOT NULL THEN
-        IF NOT EXISTS (SELECT 1 FROM public.professionals WHERE id = v_main_prof_id AND organization_id = v_org_id AND is_active = TRUE) THEN
+        IF NOT EXISTS (SELECT 1 FROM public.professionals WHERE professionals.id = v_main_prof_id AND professionals.organization_id = v_org_id AND professionals.is_active = TRUE) THEN
             RAISE EXCEPTION 'Erro: Profissional principal inválido ou inativo nesta organização.';
         END IF;
     END IF;
@@ -251,7 +251,7 @@ BEGIN
         v_app_id := (p_data->>'appointment_id')::UUID;
         SELECT status INTO v_curr_status
         FROM public.appointments
-        WHERE id = v_app_id AND organization_id = v_org_id;
+        WHERE appointments.id = v_app_id AND appointments.organization_id = v_org_id;
 
         IF v_curr_status IS NULL THEN
             RAISE EXCEPTION 'Erro: Atendimento informado não foi encontrado nesta organização.';
@@ -266,7 +266,7 @@ BEGIN
         END IF;
 
         IF v_user_role = 'professional' AND EXISTS (
-            SELECT 1 FROM public.appointments WHERE id = v_app_id AND professional_id != v_linked_prof_id
+            SELECT 1 FROM public.appointments WHERE appointments.id = v_app_id AND appointments.professional_id != v_linked_prof_id
         ) THEN
             RAISE EXCEPTION 'Acesso negado: Você não pode alterar atendimento de outro profissional.';
         END IF;
@@ -276,7 +276,7 @@ BEGIN
             professional_id = v_main_prof_id,
             notes = p_data->>'notes',
             updated_at = NOW()
-        WHERE id = v_app_id AND organization_id = v_org_id;
+        WHERE appointments.id = v_app_id AND appointments.organization_id = v_org_id;
     ELSE
         INSERT INTO public.appointments (
             organization_id, client_id, professional_id, appointment_date, finished_at, status, notes, created_by
@@ -305,7 +305,7 @@ BEGIN
 
         -- Validar Serviço no Tenant
         SELECT price, counts_for_return_frequency INTO v_svc_price, v_counts_ret
-        FROM public.services WHERE id = v_svc_id AND organization_id = v_org_id AND is_active = TRUE;
+        FROM public.services WHERE services.id = v_svc_id AND services.organization_id = v_org_id AND services.is_active = TRUE;
 
         IF v_svc_price IS NULL THEN
             RAISE EXCEPTION 'Erro: Serviço inválido ou inativo nesta organização.';
@@ -314,7 +314,7 @@ BEGIN
         -- Validar Profissional Ativo do Item
         IF v_svc_prof_id IS NOT NULL THEN
             IF NOT EXISTS (
-                SELECT 1 FROM public.professionals WHERE id = v_svc_prof_id AND organization_id = v_org_id AND is_active = TRUE
+                SELECT 1 FROM public.professionals WHERE professionals.id = v_svc_prof_id AND professionals.organization_id = v_org_id AND professionals.is_active = TRUE
             ) THEN
                 RAISE EXCEPTION 'Erro: Profissional do serviço está inativo ou inválido.';
             END IF;
@@ -358,7 +358,7 @@ BEGIN
             IF (v_payment->>'amount')::NUMERIC <= 0 THEN RAISE EXCEPTION 'Erro: Valor de pagamento deve ser positivo.'; END IF;
 
             IF NOT EXISTS (
-                SELECT 1 FROM public.payment_methods WHERE id = (v_payment->>'payment_method_id')::UUID AND organization_id = v_org_id AND is_active = TRUE
+                SELECT 1 FROM public.payment_methods WHERE payment_methods.id = (v_payment->>'payment_method_id')::UUID AND payment_methods.organization_id = v_org_id AND payment_methods.is_active = TRUE
             ) THEN
                 RAISE EXCEPTION 'Erro: Forma de pagamento inválida nesta organização.';
             END IF;
@@ -393,7 +393,7 @@ BEGIN
         status = 'completed',
         finished_at = v_finished_at,
         updated_at = NOW()
-    WHERE id = v_app_id AND organization_id = v_org_id;
+    WHERE appointments.id = v_app_id AND appointments.organization_id = v_org_id;
 
     -- 10. Recalcular Métricas do Cliente
     PERFORM public.recalculate_client_metrics(v_client_id, v_org_id);
@@ -428,7 +428,7 @@ BEGIN
     END IF;
 
     SELECT organization_id, client_id, status, professional_id INTO v_org_id, v_client_id, v_curr_status, v_app_prof_id
-    FROM public.appointments WHERE id = p_appointment_id;
+    FROM public.appointments WHERE appointments.id = p_appointment_id;
 
     IF v_org_id IS NULL THEN RAISE EXCEPTION 'Atendimento não encontrado.'; END IF;
     IF NOT public.user_belongs_to_org(v_org_id) THEN RAISE EXCEPTION 'Acesso negado.'; END IF;
@@ -439,7 +439,7 @@ BEGIN
 
     -- Professional não pode cancelar atendimentos já concluídos
     IF v_user_role = 'professional' THEN
-        SELECT id INTO v_linked_prof_id FROM public.professionals WHERE user_id = v_user_id AND organization_id = v_org_id AND is_active = TRUE;
+        SELECT professionals.id INTO v_linked_prof_id FROM public.professionals WHERE professionals.user_id = v_user_id AND professionals.organization_id = v_org_id AND professionals.is_active = TRUE;
         IF v_app_prof_id != v_linked_prof_id THEN
             RAISE EXCEPTION 'Acesso negado: Profissional só pode cancelar os seus próprios atendimentos em aberto.';
         END IF;
@@ -457,7 +457,7 @@ BEGIN
         status = 'cancelled',
         notes = CASE WHEN p_reason IS NOT NULL THEN COALESCE(notes || ' | Motivo cancelamento: ', '') || p_reason ELSE notes END,
         updated_at = NOW()
-    WHERE id = p_appointment_id AND organization_id = v_org_id;
+    WHERE appointments.id = p_appointment_id AND appointments.organization_id = v_org_id;
 
     -- Soft void dos pagamentos efetuados
     UPDATE public.appointment_payments SET
@@ -478,17 +478,17 @@ GRANT EXECUTE ON FUNCTION public.cancel_appointment TO authenticated;
 
 -- 7. BACKFILL E SEED DE FORMAS DE PAGAMENTO
 INSERT INTO public.payment_methods (organization_id, name, type, sort_order)
-SELECT id, 'Dinheiro', 'cash', 1 FROM public.organizations
+SELECT organizations.id, 'Dinheiro', 'cash', 1 FROM public.organizations
 ON CONFLICT (organization_id, name) DO NOTHING;
 
 INSERT INTO public.payment_methods (organization_id, name, type, sort_order)
-SELECT id, 'PIX', 'pix', 2 FROM public.organizations
+SELECT organizations.id, 'PIX', 'pix', 2 FROM public.organizations
 ON CONFLICT (organization_id, name) DO NOTHING;
 
 INSERT INTO public.payment_methods (organization_id, name, type, sort_order)
-SELECT id, 'Cartão de Débito', 'debit_card', 3 FROM public.organizations
+SELECT organizations.id, 'Cartão de Débito', 'debit_card', 3 FROM public.organizations
 ON CONFLICT (organization_id, name) DO NOTHING;
 
 INSERT INTO public.payment_methods (organization_id, name, type, sort_order)
-SELECT id, 'Cartão de Crédito', 'credit_card', 4 FROM public.organizations
+SELECT organizations.id, 'Cartão de Crédito', 'credit_card', 4 FROM public.organizations
 ON CONFLICT (organization_id, name) DO NOTHING;
