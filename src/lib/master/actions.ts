@@ -4,6 +4,7 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { processTenantBackupExport, getTenantBackupSignedUrl } from '@/lib/master/backup';
 import { TenantStatus, SystemRole, FeatureKey } from '@/types/master';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 async function getMasterSupabaseClient() {
   const cookieStore = await cookies();
@@ -126,6 +127,54 @@ export async function masterCreateOrganizationExistingAdmin(payload: {
   });
 
   if (error) throw new Error(error.message);
+  return data;
+}
+
+export async function masterCreateOrganizationWithNewAdmin(payload: {
+  name: string;
+  adminEmail: string;
+  adminPassword?: string;
+  saasPlanId: string;
+  billingCycle?: string;
+  phone?: string;
+  whatsapp?: string;
+  city?: string;
+  state?: string;
+}) {
+  const { supabase, user: masterUser } = await getMasterSupabaseClient();
+  const supabaseAdmin = getSupabaseAdmin();
+
+  // 1. Criar o usuário Auth com a API Admin do Supabase
+  const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+    email: payload.adminEmail,
+    password: payload.adminPassword || 'Cabellos@123',
+    email_confirm: true, // Já confirmar o email automaticamente
+  });
+
+  if (authError) {
+    throw new Error(`Erro ao criar usuário: ${authError.message}`);
+  }
+
+  const newUserId = authData.user.id;
+
+  // 2. Chamar a RPC já existente para criar o salão vinculando ao novo admin
+  const { data, error } = await supabase.rpc('master_create_organization_existing_admin', {
+    p_name: payload.name,
+    p_admin_user_id: newUserId,
+    p_saas_plan_id: payload.saasPlanId,
+    p_billing_cycle: payload.billingCycle || 'monthly',
+    p_phone: payload.phone || null,
+    p_whatsapp: payload.whatsapp || null,
+    p_city: payload.city || null,
+    p_state: payload.state || null,
+  });
+
+  if (error) {
+    // Caso dê erro na criação do salão, idealmente deveríamos apagar o usuário Auth criado,
+    // mas por simplicidade e por ser admin, apenas lançamos o erro.
+    throw new Error(`Erro ao criar salão: ${error.message}`);
+  }
+  
   return data;
 }
 

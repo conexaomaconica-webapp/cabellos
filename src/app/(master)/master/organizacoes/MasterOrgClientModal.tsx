@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { masterCreateOrganizationExistingAdmin } from '@/lib/master/actions';
-import { PlusCircle, Building2, UserCheck, CreditCard, AlertCircle } from 'lucide-react';
+import { masterCreateOrganizationExistingAdmin, masterCreateOrganizationWithNewAdmin } from '@/lib/master/actions';
+import { PlusCircle, Building2, UserCheck, CreditCard, AlertCircle, Mail, Key } from 'lucide-react';
 
 export default function MasterOrgClientModal({ plans, users }: { plans: any[]; users: any[] }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,9 +11,13 @@ export default function MasterOrgClientModal({ plans, users }: { plans: any[]; u
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
+  const [mode, setMode] = useState<'existing' | 'new'>('existing');
+
   const [formData, setFormData] = useState({
     name: '',
     adminUserId: users[0]?.id || '',
+    adminEmail: '',
+    adminPassword: '',
     saasPlanId: plans[0]?.id || '',
     billingCycle: 'monthly',
     phone: '',
@@ -28,21 +32,37 @@ export default function MasterOrgClientModal({ plans, users }: { plans: any[]; u
     setError(null);
 
     try {
-      await masterCreateOrganizationExistingAdmin({
-        name: formData.name,
-        adminUserId: formData.adminUserId,
-        saasPlanId: formData.saasPlanId,
-        billingCycle: formData.billingCycle,
-        phone: formData.phone || undefined,
-        whatsapp: formData.whatsapp || undefined,
-        city: formData.city || undefined,
-        state: formData.state || undefined,
-      });
+      if (mode === 'existing') {
+        await masterCreateOrganizationExistingAdmin({
+          name: formData.name,
+          adminUserId: formData.adminUserId,
+          saasPlanId: formData.saasPlanId,
+          billingCycle: formData.billingCycle,
+          phone: formData.phone || undefined,
+          whatsapp: formData.whatsapp || undefined,
+          city: formData.city || undefined,
+          state: formData.state || undefined,
+        });
+      } else {
+        await masterCreateOrganizationWithNewAdmin({
+          name: formData.name,
+          adminEmail: formData.adminEmail,
+          adminPassword: formData.adminPassword || undefined,
+          saasPlanId: formData.saasPlanId,
+          billingCycle: formData.billingCycle,
+          phone: formData.phone || undefined,
+          whatsapp: formData.whatsapp || undefined,
+          city: formData.city || undefined,
+          state: formData.state || undefined,
+        });
+      }
 
       setIsOpen(false);
       setFormData({
         name: '',
         adminUserId: users[0]?.id || '',
+        adminEmail: '',
+        adminPassword: '',
         saasPlanId: plans[0]?.id || '',
         billingCycle: 'monthly',
         phone: '',
@@ -73,7 +93,7 @@ export default function MasterOrgClientModal({ plans, users }: { plans: any[]; u
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-lg p-6 space-y-6 shadow-2xl animate-in fade-in-50">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
               <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <Building2 className="h-5 w-5 text-purple-400" /> Criar Salão (Cenário A - Admin Existente)
+                <Building2 className="h-5 w-5 text-purple-400" /> Criar Novo Salão
               </h2>
               <button
                 onClick={() => setIsOpen(false)}
@@ -105,23 +125,74 @@ export default function MasterOrgClientModal({ plans, users }: { plans: any[]; u
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase mb-1 flex items-center gap-1">
-                  <UserCheck className="h-3.5 w-3.5 text-purple-400" /> Usuário Administrador Existente *
-                </label>
-                <select
-                  required
-                  value={formData.adminUserId}
-                  onChange={(e) => setFormData({ ...formData, adminUserId: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:border-purple-500 outline-none"
+              <div className="flex bg-slate-100 dark:bg-slate-800 rounded-lg p-1 gap-1">
+                <button
+                  type="button"
+                  onClick={() => setMode('existing')}
+                  className={`flex-1 text-xs font-bold py-2 rounded-md transition-colors ${
+                    mode === 'existing' ? 'bg-white dark:bg-slate-900 shadow text-purple-600' : 'text-slate-500 hover:text-slate-700'
+                  }`}
                 >
-                  {users.map((u) => (
-                    <option key={u.id} value={u.id}>
-                      {u.full_name || u.email} ({u.email})
-                    </option>
-                  ))}
-                </select>
+                  Admin Existente
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMode('new')}
+                  className={`flex-1 text-xs font-bold py-2 rounded-md transition-colors ${
+                    mode === 'new' ? 'bg-white dark:bg-slate-900 shadow text-purple-600' : 'text-slate-500 hover:text-slate-700'
+                  }`}
+                >
+                  Novo Admin
+                </button>
               </div>
+
+              {mode === 'existing' ? (
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase mb-1 flex items-center gap-1">
+                    <UserCheck className="h-3.5 w-3.5 text-purple-400" /> Usuário Administrador Existente *
+                  </label>
+                  <select
+                    required
+                    value={formData.adminUserId}
+                    onChange={(e) => setFormData({ ...formData, adminUserId: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:border-purple-500 outline-none"
+                  >
+                    {users.map((u) => (
+                      <option key={u.id} value={u.id}>
+                        {u.full_name || u.email} ({u.email})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 bg-purple-50 dark:bg-purple-900/10 rounded-xl border border-purple-100 dark:border-purple-900/30">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase mb-1 flex items-center gap-1">
+                      <Mail className="h-3.5 w-3.5 text-purple-400" /> Email do Novo Admin *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.adminEmail}
+                      onChange={(e) => setFormData({ ...formData, adminEmail: e.target.value })}
+                      placeholder="admin@salao.com"
+                      className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:border-purple-500 outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase mb-1 flex items-center gap-1">
+                      <Key className="h-3.5 w-3.5 text-purple-400" /> Senha Temporária
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.adminPassword}
+                      onChange={(e) => setFormData({ ...formData, adminPassword: e.target.value })}
+                      placeholder="Padrão: Cabellos@123"
+                      className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:border-purple-500 outline-none"
+                    />
+                  </div>
+                </div>
+              )}
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase mb-1 flex items-center gap-1">
