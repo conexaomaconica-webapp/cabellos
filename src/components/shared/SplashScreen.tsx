@@ -45,6 +45,7 @@ export default function SplashScreen({
     }, maxDurationMs);
 
     return () => clearTimeout(maxTimer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [maxDurationMs]);
 
   const handleClose = () => {
@@ -65,7 +66,7 @@ export default function SplashScreen({
 
   return (
     <div
-      className={`fixed inset-0 z-[100] bg-slate-100 dark:bg-slate-950 flex flex-col items-center justify-center p-6 transition-opacity duration-500 ${
+      className={`fixed inset-0 z-[100] bg-slate-100 dark:bg-slate-950 flex flex-col items-center justify-center transition-opacity duration-500 ${
         fadingOut ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
@@ -78,7 +79,7 @@ export default function SplashScreen({
             playsInline
             onEnded={handleClose}
             onError={() => setMediaError(true)}
-            className="max-w-full max-h-[70vh] object-contain rounded-2xl shadow-2xl"
+            className="w-full h-full object-cover"
           >
             <source src={splashMedia.public_url} type={splashMedia.mime_type || 'video/mp4'} />
           </video>
@@ -90,7 +91,7 @@ export default function SplashScreen({
             onLoad={() => {
               setTimeout(handleClose, minDurationMs);
             }}
-            className="max-w-full max-h-[70vh] object-contain rounded-2xl shadow-2xl animate-pulse"
+            className="w-full h-full object-cover animate-pulse"
           />
         )
       ) : (
