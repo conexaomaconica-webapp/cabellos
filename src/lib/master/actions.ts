@@ -166,7 +166,7 @@ export async function masterCreateOrganizationWithNewAdmin(payload: {
     const { error: profileError } = await supabaseAdmin.from('profiles').insert({
       id: newUserId,
       email: payload.adminEmail,
-      full_name: `Admin - ${payload.name}`,
+      name: `Admin - ${payload.name}`,
       system_role: 'user', // Papel no sistema é user. O papel na org (admin) será setado pela RPC.
     });
 
