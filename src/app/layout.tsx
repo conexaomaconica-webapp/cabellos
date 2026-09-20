@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Cabellos — Gestão de Salões & Retenção de Clientes',
   description: 'Plataforma SaaS de gestão para salões de beleza, barbearias e estética.',
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export default function RootLayout({

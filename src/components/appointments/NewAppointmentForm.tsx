@@ -391,13 +391,13 @@ export function NewAppointmentForm({
                         </Button>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div>
-                          <label className="text-[11px] text-slate-500 dark:text-slate-400">Profissional Executante</label>
+                      <div className="flex flex-col sm:grid sm:grid-cols-3 gap-4">
+                        <div className="w-full">
+                          <label className="text-[11px] text-slate-500 dark:text-slate-400 font-semibold mb-1 block">Profissional Executante</label>
                           <select
                             value={item.professionalId}
                             onChange={(e) => handleUpdateItem(idx, 'professionalId', e.target.value)}
-                            className="w-full h-9 px-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-purple-500"
+                            className="w-full h-11 px-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-amber-500 transition-colors"
                           >
                             {professionals
                               .filter((p) => linkedProfIds.includes(p.id))
@@ -578,9 +578,9 @@ export function NewAppointmentForm({
             </div>
           </div>
 
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <Link href="/atendimentos" className="w-1/2 sm:w-auto">
-              <Button type="button" variant="secondary" className="w-full bg-slate-50 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300">
+          <div className="flex flex-col sm:flex-row items-center gap-3 w-full mt-4">
+            <Link href="/atendimentos" className="w-full sm:w-auto">
+              <Button type="button" variant="secondary" className="w-full h-12 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl">
                 Cancelar
               </Button>
             </Link>
@@ -588,10 +588,10 @@ export function NewAppointmentForm({
               type="button"
               onClick={handleSubmit}
               disabled={loading}
-              className="w-1/2 sm:w-auto h-12 px-8 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-base shadow-xl"
+              className="w-full sm:flex-1 h-12 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-base shadow-xl rounded-xl"
             >
               {loading ? (
-                <span className="flex items-center gap-2">
+                <span className="flex items-center justify-center gap-2">
                   <Loader2 className="h-5 w-5 animate-spin" /> Concluindo...
                 </span>
               ) : (
