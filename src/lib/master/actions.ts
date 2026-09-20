@@ -247,15 +247,25 @@ export async function masterManageUserSystemRole(targetUserId: string, newRole: 
 }
 export async function masterDeleteOrganization(orgId: string) {
   try {
-    const { supabase, user } = await getMasterSupabaseClient();
+    const { user } = await getMasterSupabaseClient(); // Apenas para validar se é master
+    const supabaseAdmin = getSupabaseAdmin(); // Usa o admin para bypass de RLS e FK em auditoria
     
-    const { error } = await supabase.from('organizations').delete().eq('id', orgId);
+    // 1. Remover a referência em master_audit_logs para evitar erro de Foreign Key
+    // (A tabela master_audit_logs não tem ON DELETE CASCADE para manter histórico)
+    await supabaseAdmin
+      .from('master_audit_logs')
+      .update({ organization_id: null })
+      .eq('organization_id', orgId);
+
+    // 2. Excluir a organização (as outras tabelas como clients, professionals têm ON DELETE CASCADE)
+    const { error } = await supabaseAdmin.from('organizations').delete().eq('id', orgId);
     
     if (error) {
       return { error: `Erro ao excluir salão: ${error.message}` };
     }
 
-    await supabase.from('master_audit_logs').insert({
+    // 3. Registrar a exclusão na auditoria global (sem o organization_id que acabou de ser apagado)
+    await supabaseAdmin.from('master_audit_logs').insert({
       master_user_id: user.id,
       action: 'delete_organization',
       entity_type: 'organization',
