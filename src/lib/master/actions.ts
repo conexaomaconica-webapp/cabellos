@@ -114,20 +114,24 @@ export async function masterCreateOrganizationExistingAdmin(payload: {
   city?: string;
   state?: string;
 }) {
-  const { supabase } = await getMasterSupabaseClient();
-  const { data, error } = await supabase.rpc('master_create_organization_existing_admin', {
-    p_name: payload.name,
-    p_admin_user_id: payload.adminUserId,
-    p_saas_plan_id: payload.saasPlanId,
-    p_billing_cycle: payload.billingCycle || 'monthly',
-    p_phone: payload.phone || null,
-    p_whatsapp: payload.whatsapp || null,
-    p_city: payload.city || null,
-    p_state: payload.state || null,
-  });
+  try {
+    const { supabase } = await getMasterSupabaseClient();
+    const { data, error } = await supabase.rpc('master_create_organization_existing_admin', {
+      p_name: payload.name,
+      p_admin_user_id: payload.adminUserId,
+      p_saas_plan_id: payload.saasPlanId,
+      p_billing_cycle: payload.billingCycle || 'monthly',
+      p_phone: payload.phone || null,
+      p_whatsapp: payload.whatsapp || null,
+      p_city: payload.city || null,
+      p_state: payload.state || null,
+    });
 
-  if (error) throw new Error(error.message);
-  return data;
+    if (error) return { error: error.message };
+    return { success: true, data };
+  } catch (err: any) {
+    return { error: err.message || 'Erro inesperado' };
+  }
 }
 
 export async function masterCreateOrganizationWithNewAdmin(payload: {
@@ -141,41 +145,43 @@ export async function masterCreateOrganizationWithNewAdmin(payload: {
   city?: string;
   state?: string;
 }) {
-  const { supabase, user: masterUser } = await getMasterSupabaseClient();
-  const supabaseAdmin = getSupabaseAdmin();
+  try {
+    const { supabase, user: masterUser } = await getMasterSupabaseClient();
+    const supabaseAdmin = getSupabaseAdmin();
 
-  // 1. Criar o usuário Auth com a API Admin do Supabase
-  const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
-    email: payload.adminEmail,
-    password: payload.adminPassword || 'Cabellos@123',
-    email_confirm: true, // Já confirmar o email automaticamente
-  });
+    // 1. Criar o usuário Auth com a API Admin do Supabase
+    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+      email: payload.adminEmail,
+      password: payload.adminPassword || 'Cabellos@123',
+      email_confirm: true, // Já confirmar o email automaticamente
+    });
 
-  if (authError) {
-    throw new Error(`Erro ao criar usuário: ${authError.message}`);
+    if (authError) {
+      return { error: `Erro ao criar usuário: ${authError.message}` };
+    }
+
+    const newUserId = authData.user.id;
+
+    // 2. Chamar a RPC já existente para criar o salão vinculando ao novo admin
+    const { data, error } = await supabase.rpc('master_create_organization_existing_admin', {
+      p_name: payload.name,
+      p_admin_user_id: newUserId,
+      p_saas_plan_id: payload.saasPlanId,
+      p_billing_cycle: payload.billingCycle || 'monthly',
+      p_phone: payload.phone || null,
+      p_whatsapp: payload.whatsapp || null,
+      p_city: payload.city || null,
+      p_state: payload.state || null,
+    });
+
+    if (error) {
+      return { error: `Erro ao criar salão: ${error.message}` };
+    }
+    
+    return { success: true, data };
+  } catch (err: any) {
+    return { error: err.message || 'Erro inesperado' };
   }
-
-  const newUserId = authData.user.id;
-
-  // 2. Chamar a RPC já existente para criar o salão vinculando ao novo admin
-  const { data, error } = await supabase.rpc('master_create_organization_existing_admin', {
-    p_name: payload.name,
-    p_admin_user_id: newUserId,
-    p_saas_plan_id: payload.saasPlanId,
-    p_billing_cycle: payload.billingCycle || 'monthly',
-    p_phone: payload.phone || null,
-    p_whatsapp: payload.whatsapp || null,
-    p_city: payload.city || null,
-    p_state: payload.state || null,
-  });
-
-  if (error) {
-    // Caso dê erro na criação do salão, idealmente deveríamos apagar o usuário Auth criado,
-    // mas por simplicidade e por ser admin, apenas lançamos o erro.
-    throw new Error(`Erro ao criar salão: ${error.message}`);
-  }
-  
-  return data;
 }
 
 export async function masterSetOrganizationStatus(orgId: string, newStatus: TenantStatus, reason?: string) {
@@ -220,6 +226,28 @@ export async function masterManageUserSystemRole(targetUserId: string, newRole: 
   if (error) throw new Error(error.message);
   return data;
 }
+export async function masterDeleteOrganization(orgId: string) {
+  try {
+    const { supabase, user } = await getMasterSupabaseClient();
+    
+    const { error } = await supabase.from('organizations').delete().eq('id', orgId);
+    
+    if (error) {
+      return { error: `Erro ao excluir salão: ${error.message}` };
+    }
+
+    await supabase.from('master_audit_logs').insert({
+      master_user_id: user.id,
+      action: 'delete_organization',
+      entity_type: 'organization',
+      entity_id: orgId,
+    });
+
+    return { success: true };
+  } catch (err: any) {
+    return { error: err.message || 'Erro inesperado' };
+  }
+}
 
 export async function fetchSaasPlans() {
   const { supabase } = await getMasterSupabaseClient();
@@ -244,44 +272,48 @@ export async function createSaasPlan(payload: {
   max_clients: number;
   features: Record<FeatureKey, boolean>;
 }) {
-  const { supabase, user } = await getMasterSupabaseClient();
-  
-  const { data: plan, error: planErr } = await supabase
-    .from('saas_plans')
-    .insert({
-      name: payload.name,
-      slug: payload.slug,
-      description: payload.description || null,
-      monthly_price: payload.monthly_price,
-      yearly_price: payload.yearly_price,
-      trial_days: payload.trial_days,
-      max_users: payload.max_users,
-      max_professionals: payload.max_professionals,
-      max_clients: payload.max_clients,
-      is_active: true,
-    })
-    .select()
-    .single();
+  try {
+    const { supabase, user } = await getMasterSupabaseClient();
+    
+    const { data: plan, error: planErr } = await supabase
+      .from('saas_plans')
+      .insert({
+        name: payload.name,
+        slug: payload.slug,
+        description: payload.description || null,
+        monthly_price: payload.monthly_price,
+        yearly_price: payload.yearly_price,
+        trial_days: payload.trial_days,
+        max_users: payload.max_users,
+        max_professionals: payload.max_professionals,
+        max_clients: payload.max_clients,
+        is_active: true,
+      })
+      .select()
+      .single();
 
-  if (planErr || !plan) throw new Error(planErr?.message || 'Erro ao criar plano.');
+    if (planErr || !plan) return { error: planErr?.message || 'Erro ao criar plano.' };
 
-  const featureInserts = Object.entries(payload.features).map(([key, enabled]) => ({
-    plan_id: plan.id,
-    feature_key: key,
-    enabled,
-  }));
+    const featureInserts = Object.entries(payload.features).map(([key, enabled]) => ({
+      plan_id: plan.id,
+      feature_key: key,
+      enabled,
+    }));
 
-  await supabase.from('saas_plan_features').insert(featureInserts);
+    await supabase.from('saas_plan_features').insert(featureInserts);
 
-  await supabase.from('master_audit_logs').insert({
-    master_user_id: user.id,
-    action: 'create_saas_plan',
-    entity_type: 'saas_plan',
-    entity_id: plan.id,
-    after_data: { name: payload.name, slug: payload.slug },
-  });
+    await supabase.from('master_audit_logs').insert({
+      master_user_id: user.id,
+      action: 'create_saas_plan',
+      entity_type: 'saas_plan',
+      entity_id: plan.id,
+      details: payload,
+    });
 
-  return plan;
+    return { success: true, plan };
+  } catch (err: any) {
+    return { error: err.message || 'Erro inesperado' };
+  }
 }
 
 export async function updateSaasPlan(planId: string, payload: {
@@ -313,7 +345,7 @@ export async function updateSaasPlan(planId: string, payload: {
     })
     .eq('id', planId);
 
-  if (planErr) throw new Error(planErr.message || 'Erro ao atualizar plano.');
+  if (planErr) return { error: planErr.message || 'Erro ao atualizar plano.' };
 
   // Delete all existing features and re-insert (easiest way to sync)
   await supabase.from('saas_plan_features').delete().eq('plan_id', planId);
@@ -337,33 +369,41 @@ export async function updateSaasPlan(planId: string, payload: {
 }
 
 export async function toggleSaasPlanStatus(planId: string, isActive: boolean) {
-  const { supabase, user } = await getMasterSupabaseClient();
-  const { error } = await supabase.from('saas_plans').update({ is_active: isActive }).eq('id', planId);
-  if (error) throw new Error(error.message);
-  
-  await supabase.from('master_audit_logs').insert({
-    master_user_id: user.id,
-    action: isActive ? 'activate_saas_plan' : 'deactivate_saas_plan',
-    entity_type: 'saas_plan',
-    entity_id: planId,
-  });
-  
-  return { success: true };
+  try {
+    const { supabase, user } = await getMasterSupabaseClient();
+    const { error } = await supabase.from('saas_plans').update({ is_active: isActive }).eq('id', planId);
+    if (error) return { error: error.message };
+    
+    await supabase.from('master_audit_logs').insert({
+      master_user_id: user.id,
+      action: isActive ? 'activate_saas_plan' : 'deactivate_saas_plan',
+      entity_type: 'saas_plan',
+      entity_id: planId,
+    });
+    
+    return { success: true };
+  } catch (err: any) {
+    return { error: err.message || 'Erro inesperado' };
+  }
 }
 
 export async function deleteSaasPlan(planId: string) {
-  const { supabase, user } = await getMasterSupabaseClient();
-  const { error } = await supabase.from('saas_plans').delete().eq('id', planId);
-  if (error) throw new Error(`Erro ao excluir plano: ${error.message}`);
-  
-  await supabase.from('master_audit_logs').insert({
-    master_user_id: user.id,
-    action: 'delete_saas_plan',
-    entity_type: 'saas_plan',
-    entity_id: planId,
-  });
-  
-  return { success: true };
+  try {
+    const { supabase, user } = await getMasterSupabaseClient();
+    const { error } = await supabase.from('saas_plans').delete().eq('id', planId);
+    if (error) return { error: `Erro ao excluir plano: ${error.message}` };
+    
+    await supabase.from('master_audit_logs').insert({
+      master_user_id: user.id,
+      action: 'delete_saas_plan',
+      entity_type: 'saas_plan',
+      entity_id: planId,
+    });
+    
+    return { success: true };
+  } catch (err: any) {
+    return { error: err.message || 'Erro inesperado' };
+  }
 }
 
 export async function fetchSubscriptions() {

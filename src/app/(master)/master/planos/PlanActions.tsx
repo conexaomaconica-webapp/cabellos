@@ -15,8 +15,13 @@ export default function PlanActions({ plan }: { plan: any }) {
     startTransition(async () => {
       try {
         setError(null);
-        await toggleSaasPlanStatus(plan.id, !plan.is_active);
-        router.refresh();
+        const res = await toggleSaasPlanStatus(plan.id, !plan.is_active);
+        if (res && res.error) {
+          setError(res.error);
+          alert(res.error);
+        } else {
+          router.refresh();
+        }
       } catch (err: any) {
         setError(err.message);
         alert(err.message);
@@ -32,8 +37,13 @@ export default function PlanActions({ plan }: { plan: any }) {
     startTransition(async () => {
       try {
         setError(null);
-        await deleteSaasPlan(plan.id);
-        router.refresh();
+        const res = await deleteSaasPlan(plan.id);
+        if (res && res.error) {
+          setError(res.error);
+          alert(res.error);
+        } else {
+          router.refresh();
+        }
       } catch (err: any) {
         setError(err.message);
         alert(err.message);

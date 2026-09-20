@@ -46,16 +46,23 @@ export default function MasterPlanClientModal({ planToEdit }: { planToEdit?: any
     setError(null);
 
     try {
+      let res;
       if (planToEdit) {
-        await updateSaasPlan(planToEdit.id, {
+        res = await updateSaasPlan(planToEdit.id, {
           ...formData,
           features,
         });
       } else {
-        await createSaasPlan({
+        res = await createSaasPlan({
           ...formData,
           features,
         });
+      }
+
+      if (res && res.error) {
+        setError(res.error);
+        setLoading(false);
+        return;
       }
 
       setIsOpen(false);

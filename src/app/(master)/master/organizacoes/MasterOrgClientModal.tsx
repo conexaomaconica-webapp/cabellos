@@ -32,8 +32,9 @@ export default function MasterOrgClientModal({ plans, users }: { plans: any[]; u
     setError(null);
 
     try {
+      let res;
       if (mode === 'existing') {
-        await masterCreateOrganizationExistingAdmin({
+        res = await masterCreateOrganizationExistingAdmin({
           name: formData.name,
           adminUserId: formData.adminUserId,
           saasPlanId: formData.saasPlanId,
@@ -44,7 +45,7 @@ export default function MasterOrgClientModal({ plans, users }: { plans: any[]; u
           state: formData.state || '',
         });
       } else {
-        await masterCreateOrganizationWithNewAdmin({
+        res = await masterCreateOrganizationWithNewAdmin({
           name: formData.name,
           adminEmail: formData.adminEmail,
           adminPassword: formData.adminPassword || '',
@@ -55,6 +56,12 @@ export default function MasterOrgClientModal({ plans, users }: { plans: any[]; u
           city: formData.city || '',
           state: formData.state || '',
         });
+      }
+
+      if (res && res.error) {
+        setError(res.error);
+        setLoading(false);
+        return;
       }
 
       setIsOpen(false);

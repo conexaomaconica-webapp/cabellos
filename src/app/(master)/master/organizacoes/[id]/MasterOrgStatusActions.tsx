@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { masterSetOrganizationStatus, triggerTenantBackupAction } from '@/lib/master/actions';
+import { masterSetOrganizationStatus, triggerTenantBackupAction, masterDeleteOrganization } from '@/lib/master/actions';
 import { TenantStatus } from '@/types/master';
-import { CheckCircle2, AlertTriangle, Archive, HardDriveDownload } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, Archive, HardDriveDownload, Trash2 } from 'lucide-react';
 
 export default function MasterOrgStatusActions({
   orgId,
@@ -54,6 +54,29 @@ export default function MasterOrgStatusActions({
     }
   };
 
+  const handleDelete = async () => {
+    const confirmText = prompt('Esta ação irá apagar DEFINITIVAMENTE este salão e todos os dados associados a ele. Para continuar, digite APAGAR:');
+    if (confirmText !== 'APAGAR') {
+      alert('Exclusão cancelada.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await masterDeleteOrganization(orgId);
+      if (res.error) {
+        alert(res.error);
+      } else {
+        router.push('/master/organizacoes');
+        router.refresh();
+      }
+    } catch (err: any) {
+      alert(err.message || 'Falha ao excluir o salão.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-wrap items-center gap-2">
       <button
@@ -96,6 +119,17 @@ export default function MasterOrgStatusActions({
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-950/60 hover:bg-rose-900 border border-rose-800 text-rose-300 text-xs font-medium transition-all"
         >
           <Archive className="h-4 w-4" /> Arquivar
+        </button>
+      )}
+
+      {currentStatus === 'archived' && (
+        <button
+          type="button"
+          disabled={loading}
+          onClick={handleDelete}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-950/60 hover:bg-rose-900 border border-rose-800 text-rose-300 text-xs font-medium transition-all ml-auto"
+        >
+          <Trash2 className="h-4 w-4" /> Excluir Definitivamente
         </button>
       )}
     </div>
