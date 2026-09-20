@@ -252,37 +252,49 @@ export function Sidebar({
         </div>
       </aside>
 
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-2 py-1.5 flex items-center justify-around shadow-2xl transition-colors duration-200">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-2 h-16 flex items-center justify-around shadow-2xl transition-colors duration-200">
         <Link
           href="/dashboard"
-          className={`flex flex-col items-center py-1 px-3 rounded-lg text-[11px] font-medium transition-all ${
+          className={`flex flex-col items-center py-1 px-2 rounded-lg text-[10px] font-medium transition-all w-16 ${
             pathname === '/dashboard' ? 'text-amber-500 dark:text-amber-400 font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
         >
           <LayoutDashboard className="h-5 w-5 mb-0.5" />
           <span>Dashboard</span>
         </Link>
+
         <Link
-          href="/atendimentos"
-          className={`flex flex-col items-center py-1 px-3 rounded-lg text-[11px] font-medium transition-all ${
-            pathname.startsWith('/atendimentos') ? 'text-amber-500 dark:text-amber-400 font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+          href="/retornos"
+          className={`flex flex-col items-center py-1 px-2 rounded-lg text-[10px] font-medium transition-all w-16 ${
+            pathname.startsWith('/retornos') ? 'text-amber-500 dark:text-amber-400 font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
         >
-          <CalendarCheck2 className="h-5 w-5 mb-0.5" />
-          <span>Agenda</span>
+          <Clock className="h-5 w-5 mb-0.5" />
+          <span>Retornos</span>
         </Link>
+
+        {/* BOTÃO CENTRAL ELEVADO - ATENDIMENTO */}
+        <Link
+          href="/atendimentos"
+          className="relative -top-5 flex flex-col items-center justify-center w-16 h-16 rounded-full bg-amber-500 shadow-xl shadow-amber-500/30 border-4 border-white dark:border-slate-900 text-blue-950 hover:bg-amber-400 transition-transform active:scale-95"
+        >
+          <CalendarCheck2 className="h-6 w-6" />
+          <span className="text-[9px] font-extrabold mt-0.5 tracking-tight">Atender</span>
+        </Link>
+
         <Link
           href="/clientes"
-          className={`flex flex-col items-center py-1 px-3 rounded-lg text-[11px] font-medium transition-all ${
+          className={`flex flex-col items-center py-1 px-2 rounded-lg text-[10px] font-medium transition-all w-16 ${
             pathname.startsWith('/clientes') ? 'text-amber-500 dark:text-amber-400 font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
         >
           <Users className="h-5 w-5 mb-0.5" />
           <span>Clientes</span>
         </Link>
+
         <button
           onClick={() => setIsMobileSidebarOpen(true)}
-          className={`flex flex-col items-center py-1 px-3 rounded-lg text-[11px] font-medium transition-all text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200`}
+          className={`flex flex-col items-center py-1 px-2 rounded-lg text-[10px] font-medium transition-all w-16 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200`}
         >
           <Menu className="h-5 w-5 mb-0.5" />
           <span>Menu</span>
