@@ -59,8 +59,10 @@ export async function fetchGlobalKPIs() {
 }
 
 export async function fetchOrganizations(filters?: { status?: string; q?: string }) {
-  const { supabase } = await getMasterSupabaseClient();
-  let query = supabase
+  await getMasterSupabaseClient(); // Apenas para validar se o usuário é master
+  const supabaseAdmin = getSupabaseAdmin();
+
+  let query = supabaseAdmin
     .from('organizations')
     .select('*, organization_subscriptions(*, saas_plans(*))')
     .order('created_at', { ascending: false });
@@ -79,7 +81,8 @@ export async function fetchOrganizations(filters?: { status?: string; q?: string
 }
 
 export async function fetchOrganizationDetail(orgId: string) {
-  const { supabase } = await getMasterSupabaseClient();
+  await getMasterSupabaseClient(); // Valida se é master
+  const supabaseAdmin = getSupabaseAdmin();
   
   const [
     { data: org },
@@ -88,11 +91,11 @@ export async function fetchOrganizationDetail(orgId: string) {
     { data: backups },
     { data: auditLogs },
   ] = await Promise.all([
-    supabase.from('organizations').select('*').eq('id', orgId).single(),
-    supabase.from('organization_users').select('*, profiles(*)').eq('organization_id', orgId),
-    supabase.from('organization_subscriptions').select('*, saas_plans(*)').eq('organization_id', orgId).single(),
-    supabase.from('tenant_backups').select('*').eq('organization_id', orgId).order('created_at', { ascending: false }),
-    supabase.from('master_audit_logs').select('*').eq('organization_id', orgId).order('created_at', { ascending: false }).limit(20),
+    supabaseAdmin.from('organizations').select('*').eq('id', orgId).single(),
+    supabaseAdmin.from('organization_users').select('*, profiles(*)').eq('organization_id', orgId),
+    supabaseAdmin.from('organization_subscriptions').select('*, saas_plans(*)').eq('organization_id', orgId).single(),
+    supabaseAdmin.from('tenant_backups').select('*').eq('organization_id', orgId).order('created_at', { ascending: false }),
+    supabaseAdmin.from('master_audit_logs').select('*').eq('organization_id', orgId).order('created_at', { ascending: false }).limit(20),
   ]);
 
   return {
@@ -211,8 +214,10 @@ export async function masterSetOrganizationStatus(orgId: string, newStatus: Tena
 }
 
 export async function fetchUsersGlobal(filters?: { role?: string; q?: string }) {
-  const { supabase } = await getMasterSupabaseClient();
-  let query = supabase
+  await getMasterSupabaseClient();
+  const supabaseAdmin = getSupabaseAdmin();
+
+  let query = supabaseAdmin
     .from('profiles')
     .select('*, organization_users(organization_id, role, is_active, organizations(name))')
     .order('created_at', { ascending: false });
