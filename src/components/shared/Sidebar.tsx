@@ -278,8 +278,8 @@ export function Sidebar({
           href="/atendimentos"
           className="relative -top-5 flex flex-col items-center justify-center w-16 h-16 rounded-full bg-amber-500 shadow-xl shadow-amber-500/30 border-4 border-white dark:border-slate-900 text-blue-950 hover:bg-amber-400 transition-transform active:scale-95"
         >
-          <CalendarCheck2 className="h-6 w-6" />
-          <span className="text-[9px] font-extrabold mt-0.5 tracking-tight">Atender</span>
+          <Scissors className="h-6 w-6" />
+          <span className="text-[8px] font-extrabold mt-0.5 tracking-tight uppercase">Atendimento</span>
         </Link>
 
         <Link
