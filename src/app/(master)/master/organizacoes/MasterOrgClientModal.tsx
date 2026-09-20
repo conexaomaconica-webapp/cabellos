@@ -38,22 +38,22 @@ export default function MasterOrgClientModal({ plans, users }: { plans: any[]; u
           adminUserId: formData.adminUserId,
           saasPlanId: formData.saasPlanId,
           billingCycle: formData.billingCycle,
-          phone: formData.phone || undefined,
-          whatsapp: formData.whatsapp || undefined,
-          city: formData.city || undefined,
-          state: formData.state || undefined,
+          phone: formData.phone || '',
+          whatsapp: formData.whatsapp || '',
+          city: formData.city || '',
+          state: formData.state || '',
         });
       } else {
         await masterCreateOrganizationWithNewAdmin({
           name: formData.name,
           adminEmail: formData.adminEmail,
-          adminPassword: formData.adminPassword || undefined,
+          adminPassword: formData.adminPassword || '',
           saasPlanId: formData.saasPlanId,
           billingCycle: formData.billingCycle,
-          phone: formData.phone || undefined,
-          whatsapp: formData.whatsapp || undefined,
-          city: formData.city || undefined,
-          state: formData.state || undefined,
+          phone: formData.phone || '',
+          whatsapp: formData.whatsapp || '',
+          city: formData.city || '',
+          state: formData.state || '',
         });
       }
 
