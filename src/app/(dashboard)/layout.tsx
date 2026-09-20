@@ -20,12 +20,32 @@ export default async function DashboardLayout({
     return redirect('/login');
   }
 
-  // Buscar organizações às quais o usuário pertence
-  const { data: orgUsersData } = await supabase
-    .from('organization_users')
-    .select('*, organization:organizations(*)')
-    .eq('user_id', user.id)
-    .eq('is_active', true);
+  // Buscar todos os dados secundários em paralelo para melhorar a performance
+  const [
+    { data: orgUsersData },
+    { data: profile },
+    activeOrgIdCookie,
+    rawPreview,
+    systemBranding
+  ] = await Promise.all([
+    supabase
+      .from('organization_users')
+      .select('*, organization:organizations(*)')
+      .eq('user_id', user.id)
+      .eq('is_active', true),
+    
+    supabase
+      .from('profiles')
+      .select('name, avatar_url, email, system_role')
+      .eq('id', user.id)
+      .single(),
+      
+    getActiveOrganizationId(),
+    
+    getMasterRolePreview(),
+    
+    getSystemBrandingAction()
+  ]);
 
   const orgUsers = (orgUsersData || []) as OrganizationUser[];
 
@@ -34,7 +54,7 @@ export default async function DashboardLayout({
   }
 
   // Resolver ID da organização ativa
-  let activeOrgId = await getActiveOrganizationId();
+  let activeOrgId = activeOrgIdCookie;
   if (!activeOrgId || !orgUsers.some((ou) => ou.organization_id === activeOrgId)) {
     activeOrgId = orgUsers[0].organization_id;
   }
@@ -44,23 +64,13 @@ export default async function DashboardLayout({
   const userRole = activeOrgUser?.role || 'admin';
   const hasOrgMembership = !!activeOrgUser;
 
-  // Buscar perfil do usuário
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('name, avatar_url, email, system_role')
-    .eq('id', user.id)
-    .single();
-
   const userName = profile?.name || user.email?.split('@')[0] || 'Usuário';
   const userEmail = user.email || profile?.email || '';
   const userAvatar = profile?.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
   const systemRole = profile?.system_role || 'user';
 
   // Obter simulação de papel (exclusiva para Master)
-  const rawPreview = await getMasterRolePreview();
   const previewRole = systemRole === 'master' ? rawPreview : null;
-
-  const systemBranding = await getSystemBrandingAction();
 
   return (
     <div
