@@ -320,7 +320,6 @@ export function Sidebar({
           <OrgSwitcher 
             organizations={organizations} 
             activeOrgId={activeOrgId} 
-            hasMembership={hasOrgMembership} 
           />
 
           <nav className="space-y-6">
