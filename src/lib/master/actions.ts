@@ -284,6 +284,88 @@ export async function createSaasPlan(payload: {
   return plan;
 }
 
+export async function updateSaasPlan(planId: string, payload: {
+  name: string;
+  slug: string;
+  description?: string;
+  monthly_price: number;
+  yearly_price: number;
+  trial_days: number;
+  max_users: number;
+  max_professionals: number;
+  max_clients: number;
+  features: Record<FeatureKey, boolean>;
+}) {
+  const { supabase, user } = await getMasterSupabaseClient();
+  
+  const { error: planErr } = await supabase
+    .from('saas_plans')
+    .update({
+      name: payload.name,
+      slug: payload.slug,
+      description: payload.description || null,
+      monthly_price: payload.monthly_price,
+      yearly_price: payload.yearly_price,
+      trial_days: payload.trial_days,
+      max_users: payload.max_users,
+      max_professionals: payload.max_professionals,
+      max_clients: payload.max_clients,
+    })
+    .eq('id', planId);
+
+  if (planErr) throw new Error(planErr.message || 'Erro ao atualizar plano.');
+
+  // Delete all existing features and re-insert (easiest way to sync)
+  await supabase.from('saas_plan_features').delete().eq('plan_id', planId);
+
+  const featureInserts = Object.entries(payload.features).map(([key, enabled]) => ({
+    plan_id: planId,
+    feature_key: key,
+    enabled,
+  }));
+  await supabase.from('saas_plan_features').insert(featureInserts);
+
+  await supabase.from('master_audit_logs').insert({
+    master_user_id: user.id,
+    action: 'update_saas_plan',
+    entity_type: 'saas_plan',
+    entity_id: planId,
+    details: payload,
+  });
+
+  return { success: true };
+}
+
+export async function toggleSaasPlanStatus(planId: string, isActive: boolean) {
+  const { supabase, user } = await getMasterSupabaseClient();
+  const { error } = await supabase.from('saas_plans').update({ is_active: isActive }).eq('id', planId);
+  if (error) throw new Error(error.message);
+  
+  await supabase.from('master_audit_logs').insert({
+    master_user_id: user.id,
+    action: isActive ? 'activate_saas_plan' : 'deactivate_saas_plan',
+    entity_type: 'saas_plan',
+    entity_id: planId,
+  });
+  
+  return { success: true };
+}
+
+export async function deleteSaasPlan(planId: string) {
+  const { supabase, user } = await getMasterSupabaseClient();
+  const { error } = await supabase.from('saas_plans').delete().eq('id', planId);
+  if (error) throw new Error(`Erro ao excluir plano: ${error.message}`);
+  
+  await supabase.from('master_audit_logs').insert({
+    master_user_id: user.id,
+    action: 'delete_saas_plan',
+    entity_type: 'saas_plan',
+    entity_id: planId,
+  });
+  
+  return { success: true };
+}
+
 export async function fetchSubscriptions() {
   const { supabase } = await getMasterSupabaseClient();
   const { data, error } = await supabase

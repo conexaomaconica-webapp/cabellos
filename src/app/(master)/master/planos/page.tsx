@@ -2,6 +2,7 @@ import React from 'react';
 import { fetchSaasPlans } from '@/lib/master/actions';
 import { CreditCard, CheckCircle2, XCircle, PlusCircle } from 'lucide-react';
 import MasterPlanClientModal from './MasterPlanClientModal';
+import PlanActions from './PlanActions';
 
 export const revalidate = 0;
 
@@ -32,10 +33,24 @@ export default async function MasterPlansPage() {
           <div key={plan.id} className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 flex flex-col justify-between shadow-xl">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-slate-900 dark:text-white">{plan.name}</h2>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                  {plan.slug}
-                </span>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xl font-bold text-slate-900 dark:text-white">{plan.name}</h2>
+                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${
+                    plan.is_active 
+                      ? 'bg-purple-500/20 text-purple-300 border-purple-500/30'
+                      : 'bg-slate-500/20 text-slate-400 border-slate-500/30'
+                  }`}>
+                    {plan.slug}
+                  </span>
+                  {!plan.is_active && (
+                    <span className="px-2 py-0.5 text-[10px] uppercase font-bold bg-rose-500/20 text-rose-500 rounded-md">
+                      Inativo
+                    </span>
+                  )}
+                </div>
+                
+                {/* Ações (Editar, Ativar/Inativar, Excluir) */}
+                <PlanActions plan={plan} />
               </div>
 
               <div className="flex items-baseline gap-1">

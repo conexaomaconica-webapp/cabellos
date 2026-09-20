@@ -2,35 +2,43 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createSaasPlan } from '@/lib/master/actions';
+import { createSaasPlan, updateSaasPlan } from '@/lib/master/actions';
 import { FeatureKey } from '@/types/master';
-import { PlusCircle, CreditCard, AlertCircle } from 'lucide-react';
+import { PlusCircle, CreditCard, AlertCircle, Edit2 } from 'lucide-react';
 
-export default function MasterPlanClientModal() {
+export default function MasterPlanClientModal({ planToEdit }: { planToEdit?: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    name: '',
-    slug: '',
-    monthly_price: 149,
-    yearly_price: 1490,
-    trial_days: 14,
-    max_users: 5,
-    max_professionals: 5,
-    max_clients: 1000,
+    name: planToEdit?.name || '',
+    slug: planToEdit?.slug || '',
+    monthly_price: planToEdit?.monthly_price || 149,
+    yearly_price: planToEdit?.yearly_price || 1490,
+    trial_days: planToEdit?.trial_days || 14,
+    max_users: planToEdit?.max_users || 5,
+    max_professionals: planToEdit?.max_professionals || 5,
+    max_clients: planToEdit?.max_clients || 1000,
   });
 
-  const [features, setFeatures] = useState<Record<FeatureKey, boolean>>({
+  const initialFeatures: Record<FeatureKey, boolean> = {
     financial_module: true,
     reports_module: true,
     packages_module: true,
     returns_module: true,
     csv_export: true,
     advanced_reports: true,
-  });
+  };
+
+  if (planToEdit?.saas_plan_features) {
+    planToEdit.saas_plan_features.forEach((feat: any) => {
+      initialFeatures[feat.feature_key as FeatureKey] = feat.enabled;
+    });
+  }
+
+  const [features, setFeatures] = useState<Record<FeatureKey, boolean>>(initialFeatures);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,10 +46,17 @@ export default function MasterPlanClientModal() {
     setError(null);
 
     try {
-      await createSaasPlan({
-        ...formData,
-        features,
-      });
+      if (planToEdit) {
+        await updateSaasPlan(planToEdit.id, {
+          ...formData,
+          features,
+        });
+      } else {
+        await createSaasPlan({
+          ...formData,
+          features,
+        });
+      }
 
       setIsOpen(false);
       router.refresh();
@@ -54,20 +69,31 @@ export default function MasterPlanClientModal() {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-slate-900 dark:text-white font-medium text-sm transition-all shadow-lg shadow-purple-900/30"
-      >
-        <PlusCircle className="h-4 w-4" /> Criar Novo Plano
-      </button>
+      {planToEdit ? (
+        <button
+          type="button"
+          onClick={() => setIsOpen(true)}
+          className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-purple-100 dark:hover:bg-purple-900/50 text-slate-500 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-300 transition-colors"
+          title="Editar Plano"
+        >
+          <Edit2 className="h-4 w-4" />
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setIsOpen(true)}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-slate-900 dark:text-white font-medium text-sm transition-all shadow-lg shadow-purple-900/30"
+        >
+          <PlusCircle className="h-4 w-4" /> Criar Novo Plano
+        </button>
+      )}
 
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
               <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <CreditCard className="h-5 w-5 text-purple-400" /> Criar Plano Comercial SaaS
+                <CreditCard className="h-5 w-5 text-purple-400" /> {planToEdit ? 'Editar Plano SaaS' : 'Criar Plano Comercial SaaS'}
               </h2>
               <button onClick={() => setIsOpen(false)} className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white font-bold">
                 ✕
